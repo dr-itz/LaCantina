@@ -1,0 +1,46 @@
+/* --- static menu styles ---
+note:
+	1. not all browsers render styles the same way so try out your style sheet
+	on different browsers before publishing;
+style naming convention:
+	m<zero based menu number>l<zero based level number>i|o<for inner or outer tag>
+*/
+
+/* --- menu styles ---
+note:
+	not all browsers render styles the same way so try out your style sheet
+	on different browsers before publishing;
+*/
+/* level 0 inner */
+.m0l0iout, .m0l0iover {
+	font-family: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 4px;
+	border : none;
+}
+
+.m0l0iout {
+	color: black;
+}
+
+.m0l0iover {
+	color: white;
+}
+
+/* level 0 outer */
+.m0l0oout, .m0l0oover {
+	border : none;
+}
+
+.m0l1oout, .m0l1oover {
+	border : 1px solid #326584;
+}
+
+.m0l0oout, .m0l1oout {
+	background: #CFE2EB ;
+}
+.m0l0oover, .m0l1oover {
+	background: #326584;
+}

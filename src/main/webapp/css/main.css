@@ -1,0 +1,111 @@
+body, p, table, td, tr {
+	font-family: "Trebuchet MS", Arial, sans-serif;
+	font-size: 10pt;
+
+	color: #000000;
+}
+
+body {
+	background-color: white;
+}
+
+body, form {
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+div#Body {
+	display: block;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+h1 {
+	color: #000000;
+	font-size: 16pt;
+	text-decoration: none;
+}
+
+h2 {
+	color: #000000;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 14pt;
+	text-decoration: none;
+}
+
+h3 {
+	color: #000000;
+	font-size: 13pt;
+	text-decoration: none;
+	margin-bottom: 0;
+	margin-top: 0
+}
+
+h4 {
+	color: #000000;
+	font-size: 11pt;
+	text-decoration: none;
+	margin-bottom: 0;
+	margin-top: 0;
+	font-weight: normal
+}
+
+Table#HeaderTable {
+	border-bottom: solid black 1px;
+}
+
+td.TitleBar td {
+	background-color: #326584;
+	vertical-align: bottom;
+	white-space: nowrap;
+}
+
+td.TitleBar td.HeaderLinks {
+	padding-right: 4px;
+	padding-left: 1px;
+	text-align: right;
+	font-size: 11px;
+	vertical-align: top;
+	height: 32px;
+	color: white;
+}
+
+td.HeaderLinks a {
+	color: white;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+span#CurrentUser {
+	color: white;
+	font-size: 11px;
+	vertical-align: middle;
+}
+
+.Label {
+	color: white;
+	font-variant: small-caps;
+	font-weight: bold;
+	font-size: 22px;
+	vertical-align: middle;
+}
+
+td.Logo {
+	background-color: white;
+	width: 100px;
+	text-align: center;
+}
+
+.ContextBar {
+	margin-top: 6px;
+	margin-bottom: 12px;
+	border-bottom: 1px solid;
+}
+
+.ButtonBar {
+	border-top: 1px solid;
+	margin-right: 0px;
+	margin-top: 2px;
+	padding-top: 4px;
+}
