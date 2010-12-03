@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ This build file only build the PDF documentation, the application is built with maven
+ -->
+<project name="LaCantina" basedir="." default="msg">
+	<taskdef resource="ooo2pdf-ant.properties" classpath="lib/build/ooo2pdf/ooo2pdf-0.7.jar"/>
+
+	<target name="pdf">
+		<!-- if "outdir" is omitted, the resulting files will be created next to
+		  the source documents. -->
+		<ooo2pdf outdir="doc/pdf" forceRebuild="false">
+			<filterconfig>
+				<!-- for possible options and their meaning, see:
+				  http://wiki.services.openoffice.org/wiki/API/Tutorials/PDF_export
+				  Example:
+				  <config name="InitialView" value="1"/>
+				 -->
+			</filterconfig>
+
+			<fileset dir="doc/">
+				<include name="**/*.odt"/>
+			</fileset>
+		</ooo2pdf>
+	</target>
+
+	<target name="clean">
+		<delete dir="doc/pdf"/>
+	</target>
+
+	<target name="msg">
+		<echo>
+This only builds PDF documentation using OpenOffice.org/LibreOffice.
+Usage:
+	ant pdf
+And to clean generated docs:
+	ant clean
+		</echo>
+	</target>
+</project>
