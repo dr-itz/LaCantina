@@ -34,3 +34,4 @@ webapp-version:	generates the Version.java file
 pdf:		generate PDFs from .odt
 cleanpdf:	cleans the generated PDF files
 javadoc:	generates JavaDoc
+coverage:	genrate HTML coverage report with cobertura

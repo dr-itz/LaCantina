@@ -31,6 +31,11 @@
 	<property name="classes.dir"      value="${build.dir}/classes"/>
 	<property name="classes.test.dir" value="${build.dir}/test-classes"/>
 
+	<property name="cobertura.dir"    value="${build.dir}/cobertura"/>
+	<property name="instrumented.dir" value="${cobertura.dir}/instrumented"/>
+	<property name="cover.data.file"  value="${cobertura.dir}/cobertura.ser"/>
+	<property name="cover.html.dir"   value="${cobertura.dir}/html"/>
+
 	<property name="dist.dir"         value="${build.root}/dist"/>
 
 	<property name="doc.dir"          value="doc"/>
@@ -62,6 +67,17 @@
 		</fileset>
 	</path>
 
+	<path id="cobertura.classpath">
+		<path refid="compile.classpath"/>
+		<fileset dir="${lib.test.dir}/cobertura">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
+	<path id="instrumented.classpath">
+		<pathelement location="${instrumented.dir}"/>
+	</path>
+
 	<!-- version: generate .X from .X.template -->
 	<macrodef name="versiongen">
 		<attribute name="basedir"/>
@@ -89,6 +105,7 @@
 		<mkdir dir="${classes.dir}"/>
 		<mkdir dir="${classes.test.dir}"/>
 		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${cover.html.dir}"/>
 	</target>
 
 	<target name="clean" description="Deletes all generated files">
@@ -135,17 +152,41 @@
 		</javac>
 	</target>
 
+	<target name="instrument" depends="init, compile">
+		<delete file="${cover.data.file}"/>
+		<delete dir="${instrumented.dir}" />
+
+		<cobertura-instrument datafile="${cover.data.file}" todir="${instrumented.dir}">
+			<ignore regex="org.apache.log4j.*" />
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+		</cobertura-instrument>
+	</target>
+
 	<target name="test" depends="compile-test">
-		<junit forkmode="perBatch" haltonerror="true">
+		<junit fork="on" forkmode="perBatch" haltonerror="true">
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cover.data.file}"/>
 			<classpath>
+				<path refid="instrumented.classpath"/>
 				<path refid="test.classpath"/>
 				<pathelement location="${classes.test.dir}"/>
+
+				<path refid="cobertura.classpath"/>
 			</classpath>
 			<batchtest>
 				<fileset dir="${classes.test.dir}" includes="**/*Test.class"/>
 				<formatter type="brief" usefile="false"/>
 			</batchtest>
 		</junit>
+	</target>
+
+	<target name="coverage" depends="instrument, test">
+		<cobertura-report datafile="${cover.data.file}" destdir="${cover.html.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java"/>
+			</fileset>
+		</cobertura-report>
 	</target>
 
 	<!-- Doc targets -->
