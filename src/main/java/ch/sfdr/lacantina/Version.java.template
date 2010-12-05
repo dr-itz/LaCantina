@@ -1,0 +1,22 @@
+package ch.sfdr.lacantina;
+
+/**
+ * Version
+ * WARNING: THE .java FILE IS AUTO-GENERATED FROM .java.template
+ * @author D.Ritz
+ */
+public class Version
+{
+	private Version()
+	{
+	}
+
+	/**
+	 * the current version
+	 * @return version
+	 */
+	public static String getVersion()
+	{
+		return "LaCantina-@webapp.version@";
+	}
+}

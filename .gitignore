@@ -1,10 +1,9 @@
-target/
+build/
+dist/
 *~
 \#*\#
 *.swp
 nbproject
 .DS_Store
-.classpath
-.project
-.settings/
 doc/pdf/
+src/main/java/ch/sfdr/lacantina/Version.java

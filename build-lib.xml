@@ -1,0 +1,165 @@
+<!-- build lib for web apps -->
+<project name="build-lib" basedir=".">
+	<!-- generic build properties -->
+	<property file="build.properties"/>
+
+	<property name="version.props" value="version.properties"/>
+	<property file="${version.props}"/>
+
+	<!-- some properties are built from environment variables -->
+	<property environment="myenv"/>
+	<property name="java.build.root"  value="${myenv.JAVA_BUILD_ROOT}"/>
+
+	<!-- build to different directory depending on env -->
+	<condition property="build.root" value="${java.build.root}/${webapp.name}" else=".">
+		<and>
+			<istrue value="${build.useextdir}"/>
+			<available file="${java.build.root}" type="dir"/>
+		</and>
+	</condition>
+
+	<!-- Set the uncustomizable properties -->
+	<property name="src.dir"          value="src/main/java"/>
+	<property name="src.test.dir"     value="src/test/java"/>
+	<property name="lib.dir"          value="lib/main"/>
+	<property name="lib.provided.dir" value="lib/provided"/>
+	<property name="lib.build.dir"    value="lib/build"/>
+	<property name="lib.test.dir"     value="lib/test"/>
+	<property name="etc.dir"          value="etc"/>
+
+	<property name="build.dir"        value="${build.root}/build"/>
+	<property name="classes.dir"      value="${build.dir}/classes"/>
+	<property name="classes.test.dir" value="${build.dir}/test-classes"/>
+
+	<property name="dist.dir"         value="${build.root}/dist"/>
+
+	<property name="doc.dir"          value="doc"/>
+	<property name="doc.dist.dir"     value="${dist.dir}/doc"/>
+	<property name="javadoc.dir"      value="${doc.dist.dir}/javadoc"/>
+	<property name="doc.pdf.dir"      value="${doc.dist.dir}/pdf"/>
+
+	<!-- webapp properties -->
+	<property name="war.name"         value="${webapp.name}.war"/>
+	<property name="webapp.dir"       value="src/main/webapp"/>
+
+	<!-- The classpaths to be used to compile, test, etc -->
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${lib.provided.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<path id="app.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement location="${classes.dir}"/>
+	</path>
+	<path id="test.classpath">
+		<path refid="app.classpath"/>
+		<fileset dir="${lib.test.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- version: generate .X from .X.template -->
+	<macrodef name="versiongen">
+		<attribute name="basedir"/>
+		<attribute name="versionfile"/>
+		<sequential>
+			<dependset>
+				<srcfileset dir="@{basedir}">
+					<include name="@{versionfile}.template"/>
+					<include name="${version.props}"/>
+				</srcfileset>
+				<targetfileset dir="@{basedir}">
+					<include name="@{versionfile}"/>
+				</targetfileset>
+			</dependset>
+			<copy file="@{versionfile}.template" tofile="@{versionfile}">
+				<filterset>
+					<filtersfile file="${version.props}"/>
+				</filterset>
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<!-- Default build target -->
+	<target name="init">
+		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${classes.test.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+	</target>
+
+	<target name="clean" description="Deletes all generated files">
+		<delete dir="${classes.dir}"/>
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="webapp-version">
+		<versiongen basedir="." versionfile="${src.dir}/${webapp.versionfile}"/>
+	</target>
+
+	<target name="compile" depends="init, webapp-version">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}"
+		       source="${javac.source}" target="${javac.target}"
+		       debug="${javac.debug}" optimize="${javac.optimize}">
+			<classpath>
+				<path refid="compile.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="webapp" depends="compile">
+		<jar destfile="${dist.dir}/${war.name}">
+			<fileset dir="${webapp.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<zipfileset dir="${lib.dir}" prefix="WEB-INF/lib"/>
+			<zipfileset dir="${classes.dir}" prefix="WEB-INF/classes"/>
+			<zipfileset dir="${src.dir}"  prefix="WEB-INF/classes">
+				<include name="**/*.properties"/>
+			</zipfileset>
+		</jar>
+	</target>
+
+	<!-- Targets for testing -->
+	<target name="compile-test" description="Compiles the unittests" depends="init, compile">
+		<javac srcdir="${src.test.dir}" destdir="${classes.test.dir}"
+		       debug="${javac.debug}"
+		       source="${javac.source}" target="${javac.target}">
+			<classpath>
+				<path refid="test.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="test" depends="compile-test">
+		<junit forkmode="perBatch" haltonerror="true">
+			<classpath>
+				<path refid="test.classpath"/>
+				<pathelement location="${classes.test.dir}"/>
+			</classpath>
+			<batchtest>
+				<fileset dir="${classes.test.dir}" includes="**/*Test.class"/>
+				<formatter type="brief" usefile="false"/>
+			</batchtest>
+		</junit>
+	</target>
+
+	<!-- Doc targets -->
+	<target name="javadoc">
+		<javadoc destdir="${javadoc.dir}"
+		 access="public" author="true" nodeprecated="false"
+		 nodeprecatedlist="false" noindex="false" nonavbar="false"
+		 notree="false" splitindex="true" use="true" version="true">
+			<classpath>
+				<path refid="app.classpath"/>
+			</classpath>
+			<fileset dir="${src.dir}" defaultexcludes="yes">
+				<include name="**/*.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+</project>

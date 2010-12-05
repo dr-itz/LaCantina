@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
- This build file only build the PDF documentation, the application is built with maven
- -->
-<project name="LaCantina" basedir="." default="msg">
+  Builds releases of LaCantina, mostly imported from another project
+  @author D.Ritz
+-->
+<project name="LaCantina" basedir="." default="all">
 	<taskdef resource="ooo2pdf-ant.properties" classpath="lib/build/ooo2pdf/ooo2pdf-0.7.jar"/>
 
+	<!-- define the project name, import build-lib -->
+	<import file="build-lib.xml"/>
+
+	<!-- setup tomcat.base variable -->
+	<property name="tomcat.root"       value="${myenv.TOMCAT_ROOT}"/>
+
+
+	<!-- build targets -->
 	<target name="pdf">
 		<!-- if "outdir" is omitted, the resulting files will be created next to
 		  the source documents. -->
-		<ooo2pdf outdir="doc/pdf" forceRebuild="false">
+		<ooo2pdf outdir="${doc.pdf.dir}" forceRebuild="false">
 			<filterconfig>
 				<!-- for possible options and their meaning, see:
 				  http://wiki.services.openoffice.org/wiki/API/Tutorials/PDF_export
@@ -17,23 +27,30 @@
 				 -->
 			</filterconfig>
 
-			<fileset dir="doc/">
+			<fileset dir="${doc.dir}">
 				<include name="**/*.odt"/>
 			</fileset>
 		</ooo2pdf>
 	</target>
-
-	<target name="clean">
+	<target name="cleanpdf">
 		<delete dir="doc/pdf"/>
 	</target>
 
-	<target name="msg">
-		<echo>
-This only builds PDF documentation using OpenOffice.org/LibreOffice.
-Usage:
-	ant pdf
-And to clean generated docs:
-	ant clean
-		</echo>
+
+	<target name="all" description="builds everything"
+	 depends="webapp, javadoc, pdf">
+		<echo>Full build complete</echo>
+	</target>
+
+	<target name="deploy" description="deploy the WAR">
+		<copy todir="${tomcat.root}/webapps">
+			<fileset dir="${dist.webapps.dir}" includes="*.war"/>
+		</copy>
+	</target>
+
+	<target name="guitest" description="install GUI files only">
+		<copy todir="${tomcat.root}/webapps/${webapp.name}">
+			<fileset dir="${webapp.dir}"/>
+		</copy>
 	</target>
 </project>
