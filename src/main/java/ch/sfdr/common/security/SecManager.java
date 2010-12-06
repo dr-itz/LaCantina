@@ -151,6 +151,19 @@ public class SecManager
 	}
 
 	/**
+	 * gets the current user login
+	 * @param req
+	 * @return login
+	 */
+	public static String getLogin(HttpServletRequest req)
+	{
+		SessionToken tok = getSessionToken(req);
+		if (tok == null)
+			return "";
+		return tok.getLogin();
+	}
+
+	/**
 	 * authenticates a user, set the session token to the HttpSession
 	 * @param req the HttpServletRequest
 	 * @param user User's login

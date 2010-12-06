@@ -76,8 +76,9 @@
 									<td align="right"><font face="Arial, sans-serif"
 										size="-1"> User name: </font>
 									</td>
-									<td>
+									<td align="left">
 										<html:text property="user" size="18"/>
+										<html:errors property="user"/>&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -88,8 +89,9 @@
 									<td align="right"><font face="Arial, sans-serif"
 										size="-1"> Password: </font>
 									</td>
-									<td>
+									<td align="left">
 										<html:password property="pass" size="18"/>
+										<html:errors property="pass"/>&nbsp;
 									</td>
 								</tr>
 								<tr>

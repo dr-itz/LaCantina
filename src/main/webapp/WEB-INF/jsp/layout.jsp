@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 
+<%@page import="ch.sfdr.common.security.SecManager"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -42,7 +44,7 @@
 								<td class="Label">LaCantina</td>
 								<td class="HeaderLinks">
 									<span id="CurrentUser">
-										Current user: Blub
+										Current user: <%= SecManager.getLogin(request)%>
 									</span>&nbsp;&nbsp;
 									<html:link href="/LaCantina/LoginAction.do?action=logout">Sign out</html:link>
 									&nbsp;

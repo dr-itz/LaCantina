@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- Default set of monitored resources -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+       
+	<Resource name="jdbc/LaCantinaDB" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000" validationQuery="SELECT 1;"
+		username="root" password="mysql" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/lacantina"
+		removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true"
+	/>
+</Context>
