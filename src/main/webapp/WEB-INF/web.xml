@@ -4,6 +4,23 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<display-name>LaCantina</display-name>
 
+	<!-- security is done via filtering. -->
+	<context-param>
+		<param-name>security-config</param-name>
+		<param-value>/WEB-INF/security-config.xml</param-value>
+	</context-param>
+	<filter>
+		<filter-name>SecFilter</filter-name>
+		<filter-class>
+			ch.sfdr.common.security.SecFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SecFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- struts servlet -->
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -28,9 +45,8 @@
 		<session-timeout>30</session-timeout>
 	</session-config>
 
-
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
-
 </web-app>

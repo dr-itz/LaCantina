@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security-config>
+	<!-- default is login required -->
+	<default-constraint>
+		<login>required</login>
+	</default-constraint>
+
+	<!-- unprotected stuff -->
+	<constraint>
+		<url-pattern>/img/.*</url-pattern>
+		<url-pattern>/css/.*</url-pattern>
+		<url-pattern>/js/.*</url-pattern>
+		<login>none</login>
+	</constraint>
+
+	<!-- protected stuff -->
+	<constraint>
+		<url-pattern>/admin/.*</url-pattern>
+		<privilege>admin</privilege>
+	</constraint>
+
+	<!--  user authentication class -->
+	<user-auth>
+		<class>ch.sfdr.common.security.DummyUserAuth</class>
+	</user-auth>
+
+	<!-- redirectors -->
+	<redirectors>
+		<!-- the local login form -->
+		<login-url>/login.jsp</login-url>
+
+		<!-- access denied message when already logged in -->
+		<deny-url>/deny.do</deny-url>
+
+		<!-- the start point once logged in -->
+		<home-url>/home.do</home-url>
+	</redirectors>
+</security-config>

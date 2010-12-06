@@ -8,21 +8,8 @@
 <html:html lang="false">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>LaCantina - Getting Drunk With Style</title>
+	<title>LaCantina - Login</title>
 
-	<script type="text/javascript" src="/LaCantina/js/menu.js"></script>
-	<script type="text/javascript" src="/LaCantina/js/menu_tpl.js"></script>
-	<script type="text/javascript">
-	<!--
-		var MENU_ITEMS = [
-			['Wine Cellar', '/LaCantina/app/WineCellar.do'],
-			['Configuration', null, null,
-				['Configuration',		'/LaCantina/admin/ConfigAction.do'],
-				['User management',		'/LaCantina/admin/UserAction.do'],
-			],
-		];
-	-->
-	</script>
 	<link rel="stylesheet" type="text/css" href="/LaCantina/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/LaCantina/css/menu.css">
 </head>
@@ -42,10 +29,8 @@
 								<td class="Label">LaCantina</td>
 								<td class="HeaderLinks">
 									<span id="CurrentUser">
-										Current user: Blub
+										Please log in
 									</span>&nbsp;&nbsp;
-									<html:link href="/LaCantina/LoginAction.do?action=logout">Sign out</html:link>
-									&nbsp;
 								</td>
 							</tr>
 						</tbody>
@@ -56,31 +41,72 @@
 			<tr class="m0l0oout">
 				<td colspan="2">
 					<div class="m0l0iout">&nbsp;</div>
-					<script type="text/javascript">new menu (MENU_ITEMS, MENU_POS);</script>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<div id="Body">
-		<tiles:importAttribute name="hideTitle"/>
-		<logic:notEqual name="hideTitle" value="yes">
-			<div class="ContextBar">
-				<table width="100%">
-					<tr>
-						<td align="left" valign="bottom">
-							<h3><tiles:get name="title"/></h3>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</logic:notEqual>
+		<div class="ContextBar">
+			<table width="100%">
+				<tr>
+					<td align="left" valign="bottom">
+						<h3>Login</h3>
+					</td>
+				</tr>
+			</table>
+		</div>
 
 		<html:errors property="org.apache.struts.action.GLOBAL_MESSAGE"
 			header="errors.list.header"
 			footer="errors.list.footer"
 			prefix="errors.list.prefix"
 			suffix="errors.list.suffix"/>
-		<tiles:insert attribute="body"/>
+
+		<html:form action="/LoginAction.do">
+			<html:hidden property="action" value="login"/>
+			<table class="m0l0oout"
+				cellpadding="5" width="100%">
+				<tbody>
+					<tr>
+						<td style="text-align: center;" nowrap="nowrap" valign="top">
+						<table id="t" align="center" border="0" cellpadding="1"
+							cellspacing="0">
+							<tbody>
+								<tr>
+									<td align="right"><font face="Arial, sans-serif"
+										size="-1"> User name: </font>
+									</td>
+									<td>
+										<html:text property="user" size="18"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2"><br>
+									</td>
+								</tr>
+								<tr>
+									<td align="right"><font face="Arial, sans-serif"
+										size="-1"> Password: </font>
+									</td>
+									<td>
+										<html:password property="pass" size="18"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2"><br>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" align="center"><input name="null"
+										value="Log in" type="submit"></td>
+								</tr>
+							</tbody>
+						</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</html:form>
 	</div>
 </body>
 </html:html>

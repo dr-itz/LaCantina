@@ -119,6 +119,11 @@
 	</target>
 
 	<target name="compile" depends="init, webapp-version">
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
 		<javac srcdir="${src.dir}" destdir="${classes.dir}"
 		       source="${javac.source}" target="${javac.target}"
 		       debug="${javac.debug}" optimize="${javac.optimize}">
@@ -143,6 +148,11 @@
 
 	<!-- Targets for testing -->
 	<target name="compile-test" description="Compiles the unittests" depends="init, compile">
+		<copy todir="${classes.test.dir}">
+			<fileset dir="${src.test.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
 		<javac srcdir="${src.test.dir}" destdir="${classes.test.dir}"
 		       debug="${javac.debug}"
 		       source="${javac.source}" target="${javac.target}">
@@ -157,7 +167,9 @@
 		<delete dir="${instrumented.dir}" />
 
 		<cobertura-instrument datafile="${cover.data.file}" todir="${instrumented.dir}">
+			<!--
 			<ignore regex="org.apache.log4j.*" />
+			-->
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
 			</fileset>

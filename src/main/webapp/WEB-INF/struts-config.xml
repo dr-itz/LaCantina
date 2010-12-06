@@ -4,18 +4,32 @@
 "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
 
 <struts-config>
-
 	<form-beans>
 		<form-bean name="helloWorldForm" type="ch.sfdr.lacantina.HelloWorldForm" />
+
+		<form-bean name="loginForm" type="ch.sfdr.common.LoginForm"/>
 	</form-beans>
 
 	<action-mappings>
 		<action path="/index" forward="index"/>
+
 		<action path="/helloWorld" type="ch.sfdr.lacantina.HelloWorldAction"
 			name="helloWorldForm">
 			<forward name="success" path="/HelloWorld.jsp" />
 		</action>
+
+		<action path="/LoginAction"
+		 type="ch.sfdr.common.LoginAction"
+		 name="loginForm"
+		 scope="request"
+		 validate="true"
+		 input="/login.jsp">
+			<forward name="index" path="/index.do"/>
+		</action>
 	</action-mappings>
+
+	<message-resources
+	 parameter="ch.sfdr.lacantina.resources.MessageResources"/>
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
