@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import ch.sfdr.common.security.IUserAuth;
+import ch.sfdr.common.security.Password;
 import ch.sfdr.common.security.SessionToken;
 import ch.sfdr.lacantina.dao.db.DBConnection;
 
@@ -34,8 +35,9 @@ public class UserAuth
 				int uid = rs.getInt(1);
 				String pw = rs.getString(2);
 				boolean isAdmin = rs.getBoolean(3);
-				// FIXME: check password
-				return new SessionToken(login, uid, isAdmin);
+
+				if (pw.equals(Password.getPasswordHash(pass)))
+					return new SessionToken(login, uid, isAdmin);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

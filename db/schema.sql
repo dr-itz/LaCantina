@@ -116,3 +116,9 @@ ALTER TABLE `winecellars`
 ALTER TABLE `wine_years`
   ADD CONSTRAINT `wine_years_ibfk_1` FOREIGN KEY (`winecellar_id`) REFERENCES `winecellars` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `wine_years_ibfk_2` FOREIGN KEY (`wine_id`) REFERENCES `wines` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Default data to fill the database with dummy data
+--
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `login`, `password_hash`, `email`, `is_admin`)
+  VALUES (1, 'mister', 'admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'admin@blub.com', 1);

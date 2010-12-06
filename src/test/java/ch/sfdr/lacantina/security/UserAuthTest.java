@@ -35,7 +35,7 @@ public class UserAuthTest
 			"WHERE login = ?",
 			"UserQuery",
 			new Object[][] {
-				{ 123, "blub", true },
+				{ 123, "d033e22ae348aeb5660fc2140aec35850c4da997", true },
 			}
 		);
 
