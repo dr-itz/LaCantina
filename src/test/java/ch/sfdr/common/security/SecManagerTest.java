@@ -21,7 +21,6 @@ import com.mockrunner.mock.web.MockServletContext;
 public final class SecManagerTest
 {
 	private SecManager me;
-	private MockServletContext ctx;
 	private MockHttpServletRequest req;
 	private MockHttpServletResponse resp;
 
@@ -29,15 +28,22 @@ public final class SecManagerTest
 	public void setUp()
 		throws Exception
 	{
-		ctx = new MockServletContext();
+		req = new MockHttpServletRequest();
+		// getSession() returns null otherwise - violation of the spec
+		req.setSession(new MockHttpSession());
+
+		resp = new MockHttpServletResponse();
+
+		me = getSecurityManager(new MockServletContext());
+	}
+
+	public static SecManager getSecurityManager(MockServletContext ctx)
+	{
 		ctx.setInitParameter("security-config", "/WEB-INF/security-config.xml");
 		ctx.setResourceAsStream("/WEB-INF/security-config.xml",
 			SecConfigTest.getSecurityConfigInputStream());
 
-		req = new MockHttpServletRequest();
-		resp = new MockHttpServletResponse();
-
-		me = SecManager.getInstance(ctx);
+		return SecManager.getInstance(ctx);
 	}
 
 	@Test
@@ -76,9 +82,6 @@ public final class SecManagerTest
 	public void testGetSetSessionToken()
 	{
 		assertNull(SecManager.getSessionToken(req));
-
-		// getSession() returns null otherwise - violation of the spec
-		req.setSession(new MockHttpSession());
 
 		SessionToken tok = new SessionToken("login", 1234, true);
 		me.setSessionToken(req, tok);
@@ -146,9 +149,6 @@ public final class SecManagerTest
 	@Test
 	public void testUserAuth()
 	{
-		// getSession() returns null otherwise - violation of the spec
-		req.setSession(new MockHttpSession());
-
 		SessionToken tok = me.authenticateUser(req, "admin", "admin");
 
 		assertNotNull(tok);
