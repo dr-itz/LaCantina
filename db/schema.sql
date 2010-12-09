@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `winecellars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
+  `capacity` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
