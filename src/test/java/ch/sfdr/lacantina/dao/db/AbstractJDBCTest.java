@@ -1,5 +1,6 @@
 package ch.sfdr.lacantina.dao.db;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,8 @@ import com.mockrunner.mock.jdbc.MockResultSet;
 @Ignore
 public abstract class AbstractJDBCTest
 {
-	JDBCMockObjectFactory factory = new JDBCMockObjectFactory();
-	JDBCTestModule module = new JDBCTestModule(factory);
+	protected JDBCMockObjectFactory factory = new JDBCMockObjectFactory();
+	protected JDBCTestModule module = new JDBCTestModule(factory);
 
 	private List<String> queries = new ArrayList<String>();
 
@@ -35,7 +36,7 @@ public abstract class AbstractJDBCTest
 		throws Exception
 	{
 		DBConnection.setDataSource(factory.getMockDataSource());
-		
+
 		/* register an empty ResultSet so that no NullPointerExceptions will be
 		 * thrown in case the wrong statement is executed
 		 */
@@ -103,5 +104,14 @@ public abstract class AbstractJDBCTest
 			Object[][] data)
 	{
 		prepareQueryWithResult(query, name, null, data);
+	}
+
+	/**
+	 * gets the MockConnection
+	 * @return
+	 */
+	protected Connection getConnection()
+	{
+		return factory.getMockConnection();
 	}
 }

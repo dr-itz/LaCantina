@@ -24,11 +24,7 @@ public class UserAuthTest
 	{
 		super.setUp();
 		me = new UserAuth();
-	}
 
-	@Test
-	public void testAuthenticateUser()
-	{
 		prepareQueryWithResult(
 			"SELECT id, password_hash, is_admin " +
 			"FROM users " +
@@ -38,10 +34,28 @@ public class UserAuthTest
 				{ 123, "d033e22ae348aeb5660fc2140aec35850c4da997", true },
 			}
 		);
+	}
 
+	@Test
+	public void testAuthenticateUser()
+	{
 		SessionToken tok = me.authenticateUser("admin", "admin");
 		assertNotNull(tok);
 		assertEquals(123, tok.getUserId());
 		assertTrue(tok.isAdmin());
+	}
+
+	@Test
+	public void testAuthenticateUserDeny()
+	{
+		SessionToken tok = me.authenticateUser("admin", "blub");
+		assertNull(tok);
+	}
+
+	@Test
+	public void testAuthenticateUserNoUser()
+	{
+		SessionToken tok = me.authenticateUser("blub", "blub");
+		assertNull(tok);
 	}
 }

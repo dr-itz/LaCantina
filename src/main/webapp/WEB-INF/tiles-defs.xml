@@ -15,4 +15,14 @@
 		<put name="body" value="/WEB-INF/jsp/index.jsp" />
 		<put name="title" type="string" value="LaCantina" />
 	</definition>
+
+	<!-- users -->
+	<definition name="user" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/admin/user.jsp"/>
+		<put name="title" type="string" value="User configuration"/>
+	</definition>
+	<definition name="userList" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/admin/userList.jsp"/>
+		<put name="title" type="string" value="User management"/>
+	</definition>
 </tiles-definitions>

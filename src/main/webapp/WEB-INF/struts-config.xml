@@ -5,18 +5,15 @@
 
 <struts-config>
 	<form-beans>
-		<form-bean name="helloWorldForm" type="ch.sfdr.lacantina.HelloWorldForm" />
-
 		<form-bean name="loginForm" type="ch.sfdr.common.LoginForm"/>
+
+		<form-bean name="userForm" type="ch.sfdr.lacantina.gui.admin.UserForm"/>
 	</form-beans>
 
 	<action-mappings>
-		<action path="/index" forward="index"/>
-
-		<action path="/helloWorld" type="ch.sfdr.lacantina.HelloWorldAction"
-			name="helloWorldForm">
-			<forward name="success" path="/HelloWorld.jsp" />
-		</action>
+		<action path="/index"					forward="index"/>
+		<action path="/admin/userList"			forward="userList"/>
+		<action path="/admin/user"				forward="user"/>
 
 		<action path="/LoginAction"
 		 type="ch.sfdr.common.LoginAction"
@@ -25,6 +22,15 @@
 		 validate="true"
 		 input="/login.jsp">
 			<forward name="index" path="/index.do"/>
+		</action>
+
+		<action path="/admin/UserAction"
+		 type="ch.sfdr.lacantina.gui.admin.UserAction"
+		 name="userForm"
+		 scope="request"
+		 validate="true"
+		 input="/admin/user.do">
+			<forward name="userList" path="/admin/userList.do"/>
 		</action>
 	</action-mappings>
 

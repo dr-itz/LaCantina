@@ -26,5 +26,9 @@
 	<classpathentry kind="lib" path="lib/test/mockrunner/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/test/mockrunner/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/tomcat/mysql-connector-java-5.1.13-bin.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/hamcrest-core-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/hamcrest-library-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/jmock-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/jmock-junit4-2.5.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

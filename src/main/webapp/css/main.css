@@ -120,11 +120,67 @@ td.Logo {
 	padding-left: 5px;
 }
 
-UL.Error {
+ul.Error {
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
 
 .Error {
 	background-color: #FFE0E0;
+}
+
+th {
+	background: #cfe2eb;
+	color: black;
+	text-align: left;
+	border-bottom: black 1px solid;
+}
+
+tr.even {
+	color: black;
+	background-color: white;
+}
+
+tr.odd {
+	color: black;
+	background: #E4E4E4;
+	border-width: 0;
+}
+
+tr th, tr.even td, tr.odd td {
+	padding-left: 4px;
+	padding-right: 3px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+tr.footer, tr.footer td {
+	background-color: white;
+	color: black;
+	border-top: black 1px solid;
+	padding-left: 4px;
+	padding-right: 3px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+table.datatable {
+	border-color: #222222;
+	border-style: solid;
+	border-width: 2px
+}
+
+table.formtable {
+	margin-top: 3px;
+	margin-bottom: 3px;
+	padding-left: 0px;
+	padding-right: 0px;
+	border-color: #222222;
+	border-style: solid;
+	border-width: 1px;
+}
+
+table.formtable td, table.formtable th {
+	padding-left: 3px;
+	padding-right: 3px;
 }

@@ -9,12 +9,19 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import ch.sfdr.lacantina.dao.DAOException;
+
 /**
  * base class for db connections
  * @author S.Freihofer
  */
 public class DBConnection
 {
+	protected static final Log log = LogFactory.getLog(DBConnection.class);
+
 	protected Connection conn = null;
 	private static DataSource dataSource = null;
 
@@ -55,13 +62,17 @@ public class DBConnection
 	 * @throws Exception
 	 */
 	public DBConnection()
-		throws Exception
+		throws DAOException
 	{
 		DataSource ds = getDataSource();
 		if (ds == null)
-			throw new Exception("no data source");
-		
-		conn = ds.getConnection();
+			throw new DAOException("no data source");
+
+		try {
+			conn = ds.getConnection();
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 	}
 
 	/**
@@ -82,8 +93,9 @@ public class DBConnection
 			return;
 		try {
 			conn.close();
+			conn = null;
 		} catch (SQLException e) {
-			// ignored
+			log.warn(e);
 		}
 	}
 
@@ -98,7 +110,7 @@ public class DBConnection
 		try {
 			stmt.close();
 		} catch (SQLException e) {
-
+			log.warn(e);
 		}
 	}
 
@@ -112,7 +124,7 @@ public class DBConnection
 			if (rs != null)
 				rs.close();
 		} catch (SQLException e) {
-			; // ignored
+			log.warn(e);
 		}
 	}
 }
