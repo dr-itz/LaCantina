@@ -17,7 +17,6 @@ public abstract class BaseForm
 
 	// common param used in most forms
 	protected String action;
-	protected int id;
 
 	// the most common actions
 	public static final String ACTION_FORM   = "form";
@@ -57,7 +56,6 @@ public abstract class BaseForm
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
 		action = ACTION_LIST;
-		id = 0;
 	}
 
 	@Override
@@ -116,21 +114,5 @@ public abstract class BaseForm
 	public void setAction(String action)
 	{
 		this.action = action;
-	}
-
-	/**
-	 * @return the id
-	 */
-	public int getId()
-	{
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id)
-	{
-		this.id = id;
 	}
 }

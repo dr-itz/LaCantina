@@ -57,7 +57,9 @@ public class UserForm
 			if (isEmptyString(user.getFirstName()))
 				errors.add("firstName", new ActionMessage("user.firstname.required"));
 
-			if (!isEmptyString(pw1)) {
+			if (user.getId() == 0 && isEmptyString(pw1)) {
+				errors.add("pw", new ActionMessage("user.pw.new.required"));
+			} else if (!isEmptyString(pw1)) {
 				if (!pw1.equals(pw2)) {
 					errors.add("pw", new ActionMessage("user.pw.mustmatch"));
 					pw1 = pw2 = null;
@@ -65,9 +67,6 @@ public class UserForm
 			} else if (isEmptyString(pw1)) {
 				pw1 = pw2 = null;
 			}
-
-			if (user.getId() == 0 && pw1 == null)
-				errors.add("pw", new ActionMessage("user.pw.new.required"));
 		}
 
 		return errors;

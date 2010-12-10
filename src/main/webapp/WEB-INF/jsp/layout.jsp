@@ -12,6 +12,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>LaCantina - Getting Drunk With Style</title>
 
+	<script type="text/javascript" src="/LaCantina/js/utils.js"></script>
 	<script type="text/javascript" src="/LaCantina/js/menu.js"></script>
 	<script type="text/javascript" src="/LaCantina/js/menu_tpl.js"></script>
 	<script type="text/javascript">

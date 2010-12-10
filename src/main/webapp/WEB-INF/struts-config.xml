@@ -12,6 +12,7 @@
 
 	<action-mappings>
 		<action path="/index"					forward="index"/>
+		<action path="/deny"					forward="deny"/>
 		<action path="/admin/userList"			forward="userList"/>
 		<action path="/admin/user"				forward="user"/>
 

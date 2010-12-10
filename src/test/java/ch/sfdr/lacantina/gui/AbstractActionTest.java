@@ -24,9 +24,13 @@ public class AbstractActionTest<T extends ActionForm>
 	protected ActionMockObjectFactory actionMockFactory;
 	protected ActionTestModule module;
 	protected T form;
+	protected Class<?> actionClazz;
 
-    public void setUp(Class<T> clazz)
+    @SuppressWarnings("unchecked")
+	public void setUp(Class<T> clazz, Class<?> actionClazz)
     {
+    	this.actionClazz = actionClazz;
+
     	DummyDAOConnectionFactory daoFact = new DummyDAOConnectionFactory();
     	DAOConnectionFactory.setFactory(daoFact);
     	daoConn = daoFact.getConn();
@@ -36,5 +40,65 @@ public class AbstractActionTest<T extends ActionForm>
         module = new ActionTestModule(actionMockFactory);
         form = (T) module.createActionForm(clazz);
         module.setValidate(true);
+    }
+
+    /**
+     * sets a parameter on the request
+     * @param name name
+     * @param val value
+     */
+    public void param(String name, String val)
+    {
+    	module.addRequestParameter(name, val);
+    }
+
+    /**
+     * lets the action perform
+     */
+    public void action()
+    {
+    	module.actionPerform(actionClazz, form);
+    }
+
+    /**
+     * sets the forward to inputForward
+     */
+    public void setInputForward()
+    {
+    	module.setInput("inputForward");
+    }
+
+    /**
+     * verifies that the input forward was returned
+     */
+    public void verifyInputForward()
+    {
+    	module.verifyForwardName("inputForward");
+    }
+
+    /**
+     * verifies a specific forward
+     * @param name name
+     */
+    public void verifyForward(String name)
+    {
+    	module.verifyForward(name);
+    }
+
+    /**
+     * verifies that no errors where returned
+     */
+    public void verifyNoErrors()
+    {
+    	module.verifyNoActionErrors();
+    }
+
+    /**
+     * verifies if an error is present
+     * @param name name
+     */
+    public void verifyError(String name)
+    {
+    	module.verifyActionErrorPresent(name);
     }
 }

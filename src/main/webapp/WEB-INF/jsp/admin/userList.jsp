@@ -6,7 +6,7 @@
 <html:form action="/admin/UserAction.do">
 
 <html:hidden property="action" value="list" styleId="pAction"/>
-<html:hidden property="id" styleId="pId"/>
+<html:hidden property="user.id" styleId="pId"/>
 
 <table class="datatable" width="100%" cellspacing="0">
 	<col class="fixedtextcolumn"/>
@@ -35,7 +35,7 @@
 	<logic:iterate name="userList" id="item" indexId="idx">
 		<tr class="<%= idx % 2 == 0 ? "even" : "odd" %>">
 			<td>
-				<html:link action="/admin/UserAction" paramId="id"
+				<html:link action="/admin/UserAction" paramId="user.id"
 				 paramName="item" paramProperty="id">
 				 	<html:param name="action" value="form"/>
 					<bean:write name="item" property="login"/>

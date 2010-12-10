@@ -26,4 +26,20 @@ public interface IUserDAO
 	 */
 	List<User> getUsers()
 		throws DAOException;
+
+	/**
+	 * stores a user (either insert or update)
+	 * @param u the user
+	 * @throws DAOException
+	 */
+	void storeUser(User u)
+		throws DAOException;
+
+	/**
+	 * deletes a user
+	 * @param id user id
+	 * @throws DAOException
+	 */
+	void deleteUser(int id)
+		throws DAOException;
 }

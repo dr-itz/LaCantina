@@ -40,7 +40,8 @@ public class DbUserDAOTest
 			"UserQuery",
 			new Object[][] {
 				{ 123, "admin", "first", "last", "some@one.com", true },
-			}
+			},
+			123
 		);
 
 		User u = me.getUser(123);
@@ -84,5 +85,66 @@ public class DbUserDAOTest
 		assertEquals("last1", u.getLastName());
 		assertEquals("some1@one.com", u.getEmail());
 		assertTrue(u.isAdmin());
+	}
+
+	@Test
+	public void testStoreUserInsert()
+		throws DAOException
+	{
+		User u = new User();
+		u.setId(0);
+		u.setFirstName("first");
+		u.setLastName("last");
+		u.setLogin("login");
+		u.setEmail("email");
+		u.setPasswordHash("passwordHash");
+
+		prepareUpdate(
+			"INSERT INTO users" +
+			"  (login, first_name, last_name, email, is_admin, password_hash) " +
+			"VALUES (?, ?, ?, ?, ?, ?)",
+			"UserInsert",
+			"login", "first", "last", "email", false, "passwordHash");
+
+		me.storeUser(u);
+	}
+
+	@Test
+	public void testStoreUserUpdate()
+		throws DAOException
+	{
+		User u = new User();
+		u.setId(123);
+		u.setFirstName("first");
+		u.setLastName("last");
+		u.setLogin("login");
+		u.setEmail("email");
+		u.setPasswordHash("passwordHash");
+
+		prepareUpdate(
+			"UPDATE users SET" +
+			"  login = ?, first_name = ?, last_name = ?, email = ?," +
+			"  is_admin = ? " +
+			"WHERE id = ?",
+			"UserUpdate",
+			"login", "first", "last", "email", false, 123);
+		prepareUpdate(
+			"UPDATE users SET password_hash = ? " +
+			"WHERE login = ?",
+			"UserUpdatePW",
+			"passwordHash", "login");
+
+		me.storeUser(u);
+	}
+
+	@Test
+	public void testDeleteUser()
+		throws DAOException
+	{
+		prepareUpdate(
+			"DELETE FROM users WHERE id = ?",
+			"UserDelete",
+			123);
+		me.deleteUser(123);
 	}
 }

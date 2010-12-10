@@ -10,7 +10,9 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import ch.sfdr.common.BaseAction;
+import ch.sfdr.common.security.Password;
 import ch.sfdr.lacantina.dao.DAOConnectionFactory;
+import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.IDAOConnection;
 import ch.sfdr.lacantina.dao.IUserDAO;
 import ch.sfdr.lacantina.dao.objects.User;
@@ -47,23 +49,40 @@ public class UserAction
 			IUserDAO dao = conn.getUserDAO();
 
 			if (UserForm.ACTION_FORM.equals(action)) {
-				if (form.getId() != 0) {
-					User user = dao.getUser(form.getId());
+				if (form.getUser().getId() != 0) {
+					User user = dao.getUser(form.getUser().getId());
 					form.setUser(user);
 				}
 				return returnInputForward(form, mapping, request);
 			}
 
 			if (UserForm.ACTION_MODIFY.equals(action)) {
-				// FIXME
+				String pw = form.getPw1();
+				if (pw != null) {
+					String pwHash = Password.getPasswordHash(pw);
+					form.getUser().setPasswordHash(pwHash);
+				}
+				try {
+					dao.storeUser(form.getUser());
+				} catch (DAOException e) {
+					attachSingleErrorMessage(mapping, request,
+						"user.update.failed");
+				}
+
 			} else if (UserForm.ACTION_DELETE.equals(action)) {
-				// FIXME
+				if (form.getUser().getId() != 0) {
+					try {
+						dao.deleteUser(form.getUser().getId());
+					} catch (DAOException e) {
+						attachSingleErrorMessage(mapping, request,
+							"user.delete.failed");
+					}
+				}
 			}
 
 			// defaults to LIST
 			List<User> userList = dao.getUsers();
 			request.setAttribute("userList", userList);
-
 		} finally {
 			conn.close();
 		}

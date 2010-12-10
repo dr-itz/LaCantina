@@ -1,10 +1,8 @@
 package ch.sfdr.lacantina.dao.db;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.sfdr.lacantina.dao.DAOException;
@@ -16,17 +14,16 @@ import ch.sfdr.lacantina.dao.objects.User;
  * @author D.Ritz
  */
 public class DbUserDAO
+	extends AbstractDAO<User>
 	implements IUserDAO
 {
-	private Connection conn;
-
 	/**
 	 * creates a user DAO connected to a database
 	 * @param conn
 	 */
 	public DbUserDAO(Connection conn)
 	{
-		this.conn = conn;
+		super(conn);
 	}
 
 	/**
@@ -42,7 +39,7 @@ public class DbUserDAO
 	 * @return User
 	 * @throws SQLException
 	 */
-	private static User readUser(ResultSet rs)
+	public User readRow(ResultSet rs)
 		throws SQLException
 	{
 		User u = new User();
@@ -64,24 +61,10 @@ public class DbUserDAO
 	public User getUser(int id)
 		throws DAOException
 	{
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		try {
-			stmt = conn.prepareStatement(
-				USER_SELECT +
-				"WHERE id = ?");
-			stmt.setInt(1, id);
-
-			rs = stmt.executeQuery();
-			if (rs.next())
-				return readUser(rs);
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			DBConnection.closeResultSet(rs);
-			DBConnection.closeStatement(stmt);
-		}
-		return null;
+		return getSingleRow(
+			USER_SELECT +
+			"WHERE id = ?",
+			id);
 	}
 
 	/*
@@ -90,25 +73,50 @@ public class DbUserDAO
 	public List<User> getUsers()
 		throws DAOException
 	{
-		List<User> list = new ArrayList<User>();
+		return getRowList(
+			USER_SELECT +
+			"ORDER BY last_name, first_name");
+	}
 
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		try {
-			stmt = conn.prepareStatement(
-				USER_SELECT +
-				"ORDER BY last_name, first_name");
-
-			rs = stmt.executeQuery();
-			while (rs.next())
-				list.add(readUser(rs));
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			DBConnection.closeResultSet(rs);
-			DBConnection.closeStatement(stmt);
+	/*
+	 * @see ch.sfdr.lacantina.dao.IUserDAO#storeUser(
+	 * 		ch.sfdr.lacantina.dao.objects.User)
+	 */
+	public void storeUser(User u)
+		throws DAOException
+	{
+		if (u.getId() == 0) {
+			executeUpdateStatement(
+				"INSERT INTO users" +
+				"  (login, first_name, last_name, email, is_admin, password_hash) " +
+				"VALUES (?, ?, ?, ?, ?, ?)",
+				u.getLogin(), u.getFirstName(), u.getLastName(), u.getEmail(),
+				u.isAdmin(), u.getPasswordHash());
+		} else {
+			executeUpdateStatement(
+				"UPDATE users SET" +
+				"  login = ?, first_name = ?, last_name = ?, email = ?," +
+				"  is_admin = ? " +
+				"WHERE id = ?",
+				u.getLogin(), u.getFirstName(), u.getLastName(), u.getEmail(),
+				u.isAdmin(),
+				u.getId());
+			if (u.getPasswordHash() != null) {
+				executeUpdateStatement(
+					"UPDATE users SET password_hash = ? " +
+					"WHERE login = ?",
+					u.getPasswordHash(),
+					u.getLogin());
+			}
 		}
+	}
 
-		return list;
+	/*
+	 * @see ch.sfdr.lacantina.dao.IUserDAO#deleteUser(int)
+	 */
+	public void deleteUser(int id)
+		throws DAOException
+	{
+		executeUpdateStatement("DELETE FROM users WHERE id = ?", id);
 	}
 }

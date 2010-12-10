@@ -10,7 +10,6 @@ import ch.sfdr.lacantina.dao.db.DBConnection;
 
 /**
  * User Authentication
- * @author D.Ritz
  * @author S.Freihofer
  */
 public class UserAuth

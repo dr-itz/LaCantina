@@ -26,7 +26,7 @@ public abstract class AbstractJDBCTest
 	protected JDBCMockObjectFactory factory = new JDBCMockObjectFactory();
 	protected JDBCTestModule module = new JDBCTestModule(factory);
 
-	private List<String> queries = new ArrayList<String>();
+	private List<QueryWithParams> queries = new ArrayList<QueryWithParams>();
 
 	/**
 	 * @throws java.lang.Exception
@@ -64,30 +64,32 @@ public abstract class AbstractJDBCTest
 	 */
 	protected void verifyQueries()
 	{
-		for (String query : queries)
-			module.verifySQLStatementExecuted(query);
+		for (QueryWithParams query : queries) {
+			module.verifySQLStatementExecuted(query.query);
+			for (int i = 0; i < query.params.length; i++) {
+				module.verifyPreparedStatementParameter(query.query, i + 1,
+					query.params[i]);
+			}
+		}
 	}
 
 	/**
 	 * prepares a query with attached results
 	 * @param query the SQL query string
 	 * @param name a name for the query
-	 * @param cols the columns
 	 * @param data the data returned
+	 * @param params bind params
 	 */
 	protected void prepareQueryWithResult(String query, String name,
-			String[] cols, Object[][] data)
+			Object[][] data, Object... params)
 	{
-		queries.add(query);
+		queries.add(new QueryWithParams(query, params));
 
-		PreparedStatementResultSetHandler handler = module.getPreparedStatementResultSetHandler();
+		PreparedStatementResultSetHandler handler =
+			module.getPreparedStatementResultSetHandler();
 
 		// ArrayResultSetFactory and StringValueTable are just useless
 		MockResultSet resultSet = new MockResultSet(name);
-		if (cols != null) {
-			for (int i = 0; i < cols.length; i++)
-				resultSet.addColumn(cols[i]);
-		}
 		for (int i = 0; i < data.length; i++)
 			resultSet.addRow(data[i]);
 
@@ -95,15 +97,14 @@ public abstract class AbstractJDBCTest
 	}
 
 	/**
-	 * prepares a query with attached results
+	 * prepares an update query with no result set
 	 * @param query the SQL query string
 	 * @param name a name for the query
-	 * @param data the data returned
+	 * @param params bind params
 	 */
-	protected void prepareQueryWithResult(String query, String name,
-			Object[][] data)
+	protected void prepareUpdate(String query, String name, Object... params)
 	{
-		prepareQueryWithResult(query, name, null, data);
+		queries.add(new QueryWithParams(query, params));
 	}
 
 	/**
@@ -113,5 +114,20 @@ public abstract class AbstractJDBCTest
 	protected Connection getConnection()
 	{
 		return factory.getMockConnection();
+	}
+
+	/**
+	 * a query string with the expected params
+	 */
+	private static class QueryWithParams
+	{
+		String query;
+		Object[] params;
+
+		public QueryWithParams(String query, Object[] params)
+		{
+			this.query = query;
+			this.params = params;
+		}
 	}
 }

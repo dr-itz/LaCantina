@@ -25,4 +25,10 @@
 		<put name="body" value="/WEB-INF/jsp/admin/userList.jsp"/>
 		<put name="title" type="string" value="User management"/>
 	</definition>
+
+	<!-- the access denied page -->
+	<definition name="deny" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/deny.jsp"/>
+		<put name="title" type="string" value="Access denied"/>
+	</definition>
 </tiles-definitions>

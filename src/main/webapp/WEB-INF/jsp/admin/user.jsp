@@ -2,9 +2,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
-<html:form action="/admin/UserAction.do">
+<html:form action="/admin/UserAction.do" styleId="userForm">
 	<html:hidden property="action" value="mod" styleId="pAction"/>
-	<html:hidden property="id" styleId="pId"/>
+	<html:hidden property="user.id" styleId="pId"/>
 
 	<table class="formtable" width="100%">
 		<tr>
@@ -67,12 +67,14 @@
 				</html:link>
 			</td>
 			<td align="right">
-				<logic:notEqual name="userForm" property="id" value="0">
+				<logic:notEqual name="userForm" property="user.id" value="0">
+					<input type="button" value="<bean:message key="lbl.delete"/>"
+					 id="fdelete" onClick="javascript:pfDelete('userForm')">
 					&nbsp;<html:submit styleId="fSubmit">
 						<bean:message key="lbl.modify"/>
 					</html:submit>
 				</logic:notEqual>
-				<logic:equal name="userForm" property="id" value="0">
+				<logic:equal name="userForm" property="user.id" value="0">
 					<html:submit styleId="fSubmit">
 						<bean:message key="lbl.add"/>
 					</html:submit>
