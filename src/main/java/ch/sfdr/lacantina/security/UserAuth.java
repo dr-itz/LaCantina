@@ -3,6 +3,9 @@ package ch.sfdr.lacantina.security;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import ch.sfdr.common.security.IUserAuth;
 import ch.sfdr.common.security.Password;
 import ch.sfdr.common.security.SessionToken;
@@ -15,6 +18,8 @@ import ch.sfdr.lacantina.dao.db.DBConnection;
 public class UserAuth
 	implements IUserAuth
 {
+	private static final Log log = LogFactory.getLog(UserAuth.class);
+
 	public SessionToken authenticateUser(String login, String pass)
 	{
 		DBConnection conn = null;
@@ -39,7 +44,7 @@ public class UserAuth
 					return new SessionToken(login, uid, isAdmin);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.warn(e);
 		} finally {
 			DBConnection.closeResultSet(rs);
 			DBConnection.closeStatement(stmt);

@@ -24,7 +24,10 @@ public class UserAuthTest
 	{
 		super.setUp();
 		me = new UserAuth();
+	}
 
+	private void prepareResultSet(String login)
+	{
 		prepareQueryWithResult(
 			"SELECT id, password_hash, is_admin " +
 			"FROM users " +
@@ -32,13 +35,15 @@ public class UserAuthTest
 			"UserQuery",
 			new Object[][] {
 				{ 123, "d033e22ae348aeb5660fc2140aec35850c4da997", true },
-			}
+			},
+			login
 		);
 	}
 
 	@Test
 	public void testAuthenticateUser()
 	{
+		prepareResultSet("admin");
 		SessionToken tok = me.authenticateUser("admin", "admin");
 		assertNotNull(tok);
 		assertEquals(123, tok.getUserId());
@@ -48,6 +53,7 @@ public class UserAuthTest
 	@Test
 	public void testAuthenticateUserDeny()
 	{
+		prepareResultSet("admin");
 		SessionToken tok = me.authenticateUser("admin", "blub");
 		assertNull(tok);
 	}
@@ -55,6 +61,17 @@ public class UserAuthTest
 	@Test
 	public void testAuthenticateUserNoUser()
 	{
+		SessionToken tok = me.authenticateUser("blub", "blub");
+		assertNull(tok);
+	}
+
+	@Test
+	public void testAuthenticateException()
+	{
+		prepareException(
+			"SELECT id, password_hash, is_admin " +
+			"FROM users " +
+			"WHERE login = ?", "blub");
 		SessionToken tok = me.authenticateUser("blub", "blub");
 		assertNull(tok);
 	}

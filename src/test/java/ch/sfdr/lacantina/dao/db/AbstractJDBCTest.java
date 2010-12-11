@@ -107,6 +107,14 @@ public abstract class AbstractJDBCTest
 		queries.add(new QueryWithParams(query, params));
 	}
 
+	protected void prepareException(String query, Object... params)
+	{
+		PreparedStatementResultSetHandler handler =
+			module.getPreparedStatementResultSetHandler();
+
+		handler.prepareThrowsSQLException(query, params);
+	}
+
 	/**
 	 * gets the MockConnection
 	 * @return
