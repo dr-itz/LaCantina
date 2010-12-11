@@ -1,0 +1,161 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true">  
+  <interface corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.IDAOConnectionFactory" 
+    project="LaCantina" file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnectionFactory.java" binary="false">    
+    <position x="255" y="191" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.IDAOConnection" project="LaCantina" 
+    file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnection.java" binary="false">    
+    <position x="542" y="191" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.DAOConnectionFactory" project="LaCantina" 
+    file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/DAOConnectionFactory.java" binary="false">    
+    <position x="124" y="63" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.IUserDAO" project="LaCantina" 
+    file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IUserDAO.java" binary="false">    
+    <position x="541" y="349" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.db.DbUserDAO" project="LaCantina" 
+    file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DbUserDAO.java" binary="false">    
+    <position x="540" y="532" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.db.DBDAOConnection" project="LaCantina" 
+    file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnection.java" binary="false">    
+    <position x="127" y="532" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.db.DBDAOConnectionFactory" 
+    project="LaCantina" file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnectionFactory.java" 
+    binary="false">    
+    <position x="125" y="372" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.lacantina.dao.objects.User" project="LaCantina" 
+    file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/objects/User.java" binary="false">    
+    <position x="724" y="471" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnectionFactory.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnection.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnection.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IUserDAO" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IUserDAO.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DbUserDAO" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DbUserDAO.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.objects.User" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/objects/User.java" binary="false"/>  
+  </dependency>  
+  <realization>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnection.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnection.java" binary="false"/>  
+  </realization>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.IUserDAO" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IUserDAO.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.objects.User" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/objects/User.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnectionFactory.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnection.java" binary="false"/>  
+  </dependency>  
+  <association>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.DAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/DAOConnectionFactory.java" binary="false" navigable="false">      
+      <attribute name="factory"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnectionFactory.java" binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.DAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/DAOConnectionFactory.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnection.java" binary="false"/>  
+  </dependency>  
+  <realization>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnectionFactory.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnectionFactory.java" binary="false"/>  
+  </realization>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnection.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IUserDAO" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IUserDAO.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnectionFactory.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IDAOConnection.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.DAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/DAOConnectionFactory.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnectionFactory" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnectionFactory.java" binary="false"/>  
+  </dependency>  
+  <realization>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DbUserDAO" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DbUserDAO.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.IUserDAO" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/IUserDAO.java" binary="false"/>  
+  </realization>  
+  <dependency>    
+    <source project="LaCantina" name="ch.sfdr.lacantina.dao.db.DBDAOConnection" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DBDAOConnection.java" binary="false"/>    
+    <target project="LaCantina" name="ch.sfdr.lacantina.dao.db.DbUserDAO" 
+      file="/LaCantina/src/main/java/ch/sfdr/lacantina/dao/db/DbUserDAO.java" binary="false"/>  
+  </dependency>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="true" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
