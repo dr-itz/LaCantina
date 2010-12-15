@@ -1,4 +1,5 @@
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `login_uni` (`login`),
   UNIQUE KEY `email_uni` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -50,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `winecellars` (
   `capacity` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `winecellars`
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `wines` (
   `bottle_size` smallint(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `wines`
@@ -100,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `wine_years` (
   PRIMARY KEY (`id`),
   KEY `wine_id` (`wine_id`),
   KEY `winecellar_id` (`winecellar_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `wine_years`
@@ -129,6 +130,8 @@ ALTER TABLE `wines`
 ALTER TABLE `wine_years`
   ADD CONSTRAINT `wine_years_ibfk_1` FOREIGN KEY (`winecellar_id`) REFERENCES `winecellars` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `wine_years_ibfk_2` FOREIGN KEY (`wine_id`) REFERENCES `wines` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+SET FOREIGN_KEY_CHECKS=1;
 
 --
 -- Default data to fill the database with dummy data
