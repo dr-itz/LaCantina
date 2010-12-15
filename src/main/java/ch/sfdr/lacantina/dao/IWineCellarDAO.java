@@ -11,7 +11,7 @@ import ch.sfdr.lacantina.dao.objects.WineCellar;
 public interface IWineCellarDAO
 {
 	/**
-	 * read a wine cellar by ID
+	 * reads a wine cellar by ID
 	 * @param id The wine cellar id
 	 * @return Wine cellar if found, otherwise null
 	 * @throws DAOException
@@ -20,11 +20,27 @@ public interface IWineCellarDAO
 		throws DAOException;
 
 	/**
-	 *
-	 * @param userId
-	 * @return
+	 * reads a list of wines
+	 * @param userId the user ID
+	 * @return List of wine cellar
 	 * @throws DAOException
 	 */
 	List<WineCellar> getWineCellars(int userId)
+		throws DAOException;
+
+	/**
+	 * stores a wine cellar (either insert or update)
+	 * @param wc the wine cellar
+	 * @throws DAOException
+	 */
+	void storeWineCellar(WineCellar wc)
+		throws DAOException;
+
+	/**
+	 * deletes a wine cellar
+	 * @param id wine cellar ID
+	 * @throws DAOException
+	 */
+	void deleteWineCellar(int id)
 		throws DAOException;
 }

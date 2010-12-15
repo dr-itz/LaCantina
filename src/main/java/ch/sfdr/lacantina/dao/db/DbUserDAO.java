@@ -33,12 +33,7 @@ public class DbUserDAO
 		"SELECT id, login, first_name, last_name, email, is_admin " +
 		"FROM users ";
 
-	/**
-	 * reads a user from the ResultSet
-	 * @param rs the result set
-	 * @return User
-	 * @throws SQLException
-	 */
+	@Override
 	public User readRow(ResultSet rs)
 		throws SQLException
 	{

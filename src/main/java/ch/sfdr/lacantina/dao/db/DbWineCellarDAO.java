@@ -45,6 +45,9 @@ public class DbWineCellarDAO
 			id);
 	}
 
+	/*
+	 * @see ch.sfdr.lacantina.dao.db.AbstractDAO#readRow(java.sql.ResultSet)
+	 */
 	@Override
 	public WineCellar readRow(ResultSet rs)
 		throws SQLException
@@ -60,6 +63,9 @@ public class DbWineCellarDAO
 		return wc;
 	}
 
+	/*
+	 * @see ch.sfdr.lacantina.dao.IWineCellarDAO#getWineCellars(int)
+	 */
 	public List<WineCellar> getWineCellars(int userId)
 		throws DAOException
 	{
@@ -68,5 +74,37 @@ public class DbWineCellarDAO
 			"WHERE user_id = ? " +
 			"ORDER BY name",
 			userId);
+	}
+
+	/*
+	 * @see
+	 * ch.sfdr.lacantina.dao.IWineCellarDAO#storeWineCellar(ch.sfdr.lacantina
+	 * .dao.objects.WineCellar)
+	 */
+	public void storeWineCellar(WineCellar wc)
+		throws DAOException
+	{
+		if (wc.getId() == 0) {
+			executeUpdateStatement(
+				"INSERT into winecellars" +
+				" (user_id, name, capacity) " +
+				"VALUES (?, ?, ?)",
+				wc.getUserId(), wc.getName(), wc.getCapacity());
+		} else {
+			executeUpdateStatement(
+				"UPDATE winecellars SET" +
+				" name = ?, capacity = ? " +
+				"WHERE id = ?",
+				wc.getName(), wc.getCapacity(), wc.getId());
+		}
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.IWineCellarDAO#deleteWineCellar(int)
+	 */
+	public void deleteWineCellar(int id)
+		throws DAOException
+	{
+		executeUpdateStatement("DELETE FROM winecellars WHERE id = ?", id);
 	}
 }

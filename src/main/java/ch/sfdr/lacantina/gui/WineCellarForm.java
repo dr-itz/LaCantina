@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 
 import ch.sfdr.common.BaseForm;
 import ch.sfdr.lacantina.dao.objects.WineCellar;
@@ -30,9 +31,20 @@ public class WineCellarForm
 	{
 		ActionErrors errors = new ActionErrors();
 
+		if (ACTION_MODIFY.equals(action)) {
+			if (isEmptyString(wc.getName()))
+				errors.add("name",
+					new ActionMessage("winecellar.name.required"));
+		}
+
 		return errors;
 	}
 
+	/*
+	 * @see
+	 * ch.sfdr.common.BaseForm#reset(org.apache.struts.action.ActionMapping,
+	 * javax.servlet.http.HttpServletRequest)
+	 */
 	@Override
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{

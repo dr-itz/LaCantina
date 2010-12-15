@@ -1,7 +1,7 @@
 package ch.sfdr.lacantina.dao.objects;
 
 /**
- * A wine cellar in the DB
+ * A wine cellar
  * @author S.Freihofer
  */
 public class WineCellar
