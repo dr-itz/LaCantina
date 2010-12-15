@@ -26,6 +26,16 @@
 		<put name="title" type="string" value="User management"/>
 	</definition>
 
+	<!-- wine cellars -->
+	<definition name="winecellar" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/winecellar.jsp"/>
+		<put name="title" type="string" value="Wine Cellar"/>
+	</definition>
+	<definition name="winecellarList" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/winecellarList.jsp"/>
+		<put name="title" type="string" value="Wine Cellar overview"/>
+	</definition>
+
 	<!-- wines -->
 	<definition name="wine" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/wine.jsp"/>

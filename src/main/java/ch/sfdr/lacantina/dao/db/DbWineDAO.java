@@ -34,12 +34,7 @@ public class DbWineDAO
 		"  bottle_size " +
 		"FROM wines ";
 
-	/**
-	 * reads a wine from the ResultSet
-	 * @param rs the result set
-	 * @return Wine
-	 * @throws SQLException
-	 */
+	@Override
 	public Wine readRow(ResultSet rs)
 		throws SQLException
 	{

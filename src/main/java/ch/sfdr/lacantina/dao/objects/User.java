@@ -2,6 +2,7 @@ package ch.sfdr.lacantina.dao.objects;
 
 /**
  * A User in the DB
+ * @author D.Ritz
  */
 public class User
 {

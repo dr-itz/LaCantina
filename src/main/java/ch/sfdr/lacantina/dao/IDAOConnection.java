@@ -12,6 +12,11 @@ public interface IDAOConnection
 	 */
 	IUserDAO getUserDAO();
 
+	/**
+	 * get the DAO for wine cellar queries
+	 * @return IWineCellarDAO
+	 */
+	IWineCellarDAO getWineCellarDAO();
 
 	/**
 	 * get the DAO for wine queries
