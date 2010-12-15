@@ -32,6 +32,7 @@ public class DummyDAOConnectionFactory
 	{
 		private boolean closed = false;
 		private IUserDAO userDAO;
+		private IWineCellarDAO winecellarDAO;
 		private IWineDAO wineDAO;
 
 		public void close()
@@ -62,6 +63,16 @@ public class DummyDAOConnectionFactory
 		public void setWineDAO(IWineDAO wineDAO)
 		{
 			this.wineDAO = wineDAO;
+		}
+
+		public IWineCellarDAO getWineCellarDAO()
+		{
+			return winecellarDAO;
+		}
+
+		public void setWinecellarDAO(IWineCellarDAO winecellarDAO)
+		{
+			this.winecellarDAO = winecellarDAO;
 		}
 	}
 }

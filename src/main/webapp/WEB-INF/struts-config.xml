@@ -9,6 +9,8 @@
 
 		<form-bean name="userForm" type="ch.sfdr.lacantina.gui.admin.UserForm"/>
 
+		<form-bean name="winecellarForm" type="ch.sfdr.lacantina.gui.WineCellarForm"/>
+
 		<form-bean name="wineForm" type="ch.sfdr.lacantina.gui.WineForm"/>
 	</form-beans>
 
@@ -17,6 +19,8 @@
 		<action path="/deny"					forward="deny"/>
 		<action path="/admin/userList"			forward="userList"/>
 		<action path="/admin/user"				forward="user"/>
+		<action path="/winecellarList"			forward="winecellarList"/>
+		<action path="/winecellar"				forward="winecellar"/>
 		<action path="/wineList"				forward="wineList"/>
 		<action path="/wine"					forward="wine"/>
 
@@ -36,6 +40,15 @@
 		 validate="true"
 		 input="/admin/user.do">
 			<forward name="userList" path="/admin/userList.do"/>
+		</action>
+
+		<action path="/WineCellarAction"
+		 type="ch.sfdr.lacantina.gui.WineCellarAction"
+		 name="winecellarForm"
+		 scope="request"
+		 validate="true"
+		 input="/winecellar.do">
+			<forward name="winecellarList" path="/winecellarList.do"/>
 		</action>
 
 		<action path="/WineAction"
