@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-    <!-- Default set of monitored resources -->
-    <WatchedResource>WEB-INF/web.xml</WatchedResource>
-       
+	<!-- Default set of monitored resources -->
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+
+	<!-- Define database connection for LaCantina -->
 	<Resource name="jdbc/LaCantinaDB" auth="Container" type="javax.sql.DataSource"
 		maxActive="100" maxIdle="30" maxWait="10000" validationQuery="SELECT 1;"
 		username="root" password="mysql" driverClassName="com.mysql.jdbc.Driver"
