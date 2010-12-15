@@ -89,10 +89,13 @@ public final class SecManagerTest
 		assertEquals(tok, SecManager.getSessionToken(req));
 
 		// getLogin is basically just a wrapper, so test it too
-		assertEquals("login", SecManager.getLogin(req));;
+		assertEquals("login", SecManager.getLogin(req));
+		assertEquals(1234, SecManager.getUserId(req));
 
 		SecManager.invalidateSessionToken(req);
 		assertNull(SecManager.getSessionToken(req));
+		assertEquals("", SecManager.getLogin(req));
+		assertEquals(0, SecManager.getUserId(req));
 	}
 
 	@Test

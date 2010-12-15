@@ -18,7 +18,8 @@
 	<script type="text/javascript">
 	<!--
 		var MENU_ITEMS = [
-			['Wine Cellar', '/LaCantina/app/WineCellar.do'],
+			['Wine Cellar', '/LaCantina/WineCellarAction.do'],
+			['Wines', '/LaCantina/WineAction.do'],
 			['Configuration', null, null,
 				['Configuration',		'/LaCantina/admin/ConfigAction.do'],
 				['User management',		'/LaCantina/admin/UserAction.do'],

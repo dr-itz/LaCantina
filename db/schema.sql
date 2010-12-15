@@ -17,6 +17,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(30) NOT NULL,
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Table structure for table `winecellars`
 --
 
+DROP TABLE IF EXISTS `winecellars`;
 CREATE TABLE IF NOT EXISTS `winecellars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -61,15 +63,18 @@ CREATE TABLE IF NOT EXISTS `winecellars` (
 -- Table structure for table `wines`
 --
 
+DROP TABLE IF EXISTS `wines`;
 CREATE TABLE IF NOT EXISTS `wines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `producer` varchar(50) NOT NULL,
   `country` varchar(50) NOT NULL,
   `region` varchar(50) NOT NULL,
   `description` text,
   `bottle_size` smallint(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -83,6 +88,7 @@ CREATE TABLE IF NOT EXISTS `wines` (
 -- Table structure for table `wine_years`
 --
 
+DROP TABLE IF EXISTS `wine_years`;
 CREATE TABLE IF NOT EXISTS `wine_years` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `winecellar_id` int(11) NOT NULL,
@@ -110,6 +116,12 @@ CREATE TABLE IF NOT EXISTS `wine_years` (
 --
 ALTER TABLE `winecellars`
   ADD CONSTRAINT `winecellars_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `wines`
+--
+ALTER TABLE `wines`
+  ADD CONSTRAINT `wines_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `wine_years`

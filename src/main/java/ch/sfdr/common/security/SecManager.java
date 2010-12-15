@@ -113,16 +113,25 @@ public class SecManager
 
 	/**
 	 * sets the SessionToken to the requests current session
+	 * @param sess the HttpServletRequest
+	 * @param tok the SessionToken
+	 */
+	public void setSessionToken(HttpSession sess, SessionToken tok)
+	{
+		sess.setMaxInactiveInterval(sessionTimeout * 60);
+		sess.setAttribute(ATTR_SESSION_TOKEN, tok);
+	}
+
+	/**
+	 * sets the SessionToken to the requests current session
 	 * @param req the HttpServletRequest
 	 * @param tok the SessionToken
 	 */
 	public void setSessionToken(HttpServletRequest req, SessionToken tok)
 	{
 		HttpSession sess = req.getSession();
-		sess.setMaxInactiveInterval(sessionTimeout * 60);
-		sess.setAttribute(ATTR_SESSION_TOKEN, tok);
+		setSessionToken(sess, tok);
 	}
-
 
 	/**
 	 * returns the SessionToken of the current session or null if no token exists
@@ -161,6 +170,19 @@ public class SecManager
 		if (tok == null)
 			return "";
 		return tok.getLogin();
+	}
+
+	/**
+	 * gets the current user id
+	 * @param req
+	 * @return user id
+	 */
+	public static int getUserId(HttpServletRequest req)
+	{
+		SessionToken tok = getSessionToken(req);
+		if (tok == null)
+			return 0;
+		return tok.getUserId();
 	}
 
 	/**

@@ -3,6 +3,7 @@ package ch.sfdr.lacantina.dao.db;
 import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.IDAOConnection;
 import ch.sfdr.lacantina.dao.IUserDAO;
+import ch.sfdr.lacantina.dao.IWineDAO;
 
 /**
  * DAO connection connected via JDBC to a database
@@ -28,6 +29,14 @@ public class DBDAOConnection
 	public IUserDAO getUserDAO()
 	{
 		return new DbUserDAO(conn);
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.IDAOConnection#getWineDAO()
+	 */
+	public IWineDAO getWineDAO()
+	{
+		return new DbWineDAO(conn);
 	}
 
 	/*
