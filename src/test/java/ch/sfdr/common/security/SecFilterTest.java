@@ -65,6 +65,7 @@ public class SecFilterTest
 		assertEquals(resp, chain.getLastResponse());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testDoFilterRedirectLogin()
 		throws IOException, ServletException
@@ -80,6 +81,7 @@ public class SecFilterTest
 		assertEquals("/login.jsp", m.get(m.keySet().iterator().next()).getPath());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testDoFilterRedirectDeny()
 		throws IOException, ServletException

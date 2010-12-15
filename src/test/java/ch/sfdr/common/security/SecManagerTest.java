@@ -98,6 +98,7 @@ public final class SecManagerTest
 		assertEquals(0, SecManager.getUserId(req));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testRedirectLogin()
 		throws IOException
@@ -112,6 +113,7 @@ public final class SecManagerTest
 		assertEquals("/login.jsp", m.get(m.keySet().iterator().next()).getPath());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testRedirectDeny()
 		throws IOException

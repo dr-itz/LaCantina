@@ -6,6 +6,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Ignore;
 
 import ch.sfdr.common.security.SecManager;
+import ch.sfdr.common.security.SecManagerTest;
 import ch.sfdr.common.security.SessionToken;
 import ch.sfdr.lacantina.dao.DAOConnectionFactory;
 import ch.sfdr.lacantina.dao.DummyDAOConnectionFactory;
@@ -43,8 +44,8 @@ public class AbstractActionTest<T extends ActionForm>
 		form = (T) module.createActionForm(clazz);
 		module.setValidate(true);
 
-		SecManager sec =
-			SecManager.getInstance(actionMockFactory.getMockServletContext());
+		SecManager sec = SecManagerTest.getSecurityManager(
+			actionMockFactory.getMockServletContext());
 		sec.setSessionToken(actionMockFactory.getMockSession(),
 			new SessionToken("admin", 123, true));
 		actionMockFactory.getMockRequest().getSession(true);

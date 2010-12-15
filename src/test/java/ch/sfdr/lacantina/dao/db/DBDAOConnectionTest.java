@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.sfdr.lacantina.dao.IUserDAO;
+import ch.sfdr.lacantina.dao.IWineDAO;
 
 /**
  * Tests for DBDAOConnection
@@ -31,6 +32,13 @@ public class DBDAOConnectionTest
 	{
 		IUserDAO dao = me.getUserDAO();
 		assertTrue(dao instanceof DbUserDAO);
+	}
+
+	@Test
+	public void testGetWineDAO()
+	{
+		IWineDAO dao = me.getWineDAO();
+		assertTrue(dao instanceof DbWineDAO);
 	}
 
 	@Test
