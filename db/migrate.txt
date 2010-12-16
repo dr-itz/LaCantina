@@ -1,0 +1,5 @@
+2010-12-16
+----------
+
+ALTER TABLE wine_years
+  ADD UNIQUE KEY `wine_uni` (`winecellar_id`,`wine_id`,`year`);

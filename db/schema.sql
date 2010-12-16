@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `wine_years` (
   `rating_points` int(11) DEFAULT NULL,
   `rating_text` text,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `wine_uni` (`winecellar_id`,`wine_id`,`year`),
   KEY `wine_id` (`wine_id`),
   KEY `winecellar_id` (`winecellar_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
