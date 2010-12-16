@@ -17,7 +17,7 @@ import ch.sfdr.lacantina.dao.IWineDAO;
 import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
- * Tests for UserAction
+ * Tests for WineAction
  * @author D. Ritz
  */
 @RunWith(JMock.class)

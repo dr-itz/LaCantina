@@ -12,7 +12,7 @@ import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
- * Tests for DbUserDAO
+ * Tests for DbWineDAO
  * @author D. Ritz
  */
 public class DbWineDAOTest
