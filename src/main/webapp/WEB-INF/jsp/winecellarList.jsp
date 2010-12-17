@@ -11,6 +11,7 @@
 <table class="datatable" width="100%" cellspacing="0">
 	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
+	<col class="fixedtextcolumn"/>
 	<tr>
 		<th>
 			<bean:message key="wc.lbl.name"/>
@@ -18,22 +19,28 @@
 		<th>
 			<bean:message key="wc.lbl.capacity"/>
 		</th>
+		<th>
+			<bean:message key="lbl.action"/>
+		</th>
 	</tr>
 	<logic:present name="winecellarList">
 	<logic:iterate name="winecellarList" id="item" indexId="idx">
 		<tr class="<%= idx % 2 == 0 ? "even" : "odd" %>">
 			<td>
+				<bean:write name="item" property="name"/>
+			</td>
+			<td><bean:write filter="true" name="item" property="capacity"/></td>
+			<td>
 				<html:link action="/WineCellarAction" paramId="wc.id"
 				 paramName="item" paramProperty="id">
 				 	<html:param name="action" value="form"/>
-					<bean:write name="item" property="name"/>
+				 	<bean:message key="lbl.modify"/>
 				</html:link>
 			</td>
-			<td><bean:write filter="true" name="item" property="capacity"/></td>
 		</tr>
 	</logic:iterate></logic:present>
 	<tr class="footer">
-		<td colspan="2">
+		<td colspan="3">
 			<html:link action="/WineCellarAction">
 				<html:param name="action" value="new"/>
 				<bean:message key="lbl.add"/>
