@@ -89,6 +89,7 @@ span#CurrentUser {
 	font-weight: bold;
 	font-size: 22px;
 	vertical-align: middle;
+	padding-left: 3px;
 }
 
 td.Logo {

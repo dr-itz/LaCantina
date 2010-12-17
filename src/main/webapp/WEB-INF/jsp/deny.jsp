@@ -1,1 +1,2 @@
-Access to this function is denied for your level of privileges.
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<bean:message key="msg.deny"/>

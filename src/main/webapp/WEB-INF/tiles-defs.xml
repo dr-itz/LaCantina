@@ -13,42 +13,42 @@
 	<!-- index -->
 	<definition name="index" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/index.jsp" />
-		<put name="title" type="string" value="LaCantina" />
+		<put name="title" type="string" value="title.main" />
 	</definition>
 
 	<!-- users -->
 	<definition name="user" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/admin/user.jsp"/>
-		<put name="title" type="string" value="User configuration"/>
+		<put name="title" type="string" value="title.user.form"/>
 	</definition>
 	<definition name="userList" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/admin/userList.jsp"/>
-		<put name="title" type="string" value="User management"/>
+		<put name="title" type="string" value="title.user.list"/>
 	</definition>
 
 	<!-- wine cellars -->
 	<definition name="winecellar" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/winecellar.jsp"/>
-		<put name="title" type="string" value="Wine Cellar"/>
+		<put name="title" type="string" value="title.winecellar.form"/>
 	</definition>
 	<definition name="winecellarList" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/winecellarList.jsp"/>
-		<put name="title" type="string" value="Wine Cellar overview"/>
+		<put name="title" type="string" value="title.winecellar.list"/>
 	</definition>
 
 	<!-- wines -->
 	<definition name="wine" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/wine.jsp"/>
-		<put name="title" type="string" value="Wine"/>
+		<put name="title" type="string" value="title.wine.form"/>
 	</definition>
 	<definition name="wineList" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/wineList.jsp"/>
-		<put name="title" type="string" value="Wine overview"/>
+		<put name="title" type="string" value="title.wine.list"/>
 	</definition>
 
 	<!-- the access denied page -->
 	<definition name="deny" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/deny.jsp"/>
-		<put name="title" type="string" value="Access denied"/>
+		<put name="title" type="string" value="title.deny"/>
 	</definition>
 </tiles-definitions>

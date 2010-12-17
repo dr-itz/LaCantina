@@ -1,6 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
 <%@page import="ch.sfdr.common.security.SecManager"%>
 
@@ -10,7 +11,7 @@
 <html:html lang="false">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>LaCantina - Getting Drunk With Style</title>
+	<title><bean:message key="title.head"/></title>
 
 	<script type="text/javascript" src="/LaCantina/js/utils.js"></script>
 	<script type="text/javascript" src="/LaCantina/js/menu.js"></script>
@@ -18,12 +19,14 @@
 	<script type="text/javascript">
 	<!--
 		var MENU_ITEMS = [
-			['Wine Cellar', '/LaCantina/WineCellarAction.do'],
-			['Wines', '/LaCantina/WineAction.do'],
-			['Configuration', null, null,
-				['Configuration',		'/LaCantina/admin/ConfigAction.do'],
-				['User management',		'/LaCantina/admin/UserAction.do'],
-			],
+			['<bean:message key="menu.winecellar"/>', '/LaCantina/WineCellarAction.do'],
+			['<bean:message key="menu.wines"/>', '/LaCantina/WineAction.do'],
+			<% if (SecManager.getSessionToken(request).isAdmin()) { %>
+				['<bean:message key="menu.config"/>', null, null,
+					['<bean:message key="menu.config.config"/>',		'/LaCantina/admin/ConfigAction.do'],
+					['<bean:message key="menu.config.usermgmt"/>',		'/LaCantina/admin/UserAction.do'],
+				],
+			<% } %>
 		];
 	-->
 	</script>
@@ -42,13 +45,15 @@
 						<col>
 						<tbody>
 							<tr>
-								<td><a href="layout.html"><img src="/LaCantina/img/logoLeft.gif" alt="" border="0"/></a></td>
-								<td class="Label">LaCantina</td>
+								<td class="Label"><a class="Label" href="/LaCantina/">LaCantina</a></td>
 								<td class="HeaderLinks">
 									<span id="CurrentUser">
-										Current user: <%= SecManager.getLogin(request)%>
+										<bean:message key="lbl.currentuser"/>:
+										&nbsp;<%= SecManager.getLogin(request)%>
 									</span>&nbsp;&nbsp;
-									<html:link href="/LaCantina/LoginAction.do?action=logout">Sign out</html:link>
+									<html:link href="/LaCantina/LoginAction.do?action=logout">
+										<bean:message key="lbl.signout"/>
+									</html:link>
 									&nbsp;
 								</td>
 							</tr>
@@ -72,7 +77,8 @@
 				<table width="100%">
 					<tr>
 						<td align="left" valign="bottom">
-							<h3><tiles:get name="title"/></h3>
+							<tiles:importAttribute name="title" scope="page"/>
+							<h3><bean:message key="${title}"/></h3>
 						</td>
 					</tr>
 				</table>
