@@ -66,7 +66,7 @@
 			<td align="right">
 				<logic:notEqual name="wineForm" property="wine.id" value="0">
 					<input type="button" value="<bean:message key="lbl.delete"/>"
-					 id="fdelete" onClick="javascript:pfDelete('wineForm')">
+					 id="fdelete" onClick="javascript:pfDelete()">
 					&nbsp;<html:submit styleId="fSubmit">
 						<bean:message key="lbl.modify"/>
 					</html:submit>

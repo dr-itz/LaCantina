@@ -13,7 +13,7 @@ import org.apache.struts.action.ActionMessage;
 
 /**
  * base action with some added helpers
- * @author d_ritz
+ * @author D.Ritz
  */
 public abstract class BaseAction
 	extends Action

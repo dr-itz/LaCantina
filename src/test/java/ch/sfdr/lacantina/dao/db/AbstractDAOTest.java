@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.sfdr.lacantina.dao.DAOException;
+import ch.sfdr.lacantina.dao.PagingCookie;
 
 /**
  * Tests for AbstractDAO, tests only the exception handling, the rest gets
@@ -41,6 +42,21 @@ public class AbstractDAOTest
 	{
 		prepareException("SELECT exception FROM mockrunner");
 		me.getRowListException();
+	}
+
+	@Test(expected = DAOException.class)
+	public void testGetPagedRowListException()
+		throws DAOException
+	{
+		prepareQueryWithResult(
+			"SELECT COUNT(*) FROM mockrunner",
+			"CountQuery",
+			new Object[][] {
+				{ 1 }
+			});
+		prepareException("SELECT exception FROM mockrunner LIMIT ? OFFSET ?",
+			20, 0);
+		me.getPagedRowListException();
 	}
 
 	@Test(expected = DAOException.class)
@@ -82,6 +98,15 @@ public class AbstractDAOTest
 			throws DAOException
 		{
 			executeUpdateStatement("UPDATE exception SET exception=now");
+		}
+
+		public void getPagedRowListException()
+			throws DAOException
+		{
+			PagingCookie pc = new PagingCookie();
+			getPagedRowList(
+				"SELECT COUNT(*) FROM mockrunner",
+				"SELECT exception FROM mockrunner", pc) ;
 		}
 	}
 }

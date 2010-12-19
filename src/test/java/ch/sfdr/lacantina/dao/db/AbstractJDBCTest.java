@@ -64,12 +64,29 @@ public abstract class AbstractJDBCTest
 	 */
 	protected void verifyQueries()
 	{
+		List<Exception> exceptions = new ArrayList<Exception>();
 		for (QueryWithParams query : queries) {
-			module.verifySQLStatementExecuted(query.query);
-			for (int i = 0; i < query.params.length; i++) {
-				module.verifyPreparedStatementParameter(query.query, i + 1,
-					query.params[i]);
+			try {
+				module.verifySQLStatementExecuted(query.query);
+				for (int i = 0; i < query.params.length; i++) {
+					module.verifyPreparedStatementParameter(query.query, i + 1,
+						query.params[i]);
+				}
+			} catch (Exception e) {
+				exceptions.add(e);
 			}
+		}
+		if (exceptions.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("\nEXCEPTION(s):\n");
+			for (Exception e : exceptions) {
+				sb.append(" - ").append(e.getMessage()).append("\n");
+			}
+			sb.append("EXECUTED QUERIES:\n");
+			for (Object query : module.getExecutedSQLStatements()) {
+				sb.append(" - ").append(query).append("\n");
+			}
+			throw new RuntimeException(sb.toString());
 		}
 	}
 

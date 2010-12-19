@@ -6,7 +6,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 
-import ch.sfdr.common.BaseForm;
+import ch.sfdr.common.PagedForm;
 import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
@@ -14,7 +14,7 @@ import ch.sfdr.lacantina.dao.objects.Wine;
  * @author D.Ritz
  */
 public class WineForm
-	extends BaseForm
+	extends PagedForm
 {
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,9 @@ public class WineForm
 	}
 
 	/*
-	 * @see ch.sfdr.common.BaseForm#reset(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
+	 * @see ch.sfdr.common.BaseForm#reset(
+	 * 		org.apache.struts.action.ActionMapping,
+	 * 		javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	public void reset(ActionMapping mapping, HttpServletRequest request)

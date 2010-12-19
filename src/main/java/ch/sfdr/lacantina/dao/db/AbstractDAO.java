@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.sfdr.lacantina.dao.DAOException;
+import ch.sfdr.lacantina.dao.PagingCookie;
 
 /**
  * Abstract base class for DAOs. Ensures JDBC cleanup and exception handling
@@ -30,13 +31,15 @@ public abstract class AbstractDAO<T>
 	 * fills in bind params for a statement
 	 * @param stmt the prepared statement
 	 * @param bind the bind params
+	 * @return the next bind param index
 	 * @throws SQLException
 	 */
-	private void fillStatement(PreparedStatement stmt, Object... bind)
+	private int fillStatement(PreparedStatement stmt, Object... bind)
 		throws SQLException
 	{
 		for (int i = 0; i < bind.length; i++)
 			stmt.setObject(i + 1, bind[i]);
+		return bind.length + 1;
 	}
 
 	/**
@@ -94,6 +97,55 @@ public abstract class AbstractDAO<T>
 			DBConnection.closeResultSet(rs);
 			DBConnection.closeStatement(stmt);
 		}
+
+		return list;
+	}
+
+	/**
+	 * reads a list of rows
+	 * @param query the query
+	 * @param pc the paging cookie
+	 * @param bind bind params
+	 * @return the list of rows read
+	 * @throws DAOException
+	 */
+	protected List<T> getPagedRowList(String countQuery, String query,
+			PagingCookie pc, Object... bind)
+		throws DAOException
+	{
+		List<T> list = new ArrayList<T>(pc.getLimit());
+
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			// first get the row count
+			stmt = conn.prepareStatement(countQuery);
+			fillStatement(stmt, bind);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				pc.setTotalRows(rs.getInt(1));
+
+				// cleanup
+				rs.close();
+				stmt.close();
+
+				// get the rows
+				stmt = conn.prepareStatement(query + " LIMIT ? OFFSET ?");
+				int next = fillStatement(stmt, bind);
+				stmt.setInt(next, pc.getLimit());
+				stmt.setInt(next + 1, pc.getOffset());
+
+				rs = stmt.executeQuery();
+				while (rs.next())
+					list.add(readRow(rs));
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBConnection.closeResultSet(rs);
+			DBConnection.closeStatement(stmt);
+		}
+		pc.setPageRows(list.size());
 
 		return list;
 	}

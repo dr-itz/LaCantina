@@ -7,6 +7,7 @@ import java.util.List;
 
 import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.IWineDAO;
+import ch.sfdr.lacantina.dao.PagingCookie;
 import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
@@ -66,16 +67,17 @@ public class DbWineDAO
 	}
 
 	/*
-	 * @see ch.sfdr.lacantina.dao.IWineDAO#getWines(int)
+	 * @see ch.sfdr.lacantina.dao.IWineDAO#getWineList(int, PagingCookie)
 	 */
-	public List<Wine> getWines(int user)
+	public List<Wine> getWineList(int user, PagingCookie pc)
 		throws DAOException
 	{
-		return getRowList(
+		return getPagedRowList(
+			"SELECT COUNT(*) FROM wines WHERE user_id = ?",
 			USER_SELECT +
 			"WHERE user_id = ? " +
-			"ORDER BY country, region, name",
-			user);
+			"ORDER BY country, region, name ",
+			pc, user);
 	}
 
 	/*

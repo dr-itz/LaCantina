@@ -38,7 +38,7 @@
 			<td align="right">
 				<logic:notEqual name="winecellarForm" property="wc.id" value="0">
 					<input type="button" value="<bean:message key="lbl.delete"/>"
-					 id="fdelete" onClick="javascript:pfDelete('winecellarForm')">
+					 id="fdelete" onClick="javascript:pfDelete()">
 					&nbsp;<html:submit styleId="fSubmit">
 						<bean:message key="lbl.modify"/>
 					</html:submit>

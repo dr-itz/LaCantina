@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 
 import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.IWineDAO;
+import ch.sfdr.lacantina.dao.PagingCookie;
 import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
@@ -42,7 +43,7 @@ public class WineActionTest
 	{
 		final List<Wine> list = new ArrayList<Wine>();
 		jMockery.checking(new Expectations() {{
-			one(wineDAO).getWines(123);
+			one(wineDAO).getWineList(with(123), with(any(PagingCookie.class)));
 			will(returnValue(list));
 		}});
 
@@ -126,7 +127,7 @@ public class WineActionTest
 		jMockery.checking(new Expectations() {{
 			one(wineDAO).storeWine(with(any(Wine.class)));
 
-			one(wineDAO).getWines(123);
+			one(wineDAO).getWineList(with(123), with(any(PagingCookie.class)));
 			will(returnValue(list));
 		}});
 
@@ -156,7 +157,7 @@ public class WineActionTest
 			one(wineDAO).storeWine(with(any(Wine.class)));
 			will(throwException(new DAOException("mock")));
 
-			one(wineDAO).getWines(123);
+			one(wineDAO).getWineList(with(123), with(any(PagingCookie.class)));
 			will(returnValue(list));
 		}});
 
@@ -176,7 +177,7 @@ public class WineActionTest
 		jMockery.checking(new Expectations() {{
 			one(wineDAO).deleteWine(123);
 
-			one(wineDAO).getWines(123);
+			one(wineDAO).getWineList(with(123), with(any(PagingCookie.class)));
 			will(returnValue(list));
 		}});
 
@@ -198,7 +199,7 @@ public class WineActionTest
 			one(wineDAO).deleteWine(123);
 			will(throwException(new DAOException("mock")));
 
-			one(wineDAO).getWines(123);
+			one(wineDAO).getWineList(with(123), with(any(PagingCookie.class)));
 			will(returnValue(list));
 		}});
 

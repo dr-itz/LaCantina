@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.sfdr.lacantina.dao.DAOException;
+import ch.sfdr.lacantina.dao.PagingCookie;
 import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
@@ -68,20 +69,29 @@ public class DbWineDAOTest
 		throws DAOException
 	{
 		prepareQueryWithResult(
+			"SELECT COUNT(*) FROM wines WHERE user_id = ?",
+			"CountQuery",
+			new Object[][] {
+				{ 2 },
+			},
+			123);
+		prepareQueryWithResult(
 			"SELECT id, user_id, name, producer, country, region, description," +
 			"  bottle_size " +
 			"FROM wines " +
 			"WHERE user_id = ? " +
-			"ORDER BY country, region, name",
+			"ORDER BY country, region, name " +
+			" LIMIT ? OFFSET ?",
 			"WineQuery",
 			new Object[][] {
 				{ 123, 56, "name", "producer", "country", "region", "description", 75 },
 				{ 124, 56, "name2", "producer2", "country2", "region2", "description2", 75 },
 			},
-			123
+			123, 20, 0
 		);
 
-		List<Wine> list = me.getWines(123);
+		PagingCookie pc = new PagingCookie();
+		List<Wine> list = me.getWineList(123, pc);
 		assertEquals(2, list.size());
 
 		Wine w = list.get(0);

@@ -5,12 +5,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import ch.sfdr.common.BaseAction;
 import ch.sfdr.common.BaseForm;
+import ch.sfdr.common.PagedAction;
+import ch.sfdr.common.PagedForm;
 import ch.sfdr.common.security.SecManager;
 import ch.sfdr.lacantina.dao.DAOConnectionFactory;
 import ch.sfdr.lacantina.dao.DAOException;
@@ -23,7 +23,7 @@ import ch.sfdr.lacantina.dao.objects.Wine;
  * @author D.Ritz
  */
 public class WineAction
-	extends BaseAction
+	extends PagedAction
 {
 	/*
 	 * @see org.apache.struts.action.Action#execute(
@@ -33,11 +33,11 @@ public class WineAction
 	 * 		javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	public ActionForward execute(ActionMapping mapping, ActionForm af,
+	public ActionForward doExecute(ActionMapping mapping, PagedForm pf,
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception
 	{
-		WineForm form = (WineForm) af;
+		WineForm form = (WineForm) pf;
 		String action = form.getAction();
 
 		if (BaseForm.ACTION_NEW.equals(action)) {
@@ -79,8 +79,9 @@ public class WineAction
 			}
 
 			// defaults to LIST
-			List<Wine> wineList = dao.getWines(SecManager.getUserId(request));
-			request.setAttribute("wineList", wineList);
+			List<Wine> wineList = dao.getWineList(SecManager.getUserId(request),
+				form.getPagingCookie());
+			setList(request, form.getPagingCookie(), wineList, "wineList");
 		} finally {
 			conn.close();
 		}

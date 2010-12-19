@@ -22,10 +22,11 @@ public interface IWineDAO
 	/**
 	 * reads a list of wines
 	 * @param user the user ID
+	 * @param pc the paging cookie
 	 * @return List of Wine
 	 * @throws DAOException
 	 */
-	List<Wine> getWines(int user)
+	List<Wine> getWineList(int user, PagingCookie pc)
 		throws DAOException;
 
 	/**

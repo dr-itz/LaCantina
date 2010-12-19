@@ -1,20 +1,39 @@
-function formSubmit(form)
+function formSubmit()
 {
-	for (var i = 1; i < arguments.length; i += 2) {
-		if (i + 1 < arguments.length)
-			document.getElementById(arguments[i]).value = arguments[i + 1];
+	var form;
+	for (var i = 0; i < arguments.length; i += 2) {
+		if (i + 1 < arguments.length) {
+			var elem = document.getElementById(arguments[i]);
+			elem.value = arguments[i + 1];
+			form = elem.form;
+		}
 	}
-	document.getElementById(form).submit();
+	form.submit();
 }
 
-function pfConfirm(form, act)
+function pfAction(act)
+{
+	formSubmit('pAction', act);
+}
+
+function pfConfirm(act)
 {
 	var ok = confirm("Are you sure?")
 	if (ok)
-		formSubmit(form, 'pAction', act);
+		pfAction(act);
 }
 
-function pfDelete(form)
+function pfDelete()
 {
-	pfConfirm(form, 'del');
+	pfConfirm('del');
+}
+
+function pfPrev()
+{
+	pfAction('prev');
+}
+
+function pfNext()
+{
+	pfAction('next');
 }

@@ -10,6 +10,9 @@
 		<put name="hideTitle" type="string" value="" />
 	</definition>
 
+	<!-- paging footer -->
+	<definition name="paging" path="/WEB-INF/jsp/paging.jsp"/>
+
 	<!-- index -->
 	<definition name="index" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/index.jsp" />
