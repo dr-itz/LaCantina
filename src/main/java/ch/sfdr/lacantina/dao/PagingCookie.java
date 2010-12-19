@@ -7,7 +7,7 @@ package ch.sfdr.lacantina.dao;
  */
 public class PagingCookie
 {
-	private static final int DEFAULT_PAGE_SIZE = 1;
+	private static final int DEFAULT_PAGE_SIZE = 20;
 
 	private int offset;
 	private int limit = DEFAULT_PAGE_SIZE;
