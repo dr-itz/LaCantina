@@ -5,13 +5,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
-import ch.sfdr.common.BaseForm;
+import ch.sfdr.common.PagedForm;
 
 /**
  * @author S.Freihofer
  */
 public class CellarEntryForm
-	extends BaseForm
+	extends PagedForm
 {
 	private static final long serialVersionUID = 1L;
 

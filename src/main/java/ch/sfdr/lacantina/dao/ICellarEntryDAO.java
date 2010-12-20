@@ -17,6 +17,7 @@ public interface ICellarEntryDAO
 	 * @return List of cellar entries
 	 * @throws DAOException
 	 */
-	List<CellarEntry> getCellarEntries(int winecellarId, int userId)
+	List<CellarEntry> getCellarEntries(int winecellarId, int userId,
+			PagingCookie pc)
 		throws DAOException;
 }

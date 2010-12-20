@@ -7,6 +7,7 @@ import java.util.List;
 
 import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.ICellarEntryDAO;
+import ch.sfdr.lacantina.dao.PagingCookie;
 import ch.sfdr.lacantina.dao.objects.CellarEntry;
 import ch.sfdr.lacantina.dao.objects.Wine;
 
@@ -30,11 +31,17 @@ public class DbCellarEntryDAO
 	/**
 	 * Query used to read cellar entries
 	 */
+	private static final String CELLARENTRY_FROM =
+		"FROM wine_years y INNER JOIN wines w" +
+		"  ON y.wine_id = w.id ";
+
 	private static final String CELLARENTRY_SELECT =
 		"SELECT y.id, y.winecellar_id, y.year, y.quantity, w.id, w.user_id, w.name," +
 		"  w.producer, w.country, w.region, w.description, w.bottle_size " +
-		"FROM wine_years y INNER JOIN wines w" +
-		"  ON y.wine_id = w.id ";
+		CELLARENTRY_FROM;
+
+	private static final String CELLARENTRY_LIST_WHERE =
+		"WHERE y.winecellar_id = ? AND w.user_id = ?";
 
 	/*
 	 * @see ch.sfdr.lacantina.dao.db.AbstractDAO#readRow(java.sql.ResultSet)
@@ -71,12 +78,13 @@ public class DbCellarEntryDAO
 	/*
 	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#getCellarEntries(int, int)
 	 */
-	public List<CellarEntry> getCellarEntries(int winecellarId, int userId)
+	public List<CellarEntry> getCellarEntries(int winecellarId, int userId,
+			PagingCookie pc)
 		throws DAOException
 	{
-		return getRowList(
-			CELLARENTRY_SELECT +
-			"WHERE y.winecellar_id = ? AND w.user_id = ?",
-			winecellarId, userId);
+		return getPagedRowList(
+			"SELECT COUNT(*) " + CELLARENTRY_FROM + CELLARENTRY_LIST_WHERE,
+			CELLARENTRY_SELECT + CELLARENTRY_LIST_WHERE,
+			pc, winecellarId, userId);
 	}
 }

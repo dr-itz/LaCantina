@@ -53,11 +53,14 @@
 		</tr>
 	</logic:iterate></logic:present>
 	<tr class="footer">
-		<td colspan="7">
+		<td colspan="4">
 			<html:link action="/CellarEntryAction">
 				<html:param name="action" value="new"/>
 				<bean:message key="lbl.add"/>
 			</html:link>
+		</td>
+		<td colspan="3" align="right">
+			<tiles:insert definition="paging"/>
 		</td>
 	</tr>
 </table>
