@@ -83,11 +83,16 @@ span#CurrentUser {
 	vertical-align: middle;
 }
 
-.Label {
+.Label, a.Label:link,
+a.Label:visited,
+a.Label:active,
+a.Label:focus,
+a.Label:hover {
 	color: white;
 	font-variant: small-caps;
 	font-weight: bold;
 	font-size: 22px;
+	text-decoration: none;
 	vertical-align: middle;
 	padding-left: 3px;
 }
@@ -185,3 +190,17 @@ table.formtable td, table.formtable th {
 	padding-left: 3px;
 	padding-right: 3px;
 }
+
+a:link,
+a:visited,
+a:active,
+a:focus {
+	color: blue;
+	text-decoration: none;
+}
+a:hover {
+	color: red;
+	text-decoration: none;
+}
+
+
