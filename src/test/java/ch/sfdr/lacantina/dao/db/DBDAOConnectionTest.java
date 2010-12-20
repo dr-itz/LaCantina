@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.sfdr.lacantina.dao.ICellarEntryDAO;
 import ch.sfdr.lacantina.dao.IUserDAO;
 import ch.sfdr.lacantina.dao.IWineCellarDAO;
 import ch.sfdr.lacantina.dao.IWineDAO;
@@ -47,6 +48,13 @@ public class DBDAOConnectionTest
 	{
 		IWineCellarDAO dao = me.getWineCellarDAO();
 		assertTrue(dao instanceof DbWineCellarDAO);
+	}
+
+	@Test
+	public void testGetCellarEntryDAO()
+	{
+		ICellarEntryDAO dao = me.getCellarEntryDAO();
+		assertTrue(dao instanceof DbCellarEntryDAO);
 	}
 
 	@Test
