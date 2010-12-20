@@ -1,6 +1,7 @@
 package ch.sfdr.lacantina.gui;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +45,61 @@ public class CellarEntryActionTest
 			will(returnValue(list));
 		}});
 
-		param("winecellarId", "789");
+		param("ce.winecellarId", "789");
 		param("action", "list");
 		action();
 
 		verifyNoErrors();
         verifyForward("cellarentryList");
         assertEquals(list, module.getRequestAttribute("cellarentryList"));
+	}
+
+	@Test
+	public void testForm()
+		throws DAOException
+	{
+		final CellarEntry ce = new CellarEntry();
+		jMockery.checking(new Expectations() {{
+			one(cellarentryDAO).getCellarEntry(456, 123);
+			will(returnValue(ce));
+		}});
+
+		param("action", "form");
+		param("ce.id", "456");
+		setInputForward();
+		action();
+
+		verifyNoErrors();
+		verifyInputForward();
+		assertEquals(ce, form.getCe());
+	}
+
+	@Test
+	public void testFormNew()
+		throws DAOException
+	{
+		jMockery.checking(new Expectations() {{
+			never(cellarentryDAO).getCellarEntry(456, 123);
+		}});
+
+		param("action", "new");
+		param("ce.id", "456");
+		setInputForward();
+		action();
+
+		verifyNoErrors();
+		verifyInputForward();
+		assertNotNull(form.getCe());
+		assertEquals(0, form.getCe().getId());
+	}
+
+	@Test
+	public void testFormValidation()
+	{
+		param("action", "mod");
+		module.populateRequestToForm();
+
+		verifyError("ce.year.required");
+		verifyError("ce.quantity.required");
 	}
 }

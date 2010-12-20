@@ -39,7 +39,7 @@ public interface IWineDAO
 
 	/**
 	 * deletes a wine
-	 * @param id wine id
+	 * @param id the wine id
 	 * @throws DAOException
 	 */
 	void deleteWine(int id)

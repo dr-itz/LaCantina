@@ -20,4 +20,29 @@ public interface ICellarEntryDAO
 	List<CellarEntry> getCellarEntries(int winecellarId, int userId,
 			PagingCookie pc)
 		throws DAOException;
+
+	/**
+	 * reads a cellar entry by ID
+	 * @param id the cellar entry ID
+	 * @return cellar entry if found, otherwise null
+	 * @throws DAOException
+	 */
+	CellarEntry getCellarEntry(int id, int userId)
+		throws DAOException;
+
+	/**
+	 * stores a cellar entry (either insert or update)
+	 * @param ce the cellar entry
+	 * @throws DAOException
+	 */
+	void storeCellarEntry(CellarEntry ce)
+		throws DAOException;
+
+	/**
+	 * deletes a cellar entry
+	 * @param id the cellar entry id
+	 * @throws DAOException
+	 */
+	void deleteCellarEntry(int id)
+		throws DAOException;
 }

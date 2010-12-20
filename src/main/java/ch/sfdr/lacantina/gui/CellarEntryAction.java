@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import ch.sfdr.common.BaseForm;
 import ch.sfdr.common.PagedAction;
 import ch.sfdr.common.PagedForm;
 import ch.sfdr.common.security.SecManager;
 import ch.sfdr.lacantina.dao.DAOConnectionFactory;
+import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.ICellarEntryDAO;
 import ch.sfdr.lacantina.dao.IDAOConnection;
 import ch.sfdr.lacantina.dao.objects.CellarEntry;
@@ -37,13 +39,48 @@ public class CellarEntryAction
 		String action = form.getAction();
 
 		IDAOConnection conn = DAOConnectionFactory.getConnection();
-
 		try {
 			ICellarEntryDAO dao = conn.getCellarEntryDAO();
 
+			if (BaseForm.ACTION_NEW.equals(action)) {
+				int winecellarId = form.getCe().getWinecellarId();
+				form.reset(mapping, request);
+				form.getCe().setWinecellarId(winecellarId);
+				return returnInputForward(form, mapping, request);
+			}
+
+			if (BaseForm.ACTION_FORM.equals(action)) {
+				if (form.getCe().getId() != 0) {
+					CellarEntry ce = dao.getCellarEntry(
+						form.getCe().getId(), SecManager.getUserId(request));
+					form.setCe(ce);
+				}
+				return returnInputForward(form, mapping, request);
+			}
+
+			if (BaseForm.ACTION_MODIFY.equals(action)) {
+				try {
+					CellarEntry ce = form.getCe();
+					dao.storeCellarEntry(ce);
+				} catch (DAOException e) {
+					attachSingleErrorMessage(mapping, request,
+						"ce.update.failed");
+				}
+
+			} else if (BaseForm.ACTION_DELETE.equals(action)) {
+				if (form.getCe().getId() != 0) {
+					try {
+						dao.deleteCellarEntry(form.getCe().getId());
+					} catch (DAOException e) {
+						attachSingleErrorMessage(mapping, request,
+							"ce.delete.failed");
+					}
+				}
+			}
+
 			// defaults to LIST
 			List<CellarEntry> cellarentryList = dao.getCellarEntries(
-				form.getWinecellarId(), SecManager.getUserId(request),
+				form.getCe().getWinecellarId(), SecManager.getUserId(request),
 				form.getPagingCookie());
 			setList(request, form.getPagingCookie(), cellarentryList,
 				"cellarentryList");

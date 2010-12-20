@@ -55,7 +55,6 @@ public class CellarEntryTest
 	@Test
 	public void testGetSetWine()
 	{
-		assertNull(me.getWine());
 		Wine w = new Wine();
 		me.setWine(w);
 		assertEquals(w, me.getWine());

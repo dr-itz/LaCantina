@@ -10,7 +10,7 @@ public class CellarEntry
 	private int winecellarId;
 	private int year;
 	private int quantity;
-	private Wine wine;
+	private Wine wine = new Wine();
 
 	/**
 	 * @return the id

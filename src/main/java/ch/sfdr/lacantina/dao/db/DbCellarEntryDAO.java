@@ -76,6 +76,18 @@ public class DbCellarEntryDAO
 	}
 
 	/*
+	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#getCellarEntry(int)
+	 */
+	public CellarEntry getCellarEntry(int id, int userId)
+		throws DAOException
+	{
+		return getSingleRow(
+			CELLARENTRY_SELECT +
+			"WHERE y.id = ? AND w.user_id = ?",
+			id, userId);
+	}
+
+	/*
 	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#getCellarEntries(int, int)
 	 */
 	public List<CellarEntry> getCellarEntries(int winecellarId, int userId,
@@ -86,5 +98,38 @@ public class DbCellarEntryDAO
 			"SELECT COUNT(*) " + CELLARENTRY_FROM + CELLARENTRY_LIST_WHERE,
 			CELLARENTRY_SELECT + CELLARENTRY_LIST_WHERE,
 			pc, winecellarId, userId);
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#storeCellarEntry(ch.sfdr.
+	 * lacantina.dao.objects.CellarEntry)
+	 */
+	public void storeCellarEntry(CellarEntry ce)
+		throws DAOException
+	{
+		if (ce.getId() == 0) {
+			executeUpdateStatement(
+				"INSERT INTO wine_years" +
+				"  (winecellar_id, wine_id, year, quantity) " +
+				"VALUES (?, ?, ?, ?)",
+				ce.getWinecellarId(), ce.getWine().getId(), ce.getYear(),
+				ce.getQuantity());
+		} else {
+			executeUpdateStatement(
+				"UPDATE wine_years SET" +
+				"  winecellar_id = ?, wine_id = ?, year = ?, quantity = ? " +
+				"WHERE id = ?",
+				ce.getWinecellarId(), ce.getWine().getId(), ce.getYear(),
+				ce.getQuantity(), ce.getId());
+		}
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#deleteCellarEntry(int)
+	 */
+	public void deleteCellarEntry(int id)
+		throws DAOException
+	{
+		executeUpdateStatement("DELETE FROM wine_years WHERE id = ?", id);
 	}
 }

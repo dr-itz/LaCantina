@@ -6,7 +6,7 @@
 <html:form action="/CellarEntryAction.do">
 
 <html:hidden property="action" value="list" styleId="pAction"/>
-<html:hidden property="winecellarId"/>
+<html:hidden property="ce.winecellarId"/>
 
 <table class="datatable" width="100%" cellspacing="0">
 	<col class="fixedtextcolumn"/>
@@ -49,12 +49,19 @@
 			<td><bean:write filter="true" name="item" property="wine.region"/></td>
 			<td><bean:write filter="true" name="item" property="year"/></td>
 			<td><bean:write filter="true" name="item" property="quantity"/></td>
-			<td>&nbsp;</td>
+			<td>
+				<html:link action="/CellarEntryAction" paramId="ce.id"
+				 paramName="item" paramProperty="id">
+				 	<html:param name="action" value="form"/>
+				 	<bean:message key="lbl.modify"/>
+				 </html:link>
+			</td>
 		</tr>
 	</logic:iterate></logic:present>
 	<tr class="footer">
 		<td colspan="4">
-			<html:link action="/CellarEntryAction">
+			<html:link action="/CellarEntryAction" paramId="ce.winecellarId"
+				 paramName="cellarentryForm" paramProperty="ce.winecellarId">
 				<html:param name="action" value="new"/>
 				<bean:message key="lbl.add"/>
 			</html:link>

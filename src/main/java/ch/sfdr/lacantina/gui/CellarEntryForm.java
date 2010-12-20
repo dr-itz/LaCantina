@@ -4,8 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 
 import ch.sfdr.common.PagedForm;
+import ch.sfdr.lacantina.dao.objects.CellarEntry;
 
 /**
  * @author S.Freihofer
@@ -15,7 +17,7 @@ public class CellarEntryForm
 {
 	private static final long serialVersionUID = 1L;
 
-	private int winecellarId;
+	private CellarEntry ce;
 
 	/*
 	 * @see
@@ -27,6 +29,13 @@ public class CellarEntryForm
 			HttpServletRequest request)
 	{
 		ActionErrors errors = new ActionErrors();
+
+		if (ACTION_MODIFY.equals(action)) {
+			if (ce.getYear() == 0)
+				errors.add("year", new ActionMessage("ce.year.required"));
+			if (ce.getQuantity() == 0)
+				errors.add("quantity", new ActionMessage("ce.quantity.required"));
+		}
 
 		return errors;
 	}
@@ -40,22 +49,22 @@ public class CellarEntryForm
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
 		super.reset(mapping, request);
-		winecellarId = 0;
+		ce = new CellarEntry();
 	}
 
 	/**
-	 * @return the winecellarId
+	 * @return the ce
 	 */
-	public int getWinecellarId()
+	public CellarEntry getCe()
 	{
-		return winecellarId;
+		return ce;
 	}
 
 	/**
-	 * @param winecellarId the winecellarId to set
+	 * @param ce the ce to set
 	 */
-	public void setWinecellarId(int winecellarId)
+	public void setCe(CellarEntry ce)
 	{
-		this.winecellarId = winecellarId;
+		this.ce = ce;
 	}
 }
