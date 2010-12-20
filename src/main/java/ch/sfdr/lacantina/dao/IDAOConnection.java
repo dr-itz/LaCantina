@@ -25,6 +25,12 @@ public interface IDAOConnection
 	IWineDAO getWineDAO();
 
 	/**
+	 * get the DAO for cellar entry queries
+	 * @return ICellarEntryDAO
+	 */
+	ICellarEntryDAO getCellarEntryDAO();
+
+	/**
 	 * closes the connection
 	 */
 	void close();

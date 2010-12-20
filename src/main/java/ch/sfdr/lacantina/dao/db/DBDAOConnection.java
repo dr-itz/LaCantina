@@ -1,6 +1,7 @@
 package ch.sfdr.lacantina.dao.db;
 
 import ch.sfdr.lacantina.dao.DAOException;
+import ch.sfdr.lacantina.dao.ICellarEntryDAO;
 import ch.sfdr.lacantina.dao.IDAOConnection;
 import ch.sfdr.lacantina.dao.IUserDAO;
 import ch.sfdr.lacantina.dao.IWineCellarDAO;
@@ -46,6 +47,14 @@ public class DBDAOConnection
 	public IWineDAO getWineDAO()
 	{
 		return new DbWineDAO(conn);
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.IDAOConnection#getCellarEntryDAO()
+	 */
+	public ICellarEntryDAO getCellarEntryDAO()
+	{
+		return new DbCellarEntryDAO(conn);
 	}
 
 	/*
