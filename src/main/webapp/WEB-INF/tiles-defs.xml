@@ -46,6 +46,16 @@
 		<put name="title" type="string" value="title.wine.list"/>
 	</definition>
 
+	<!-- cellar entries -->
+	<definition name="cellarentry" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/cellarentry.jsp"/>
+		<put name="title" type="string" value="title.cellarentry.form"/>
+	</definition>
+	<definition name="cellarentryList" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/cellarentryList.jsp"/>
+		<put name="title" type="string" value="title.cellarentry.list"/>
+	</definition>
+
 	<!-- the access denied page -->
 	<definition name="deny" extends="layout">
 		<put name="body" value="/WEB-INF/jsp/deny.jsp"/>

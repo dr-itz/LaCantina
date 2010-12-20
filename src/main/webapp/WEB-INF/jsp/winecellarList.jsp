@@ -27,7 +27,11 @@
 	<logic:iterate name="winecellarList" id="item" indexId="idx">
 		<tr class="<%= idx % 2 == 0 ? "even" : "odd" %>">
 			<td>
-				<bean:write name="item" property="name"/>
+				<html:link action="/CellarEntryAction" paramId="winecellarId"
+				 paramName="item" paramProperty="id">
+				 	<html:param name="action" value="list"/>
+					<bean:write name="item" property="name"/>
+				</html:link>
 			</td>
 			<td><bean:write filter="true" name="item" property="capacity"/></td>
 			<td>
