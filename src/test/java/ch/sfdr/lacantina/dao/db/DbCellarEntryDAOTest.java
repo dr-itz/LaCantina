@@ -84,6 +84,7 @@ public class DbCellarEntryDAOTest
 			"FROM wine_years y INNER JOIN wines w" +
 			"  ON y.wine_id = w.id " +
 			"WHERE y.winecellar_id = ? AND w.user_id = ?" +
+			" ORDER BY w.country, w.region, w.name" +
 			" LIMIT ? OFFSET ?",
 			"CellarEntryListQuery",
 			new Object [][] {

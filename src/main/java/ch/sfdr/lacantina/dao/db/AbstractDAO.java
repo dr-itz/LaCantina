@@ -16,6 +16,8 @@ import ch.sfdr.lacantina.dao.PagingCookie;
  */
 public abstract class AbstractDAO<T>
 {
+	public static final String DEFAULT_SORT = "default";
+
 	protected Connection conn;
 
 	/**
@@ -102,6 +104,54 @@ public abstract class AbstractDAO<T>
 	}
 
 	/**
+	 * retrieves the sort mapping. this uses a linear search which is not that
+	 * fast, a hash would be faster, but with so small column counts it's not
+	 * worth the code complexity.
+	 * @param pc the paging cookie
+	 * @return the order by columns
+	 */
+	private String getOrderBy(PagingCookie pc)
+	{
+		SortPair[] map = getSortMapping();
+		if (map == null || map.length == 0)
+			return null;
+
+		String key = pc.getSortKey();
+		String def = null;
+		StringBuilder sb = new StringBuilder();
+		for (SortPair sp : map) {
+			if (DEFAULT_SORT.equals(sp.key)) {
+				def = sp.value;
+			} else {
+				if (sp.key.equals(key)) {
+					sb.append(sp.value);
+					if (pc.isSortDesc())
+						sb.append(" DESC");
+					break;
+				}
+			}
+		}
+
+		// always add default order for more natural sorting
+		if (def != null) {
+			if (sb.length() > 0)
+				sb.append(", ");
+			sb.append(def);
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 * returns the sort mapping used to construct the ORDER BY statement
+	 * @return SortPair[]
+	 */
+	protected SortPair[] getSortMapping()
+	{
+		return null;
+	}
+
+	/**
 	 * reads a list of rows
 	 * @param query the query
 	 * @param pc the paging cookie
@@ -113,6 +163,9 @@ public abstract class AbstractDAO<T>
 			PagingCookie pc, Object... bind)
 		throws DAOException
 	{
+		if (pc == null)
+			return getRowList(query, bind);
+
 		List<T> list = new ArrayList<T>(pc.getLimit());
 
 		PreparedStatement stmt = null;
@@ -129,8 +182,16 @@ public abstract class AbstractDAO<T>
 				rs.close();
 				stmt.close();
 
+				// prepare the query
+				StringBuilder sb = new StringBuilder();
+				sb.append(query);
+				String orderby = getOrderBy(pc);
+				if (orderby != null && orderby.length() != 0)
+					sb.append(" ORDER BY ").append(orderby);
+				sb.append(" LIMIT ? OFFSET ?");
+
 				// get the rows
-				stmt = conn.prepareStatement(query + " LIMIT ? OFFSET ?");
+				stmt = conn.prepareStatement(sb.toString());
 				int next = fillStatement(stmt, bind);
 				stmt.setInt(next, pc.getLimit());
 				stmt.setInt(next + 1, pc.getOffset());
@@ -172,10 +233,36 @@ public abstract class AbstractDAO<T>
 	}
 
 	/**
+	 * returns a new SortPair
+	 * @param key
+	 * @param value
+	 * @return SortPair
+	 */
+	public static SortPair sortPair(String key, String value)
+	{
+		return new SortPair(key, value);
+	}
+
+	/**
 	 * defines how a row is read
 	 * @param rs the ResultSet to read from
 	 * @return the row read
 	 */
 	public abstract T readRow(ResultSet rs)
 		throws SQLException;
+
+	/**
+	 * a key value pair for sort column mapping
+	 */
+	public static class SortPair
+	{
+		public String key;
+		public String value;
+
+		public SortPair(String key, String value)
+		{
+			this.key = key;
+			this.value = value;
+		}
+	}
 }

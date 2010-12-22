@@ -4,14 +4,20 @@
 
 <tiles-definitions>
 	<!-- main layout file -->
-	<definition name="layout" path="/WEB-INF/jsp/layout.jsp">
+	<definition name="layout" path="/WEB-INF/jsp/templates/layout.jsp">
 		<put name="body" value="" />
 		<put name="title" type="string" value="" />
 		<put name="hideTitle" type="string" value="" />
 	</definition>
 
 	<!-- paging footer -->
-	<definition name="paging" path="/WEB-INF/jsp/paging.jsp"/>
+	<definition name="paging" path="/WEB-INF/jsp/templates/paging.jsp"/>
+
+	<!-- sort headers -->
+	<definition name="sortHeader" path="/WEB-INF/jsp/templates/sortHeader.jsp">
+		<put name="label" value="label"/>
+		<put name="col" value="col"/>
+	</definition>
 
 	<!-- index -->
 	<definition name="index" extends="layout">

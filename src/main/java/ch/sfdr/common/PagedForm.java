@@ -17,8 +17,10 @@ public abstract class PagedForm
 
 	public static final String ACTION_PREV   = "prev";
 	public static final String ACTION_NEXT   = "next";
+	public static final String ACTION_SORT   = "sort";
 
 	protected PagingCookie pc;
+	private String sortKey;
 
 	/*
 	 * @see ch.sfdr.common.BaseForm#reset(
@@ -32,6 +34,21 @@ public abstract class PagedForm
 		pc = null;
 	}
 
+	/*
+	 * @see ch.sfdr.common.BaseForm#preValidate(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	protected void preValidate(ActionMapping mapping, HttpServletRequest request)
+	{
+		if (ACTION_SORT.equals(getAction())) {
+			PagingCookie pc = getPagingCookie();
+			if (pc.getSortKey().equals(sortKey))
+				pc.setSortDesc(!pc.isSortDesc());
+			else
+				pc.setSortDesc(false);
+			pc.setSortKey(sortKey);
+		}
+	}
 
 	/**
 	 * gets the PagingCookie as String (for the JSP part)
@@ -63,5 +80,21 @@ public abstract class PagedForm
 		if (pc == null)
 			pc = new PagingCookie();
 		return pc;
+	}
+
+	/**
+	 * @return the sortKey
+	 */
+	public String getSortKey()
+	{
+		return sortKey;
+	}
+
+	/**
+	 * @param sortKey the sortKey to set
+	 */
+	public void setSortKey(String sortKey)
+	{
+		this.sortKey = sortKey;
 	}
 }

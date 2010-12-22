@@ -80,8 +80,8 @@ public class DbWineDAOTest
 			"  bottle_size " +
 			"FROM wines " +
 			"WHERE user_id = ? " +
-			"ORDER BY country, region, name " +
-			" LIMIT ? OFFSET ?",
+			"ORDER BY producer DESC, country, region, name " +
+			"LIMIT ? OFFSET ?",
 			"WineQuery",
 			new Object[][] {
 				{ 123, 56, "name", "producer", "country", "region", "description", 75 },
@@ -91,6 +91,8 @@ public class DbWineDAOTest
 		);
 
 		PagingCookie pc = new PagingCookie();
+		pc.setSortKey("producer");
+		pc.setSortDesc(true);
 		List<Wine> list = me.getWineList(123, pc);
 		assertEquals(2, list.size());
 

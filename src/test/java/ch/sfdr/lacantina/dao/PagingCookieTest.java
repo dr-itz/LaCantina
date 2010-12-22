@@ -23,23 +23,31 @@ public class PagingCookieTest
 	@Test
 	public void testToString()
 	{
-		assertEquals("0,20,0,0", me.toString());
+		assertEquals("0,20,0,0,,0", me.toString());
+		me.setSortKey("key");
+		assertEquals("0,20,0,0,key,0", me.toString());
+		me.setSortDesc(true);
+		assertEquals("0,20,0,0,key,1", me.toString());
 	}
 
 	@Test
 	public void testFromString()
 	{
-		me = PagingCookie.fromString("10,5,50,5");
+		me = PagingCookie.fromString("10,5,50,5,key,0");
 		assertEquals(5, me.getLimit());
 		assertEquals(10, me.getOffset());
 		assertEquals(50, me.getTotalRows());
 		assertEquals(5, me.getPageRows());
+		assertEquals("key", me.getSortKey());
+		assertFalse(me.isSortDesc());
 
-		me = PagingCookie.fromString("blub,5,50,5");
+		me = PagingCookie.fromString("blub,5,50,5,key,1");
 		assertEquals(5, me.getLimit());
 		assertEquals(0, me.getOffset());
 		assertEquals(50, me.getTotalRows());
 		assertEquals(5, me.getPageRows());
+		assertEquals("key", me.getSortKey());
+		assertTrue(me.isSortDesc());
 	}
 
 	@Test

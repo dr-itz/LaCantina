@@ -11,6 +11,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 
+import ch.sfdr.lacantina.dao.IDAOConnection;
+
 /**
  * base action with some added helpers
  * @author D.Ritz
@@ -47,15 +49,32 @@ public abstract class BaseAction
 
 	/**
 	 * returns the input forward with all data set
-	 * @param mapping
-	 * @param request
-	 * @return
+	 * @param form the form
+	 * @param conn the IDAOConnection if available/needed, null otherwise
+	 * @param mapping ActionMapping
+	 * @param request HttpServletRequest
+	 * @return the ActionForward
+	 */
+	protected ActionForward returnInputForward(BaseForm frm, IDAOConnection conn,
+		ActionMapping mapping, HttpServletRequest request)
+	{
+		if (conn != null && frm instanceof BaseForm.DataListAttacher) {
+			((BaseForm.DataListAttacher) frm).attachDataLists(request, conn);
+		}
+		return mapping.getInputForward();
+	}
+
+	/**
+	 * returns the input forward with all data set
+	 * @param form the form
+	 * @param mapping ActionMapping
+	 * @param request HttpServletRequest
+	 * @return the ActionForward
 	 */
 	protected ActionForward returnInputForward(BaseForm frm,
 		ActionMapping mapping, HttpServletRequest request)
 	{
-		frm.attachDataLists(request);
-		return mapping.getInputForward();
+		return returnInputForward(frm, null, mapping, request);
 	}
 
 	/**

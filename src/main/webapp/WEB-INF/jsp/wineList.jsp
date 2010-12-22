@@ -15,16 +15,28 @@
 	<col class="fixedtextcolumn"/>
 	<tr>
 		<th>
-			<bean:message key="wine.lbl.name"/>
+			<tiles:insert definition="sortHeader">
+				<tiles:put name="label" value="wine.lbl.name"/>
+				<tiles:put name="col" value="name"/>
+			</tiles:insert>
 		</th>
 		<th>
-			<bean:message key="wine.lbl.producer"/>
+			<tiles:insert definition="sortHeader">
+				<tiles:put name="label" value="wine.lbl.producer"/>
+				<tiles:put name="col" value="producer"/>
+			</tiles:insert>
 		</th>
 		<th>
-			<bean:message key="wine.lbl.country"/>
+			<tiles:insert definition="sortHeader">
+				<tiles:put name="label" value="wine.lbl.country"/>
+				<tiles:put name="col" value="country"/>
+			</tiles:insert>
 		</th>
 		<th>
-			<bean:message key="wine.lbl.region"/>
+			<tiles:insert definition="sortHeader">
+				<tiles:put name="label" value="wine.lbl.region"/>
+				<tiles:put name="col" value="region"/>
+			</tiles:insert>
 		</th>
 	</tr>
 	<logic:present name="wineList">

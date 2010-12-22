@@ -35,6 +35,17 @@ public class DbWineDAO
 		"  bottle_size " +
 		"FROM wines ";
 
+	/**
+	 * sort mapping
+	 */
+	private static final SortPair[] SORT_MAP = {
+		sortPair(DEFAULT_SORT, "country, region, name"),
+		sortPair("name", "name"),
+		sortPair("producer", "producer"),
+		sortPair("country", "country"),
+		sortPair("region", "region"),
+	};
+
 	@Override
 	public Wine readRow(ResultSet rs)
 		throws SQLException
@@ -52,6 +63,15 @@ public class DbWineDAO
 		w.setBottleSize(rs.getShort(n++));
 
 		return w;
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.db.AbstractDAO#getSortMapping()
+	 */
+	@Override
+	protected SortPair[] getSortMapping()
+	{
+		return SORT_MAP;
 	}
 
 	/*
@@ -75,8 +95,7 @@ public class DbWineDAO
 		return getPagedRowList(
 			"SELECT COUNT(*) FROM wines WHERE user_id = ?",
 			USER_SELECT +
-			"WHERE user_id = ? " +
-			"ORDER BY country, region, name ",
+			"WHERE user_id = ?",
 			pc, user);
 	}
 

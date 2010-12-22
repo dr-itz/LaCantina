@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html"  prefix="html" %>
 
 <logic:present name="pcookie">
+	<html:hidden property="sortKey" styleId="pSortKey"/>
 	<html:hidden property="pc"/>
 	<logic:notEqual name="pcookie" property="rangeStart" value="1">
 		<a href="javascript:pfPrev()"><bean:message key="lbl.prev"/></a>

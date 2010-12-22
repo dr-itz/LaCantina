@@ -13,6 +13,10 @@ import org.apache.struts.action.ActionMessage;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.sfdr.lacantina.dao.DAOConnectionFactory;
+import ch.sfdr.lacantina.dao.DummyDAOConnectionFactory;
+import ch.sfdr.lacantina.dao.IDAOConnection;
+
 import com.mockrunner.mock.web.MockActionMapping;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 
@@ -22,6 +26,7 @@ import com.mockrunner.mock.web.MockHttpServletRequest;
  */
 public class BaseFormTest
 	extends BaseForm
+	implements BaseForm.DataListAttacher
 {
 	private static final long serialVersionUID = 1L;
 
@@ -36,6 +41,7 @@ public class BaseFormTest
 		mapping = new MockActionMapping();
 		req = new MockHttpServletRequest();
 		errors = new ActionErrors();
+		DAOConnectionFactory.setFactory(new DummyDAOConnectionFactory());
 	}
 
 	@Test
@@ -92,5 +98,10 @@ public class BaseFormTest
 		assertEquals(this.mapping, mapping);
 		assertEquals(this.req, request);
 		super.preValidate(mapping, request);
+	}
+
+	public void attachDataLists(HttpServletRequest request, IDAOConnection conn)
+	{
+		assertEquals(req, request);
 	}
 }

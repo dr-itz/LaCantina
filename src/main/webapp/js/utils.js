@@ -37,3 +37,8 @@ function pfNext()
 {
 	pfAction('next');
 }
+
+function pfSort(key)
+{
+	formSubmit('pAction', 'sort', 'pSortKey', key);
+}

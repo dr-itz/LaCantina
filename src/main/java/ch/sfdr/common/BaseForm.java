@@ -6,6 +6,10 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
+import ch.sfdr.lacantina.dao.DAOConnectionFactory;
+import ch.sfdr.lacantina.dao.DAOException;
+import ch.sfdr.lacantina.dao.IDAOConnection;
+
 /**
  * base class for all forms. adds some helpers
  * @author D.Ritz
@@ -64,7 +68,7 @@ public abstract class BaseForm
 	{
 		preValidate(mapping, request);
 		ActionErrors errors = doValidate(mapping, request);
-		if (!errors.isEmpty())
+		if (errors != null && !errors.isEmpty())
 			attachDataLists(request);
 		return errors;
 	}
@@ -82,9 +86,22 @@ public abstract class BaseForm
 	 * used to attach data lists
 	 * @param request
 	 */
-	public void attachDataLists(HttpServletRequest request)
+	private void attachDataLists(HttpServletRequest request)
 	{
-
+		if (this instanceof DataListAttacher) {
+			IDAOConnection conn;
+			try {
+				conn = DAOConnectionFactory.getConnection();
+				try{
+					((DataListAttacher) this).attachDataLists(request, conn);
+				} finally {
+					conn.close();
+				}
+			} catch (DAOException e) {
+				// FIXME: some error handling
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -114,5 +131,13 @@ public abstract class BaseForm
 	public void setAction(String action)
 	{
 		this.action = action;
+	}
+
+	/**
+	 * Defines the method called to attach data lists from a IDAOConnection
+	 */
+	public interface DataListAttacher
+	{
+		void attachDataLists(HttpServletRequest request, IDAOConnection conn);
 	}
 }

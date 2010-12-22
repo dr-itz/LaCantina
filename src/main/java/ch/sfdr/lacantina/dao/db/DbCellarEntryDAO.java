@@ -43,6 +43,19 @@ public class DbCellarEntryDAO
 	private static final String CELLARENTRY_LIST_WHERE =
 		"WHERE y.winecellar_id = ? AND w.user_id = ?";
 
+	/**
+	 * sort mapping
+	 */
+	private static final SortPair[] SORT_MAP = {
+		sortPair(DEFAULT_SORT, "w.country, w.region, w.name"),
+		sortPair("name", "w.name"),
+		sortPair("producer", "w.producer"),
+		sortPair("country", "w.country"),
+		sortPair("region", "w.region"),
+		sortPair("quantity", "y.quantity"),
+		sortPair("year", "y.year"),
+	};
+
 	/*
 	 * @see ch.sfdr.lacantina.dao.db.AbstractDAO#readRow(java.sql.ResultSet)
 	 */
@@ -73,6 +86,15 @@ public class DbCellarEntryDAO
 		ce.setWine(w);
 
 		return ce;
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.db.AbstractDAO#getSortMapping()
+	 */
+	@Override
+	protected SortPair[] getSortMapping()
+	{
+		return SORT_MAP;
 	}
 
 	/*

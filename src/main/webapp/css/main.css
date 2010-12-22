@@ -138,6 +138,7 @@ ul.Error {
 th {
 	background: #cfe2eb;
 	color: black;
+	text-decoration: none;
 	text-align: left;
 	border-bottom: black 1px solid;
 }
@@ -198,9 +199,18 @@ a:focus {
 	color: blue;
 	text-decoration: none;
 }
-a:hover {
+
+a:hover,
+a.sortlink:hover {
 	color: red;
 	text-decoration: none;
 }
 
-
+.sortlink,
+a.sortlink:link,
+a.sortlink:visited,
+a.sortlink:active,
+a.sortlink:focus{
+	color: black;
+	text-decoration: none;
+}

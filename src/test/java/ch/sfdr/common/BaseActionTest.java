@@ -10,6 +10,9 @@ import org.apache.struts.action.ActionMessages;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.sfdr.lacantina.dao.DummyDAOConnectionFactory;
+import ch.sfdr.lacantina.dao.IDAOConnection;
+
 import com.mockrunner.mock.web.MockActionMapping;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 
@@ -49,25 +52,27 @@ public class BaseActionTest
 	@Test
 	public void testReturnInputForward()
 	{
-		BaseForm frm = new BaseForm()
-		{
-			private static final long serialVersionUID = 1L;
+		BaseForm frm = new DummyForm();
+		returnInputForward(frm,
+			new DummyDAOConnectionFactory.DummyDAOConnection(), mapping, req);
+	}
 
-			@Override
-			protected ActionErrors doValidate(ActionMapping mapping,
-					HttpServletRequest request)
-			{
-				return null;
-			}
-			/*
-			 * @see ch.sfdr.common.BaseForm#attachDataLists(javax.servlet.http.HttpServletRequest)
-			 */
-			@Override
-			public void attachDataLists(HttpServletRequest request)
-			{
-				assertEquals(req, request);
-			}
-		};
-		returnInputForward(frm, mapping, req);
+	private class DummyForm
+		extends BaseForm
+		implements BaseForm.DataListAttacher
+	{
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected ActionErrors doValidate(ActionMapping mapping,
+				HttpServletRequest request)
+		{
+			return null;
+		}
+
+		public void attachDataLists(HttpServletRequest request, IDAOConnection conn)
+		{
+			assertEquals(req, request);
+		}
 	}
 }

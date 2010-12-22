@@ -13,6 +13,8 @@ public class PagingCookie
 	private int limit = DEFAULT_PAGE_SIZE;
 	private int totalRows;
 	private int pageRows;
+	private String sortKey = "";
+	private boolean sortDesc;
 
 	@Override
 	public String toString()
@@ -21,7 +23,9 @@ public class PagingCookie
 		sb.append(offset).append(",");
 		sb.append(limit).append(",");
 		sb.append(totalRows).append(",");
-		sb.append(pageRows);
+		sb.append(pageRows).append(",");
+		sb.append(sortKey).append(",");
+		sb.append(sortDesc ? "1" : "0");
 		return sb.toString();
 	}
 
@@ -44,13 +48,17 @@ public class PagingCookie
 		PagingCookie pc = new PagingCookie();
 		String[] parts = str.split(",");
 		if (parts.length > 0)
-			pc.setOffset(string2int(parts[0]));
+			pc.offset = string2int(parts[0]);
 		if (parts.length > 1)
-			pc.setLimit(string2int(parts[1]));
+			pc.limit = string2int(parts[1]);
 		if (parts.length > 2)
-			pc.setTotalRows(string2int(parts[2]));
+			pc.totalRows = string2int(parts[2]);
 		if (parts.length > 3)
-			pc.setPageRows(string2int(parts[3]));
+			pc.pageRows = string2int(parts[3]);
+		if (parts.length > 4)
+			pc.sortKey = parts[4];
+		if (parts.length > 5)
+			pc.sortDesc = "1".equals(parts[5]);
 		return pc;
 	}
 
@@ -138,6 +146,38 @@ public class PagingCookie
 	public void setPageRows(int pageRows)
 	{
 		this.pageRows = pageRows;
+	}
+
+	/**
+	 * @return the sortKey
+	 */
+	public String getSortKey()
+	{
+		return sortKey;
+	}
+
+	/**
+	 * @param sortKey the sortKey to set
+	 */
+	public void setSortKey(String sortKey)
+	{
+		this.sortKey = sortKey;
+	}
+
+	/**
+	 * @return the sortDesc
+	 */
+	public boolean isSortDesc()
+	{
+		return sortDesc;
+	}
+
+	/**
+	 * @param sortDesc the sortDesc to set
+	 */
+	public void setSortDesc(boolean sortDesc)
+	{
+		this.sortDesc = sortDesc;
 	}
 
 	/**
