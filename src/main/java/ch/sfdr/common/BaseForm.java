@@ -138,6 +138,7 @@ public abstract class BaseForm
 	 */
 	public interface DataListAttacher
 	{
-		void attachDataLists(HttpServletRequest request, IDAOConnection conn);
+		void attachDataLists(HttpServletRequest request, IDAOConnection conn)
+			throws DAOException;
 	}
 }

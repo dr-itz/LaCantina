@@ -80,7 +80,7 @@ public class DbWineDAOTest
 			"  bottle_size " +
 			"FROM wines " +
 			"WHERE user_id = ? " +
-			"ORDER BY producer DESC, country, region, name " +
+			"ORDER BY producer DESC, country, region, producer, name, bottle_size " +
 			"LIMIT ? OFFSET ?",
 			"WineQuery",
 			new Object[][] {
@@ -94,6 +94,38 @@ public class DbWineDAOTest
 		pc.setSortKey("producer");
 		pc.setSortDesc(true);
 		List<Wine> list = me.getWineList(123, pc);
+		assertEquals(2, list.size());
+
+		Wine w = list.get(0);
+		assertEquals(123, w.getId());
+		assertEquals(56, w.getUserId());
+		assertEquals("name", w.getName());
+		assertEquals("producer", w.getProducer());
+		assertEquals("country", w.getCountry());
+		assertEquals("region", w.getRegion());
+		assertEquals("description", w.getDescription());
+		assertEquals(75, w.getBottleSize());
+	}
+
+	@Test
+	public void testGetWineListNonPaging()
+		throws DAOException
+	{
+		prepareQueryWithResult(
+			"SELECT id, user_id, name, producer, country, region, description," +
+			"  bottle_size " +
+			"FROM wines " +
+			"WHERE user_id = ? " +
+			"ORDER BY country, region, producer, name, bottle_size",
+			"WineQuery",
+			new Object[][] {
+				{ 123, 56, "name", "producer", "country", "region", "description", 75 },
+				{ 124, 56, "name2", "producer2", "country2", "region2", "description2", 75 },
+			},
+			123
+		);
+
+		List<Wine> list = me.getWineList(123, null);
 		assertEquals(2, list.size());
 
 		Wine w = list.get(0);

@@ -19,7 +19,9 @@
 		<tr class="even">
 			<td width="120"><bean:message key="ce.lbl.wine"/></td>
 			<td width="450">
-				<html:text property="ce.wine.id" styleId="fwineId"/>
+				<html:select property="ce.wine.id" styleId="fwineId">
+					<html:optionsCollection name="wineList" label="friendlyName" value="id"/>
+				</html:select>
 			</td>
 			<td>&nbsp;</td>
 		</tr>

@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 
+import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.IDAOConnection;
 
 /**
@@ -59,7 +60,11 @@ public abstract class BaseAction
 		ActionMapping mapping, HttpServletRequest request)
 	{
 		if (conn != null && frm instanceof BaseForm.DataListAttacher) {
-			((BaseForm.DataListAttacher) frm).attachDataLists(request, conn);
+			try {
+				((BaseForm.DataListAttacher) frm).attachDataLists(request, conn);
+			} catch (DAOException e) {
+				// FIXME: handle exception
+			}
 		}
 		return mapping.getInputForward();
 	}

@@ -83,4 +83,15 @@ public class WineTest
 		me.setBottleSize(75);
 		assertEquals(75, me.getBottleSize());
 	}
+
+	@Test
+	public void testGetFriendlyName()
+	{
+		me.setName("Campofiorin");
+		me.setProducer("Masi");
+		me.setCountry("Italy");
+		me.setRegion("Veneto");
+		me.setBottleSize(75);
+		assertEquals("Italy/Veneto: Masi: Campofiorin, 75cl", me.getFriendlyName());
+	}
 }

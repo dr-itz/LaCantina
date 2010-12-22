@@ -39,7 +39,7 @@ public class DbWineDAO
 	 * sort mapping
 	 */
 	private static final SortPair[] SORT_MAP = {
-		sortPair(DEFAULT_SORT, "country, region, name"),
+		sortPair(DEFAULT_SORT, "country, region, producer, name, bottle_size"),
 		sortPair("name", "name"),
 		sortPair("producer", "producer"),
 		sortPair("country", "country"),

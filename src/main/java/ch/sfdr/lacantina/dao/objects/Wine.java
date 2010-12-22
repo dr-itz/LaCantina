@@ -142,4 +142,29 @@ public class Wine
 	{
 		this.bottleSize = (short) bottleSize;
 	}
+
+	/**
+	 * returns a friendly name
+	 * @return friendly String
+	 */
+	public String getFriendlyName()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(country);
+		if (region != null && region.length() > 0)
+			sb.append("/").append(region);
+		sb.append(": ");
+		sb.append(producer).append(": ").append(name).append(", ");
+		sb.append(bottleSize).append("cl");
+		return sb.toString();
+	}
+
+	/*
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return getFriendlyName();
+	}
 }

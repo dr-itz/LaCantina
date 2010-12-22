@@ -19,16 +19,18 @@ import ch.sfdr.lacantina.dao.IDAOConnection;
 import ch.sfdr.lacantina.dao.objects.CellarEntry;
 
 /**
+ * Action for wine cellar entries
  * @author S.Freihofer
  */
 public class CellarEntryAction
 	extends PagedAction
 {
 	/*
-	 * @see org.apache.struts.action.Action#execute(org.apache.struts.action.
-	 * ActionMapping, org.apache.struts.action.ActionForm,
-	 * javax.servlet.http.HttpServletRequest,
-	 * javax.servlet.http.HttpServletResponse)
+	 * @see org.apache.struts.action.Action#execute(
+	 * 		org.apache.struts.action.ActionMapping,
+	 * 		org.apache.struts.action.ActionForm,
+	 * 		javax.servlet.http.HttpServletRequest,
+	 * 		javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
 	public ActionForward doExecute(ActionMapping mapping, PagedForm pf,
@@ -46,7 +48,7 @@ public class CellarEntryAction
 				int winecellarId = form.getCe().getWinecellarId();
 				form.reset(mapping, request);
 				form.getCe().setWinecellarId(winecellarId);
-				return returnInputForward(form, mapping, request);
+				return returnInputForward(form, conn, mapping, request);
 			}
 
 			if (BaseForm.ACTION_FORM.equals(action)) {
@@ -55,7 +57,7 @@ public class CellarEntryAction
 						form.getCe().getId(), SecManager.getUserId(request));
 					form.setCe(ce);
 				}
-				return returnInputForward(form, mapping, request);
+				return returnInputForward(form, conn, mapping, request);
 			}
 
 			if (BaseForm.ACTION_MODIFY.equals(action)) {

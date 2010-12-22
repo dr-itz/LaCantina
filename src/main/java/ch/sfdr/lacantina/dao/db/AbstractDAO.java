@@ -116,7 +116,7 @@ public abstract class AbstractDAO<T>
 		if (map == null || map.length == 0)
 			return null;
 
-		String key = pc.getSortKey();
+		String key = pc != null ? pc.getSortKey() : "";
 		String def = null;
 		StringBuilder sb = new StringBuilder();
 		for (SortPair sp : map) {
@@ -163,8 +163,16 @@ public abstract class AbstractDAO<T>
 			PagingCookie pc, Object... bind)
 		throws DAOException
 	{
+		// prepare the query
+		StringBuilder sb = new StringBuilder();
+		sb.append(query);
+		String orderby = getOrderBy(pc);
+		if (orderby != null && orderby.length() != 0)
+			sb.append(" ORDER BY ").append(orderby);
+
+		// if no paging, use the non-counting/paging call
 		if (pc == null)
-			return getRowList(query, bind);
+			return getRowList(sb.toString(), bind);
 
 		List<T> list = new ArrayList<T>(pc.getLimit());
 
@@ -182,12 +190,7 @@ public abstract class AbstractDAO<T>
 				rs.close();
 				stmt.close();
 
-				// prepare the query
-				StringBuilder sb = new StringBuilder();
-				sb.append(query);
-				String orderby = getOrderBy(pc);
-				if (orderby != null && orderby.length() != 0)
-					sb.append(" ORDER BY ").append(orderby);
+				// add the paging to the query
 				sb.append(" LIMIT ? OFFSET ?");
 
 				// get the rows
