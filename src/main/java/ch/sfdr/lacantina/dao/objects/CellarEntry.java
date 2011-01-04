@@ -11,6 +11,8 @@ public class CellarEntry
 	private int year;
 	private int quantity;
 	private Wine wine = new Wine();
+	private int ratingPoints;
+	private String ratingText;
 
 	/**
 	 * @return the id
@@ -90,5 +92,37 @@ public class CellarEntry
 	public void setWine(Wine wine)
 	{
 		this.wine = wine;
+	}
+
+	/**
+	 * @return the ratingPoints
+	 */
+	public int getRatingPoints()
+	{
+		return ratingPoints;
+	}
+
+	/**
+	 * @param ratingPoints the ratingPoints to set
+	 */
+	public void setRatingPoints(int ratingPoints)
+	{
+		this.ratingPoints = ratingPoints;
+	}
+
+	/**
+	 * @return the ratingText
+	 */
+	public String getRatingText()
+	{
+		return ratingText;
+	}
+
+	/**
+	 * @param ratingText the ratingText to set
+	 */
+	public void setRatingText(String ratingText)
+	{
+		this.ratingText = ratingText;
 	}
 }

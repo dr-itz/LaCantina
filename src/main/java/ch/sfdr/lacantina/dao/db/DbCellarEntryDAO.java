@@ -36,8 +36,8 @@ public class DbCellarEntryDAO
 		"  ON y.wine_id = w.id ";
 
 	private static final String CELLARENTRY_SELECT =
-		"SELECT y.id, y.winecellar_id, y.year, y.quantity, w.id, w.user_id, w.name," +
-		"  w.producer, w.country, w.region, w.description, w.bottle_size " +
+		"SELECT y.id, y.winecellar_id, y.year, y.quantity, y.rating_points, y.rating_text," +
+		"  w.id, w.user_id, w.name, w.producer, w.country, w.region, w.description, w.bottle_size " +
 		CELLARENTRY_FROM;
 
 	private static final String CELLARENTRY_LIST_WHERE =
@@ -54,6 +54,8 @@ public class DbCellarEntryDAO
 		sortPair("region", "w.region"),
 		sortPair("quantity", "y.quantity"),
 		sortPair("year", "y.year"),
+		sortPair("ratingPoints", "y.rating_points"),
+		sortPair("ratingText", "y.rating_text"),
 	};
 
 	/*
@@ -71,6 +73,8 @@ public class DbCellarEntryDAO
 		ce.setWinecellarId(rs.getInt(n++));
 		ce.setYear(rs.getInt(n++));
 		ce.setQuantity(rs.getInt(n++));
+		ce.setRatingPoints(rs.getInt(n++));
+		ce.setRatingText(rs.getString(n++));
 
 		Wine w = new Wine();
 
@@ -132,17 +136,17 @@ public class DbCellarEntryDAO
 		if (ce.getId() == 0) {
 			executeUpdateStatement(
 				"INSERT INTO wine_years" +
-				"  (winecellar_id, wine_id, year, quantity) " +
-				"VALUES (?, ?, ?, ?)",
+				"  (winecellar_id, wine_id, year, quantity, rating_points, rating_text) " +
+				"VALUES (?, ?, ?, ?, ?, ?)",
 				ce.getWinecellarId(), ce.getWine().getId(), ce.getYear(),
-				ce.getQuantity());
+				ce.getQuantity(), ce.getRatingPoints(), ce.getRatingText());
 		} else {
 			executeUpdateStatement(
 				"UPDATE wine_years SET" +
-				"  winecellar_id = ?, wine_id = ?, year = ?, quantity = ? " +
+				"  winecellar_id = ?, wine_id = ?, year = ?, quantity = ?, rating_points = ?, rating_text = ? " +
 				"WHERE id = ?",
 				ce.getWinecellarId(), ce.getWine().getId(), ce.getYear(),
-				ce.getQuantity(), ce.getId());
+				ce.getQuantity(), ce.getRatingPoints(), ce.getRatingText(), ce.getId());
 		}
 	}
 

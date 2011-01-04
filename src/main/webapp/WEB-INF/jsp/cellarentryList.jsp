@@ -15,6 +15,8 @@
 	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
+	<col class="fixedtextcolumn"/>
+	<col class="fixedtextcolumn"/>
 	<tr>
 		<th>
 			<tiles:insert definition="sortHeader">
@@ -53,6 +55,18 @@
 			</tiles:insert>
 		</th>
 		<th>
+			<tiles:insert definition="sortHeader">
+				<tiles:put name="label" value="wine.lbl.ratingPoints"/>
+				<tiles:put name="col" value="ratingPoints"/>
+			</tiles:insert>
+		</th>
+		<th>
+			<tiles:insert definition="sortHeader">
+				<tiles:put name="label" value="wine.lbl.ratingText"/>
+				<tiles:put name="col" value="ratingText"/>
+			</tiles:insert>
+		</th>
+		<th>
 			<bean:message key="lbl.action"/>
 		</th>
 	</tr>
@@ -67,6 +81,8 @@
 			<td><bean:write filter="true" name="item" property="wine.region"/></td>
 			<td><bean:write filter="true" name="item" property="year"/></td>
 			<td><bean:write filter="true" name="item" property="quantity"/></td>
+			<td><bean:write filter="true" name="item" property="ratingPoints"/></td>
+			<td><bean:write filter="true" name="item" property="ratingText"/></td>
 			<td>
 				<html:link action="/CellarEntryAction" paramId="ce.id"
 				 paramName="item" paramProperty="id">
@@ -84,7 +100,7 @@
 				<bean:message key="lbl.add"/>
 			</html:link>
 		</td>
-		<td colspan="3" align="right">
+		<td colspan="5" align="right">
 			<tiles:insert definition="paging"/>
 		</td>
 	</tr>

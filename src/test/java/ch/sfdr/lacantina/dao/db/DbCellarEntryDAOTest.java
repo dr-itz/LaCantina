@@ -35,14 +35,14 @@ public class DbCellarEntryDAOTest
 		throws DAOException
 	{
 		prepareQueryWithResult(
-			"SELECT y.id, y.winecellar_id, y.year, y.quantity, w.id, w.user_id, w.name," +
-			"  w.producer, w.country, w.region, w.description, w.bottle_size " +
+			"SELECT y.id, y.winecellar_id, y.year, y.quantity, y.rating_points, y.rating_text," +
+			"  w.id, w.user_id, w.name, w.producer, w.country, w.region, w.description, w.bottle_size " +
 			"FROM wine_years y INNER JOIN wines w" +
 			"  ON y.wine_id = w.id " +
 			"WHERE y.id = ? AND w.user_id = ?",
 			"CellarEntryQuery",
 			new Object [][] {
-				{ 456, 789, 2005, 6, 123, 56, "name", "producer", "country", "region", "description", 75 },
+				{ 456, 789, 2005, 6, 10, "text", 123, 56, "name", "producer", "country", "region", "description", 75 },
 			},
 			456, 56
 		);
@@ -51,6 +51,8 @@ public class DbCellarEntryDAOTest
 		assertEquals(456, ce.getId());
 		assertEquals(2005, ce.getYear());
 		assertEquals(6, ce.getQuantity());
+		assertEquals(10, ce.getRatingPoints());
+		assertEquals("text", ce.getRatingText());
 
 		Wine w = ce.getWine();
 		assertEquals(123, w.getId());
@@ -79,8 +81,8 @@ public class DbCellarEntryDAOTest
 			789, 56);
 
 		prepareQueryWithResult(
-			"SELECT y.id, y.winecellar_id, y.year, y.quantity, w.id, w.user_id, w.name," +
-			"  w.producer, w.country, w.region, w.description, w.bottle_size " +
+			"SELECT y.id, y.winecellar_id, y.year, y.quantity, y.rating_points, y.rating_text," +
+			"  w.id, w.user_id, w.name, w.producer, w.country, w.region, w.description, w.bottle_size " +
 			"FROM wine_years y INNER JOIN wines w" +
 			"  ON y.wine_id = w.id " +
 			"WHERE y.winecellar_id = ? AND w.user_id = ?" +
@@ -88,8 +90,8 @@ public class DbCellarEntryDAOTest
 			" LIMIT ? OFFSET ?",
 			"CellarEntryListQuery",
 			new Object [][] {
-				{ 456, 789, 2005, 6, 123, 56, "name", "producer", "country", "region", "description", 75 },
-				{ 457, 789, 2004, 12, 124, 56, "name2", "producer2", "country2", "region2", "description2", 75 },
+				{ 456, 789, 2005, 6, 10, "text", 123, 56, "name", "producer", "country", "region", "description", 75 },
+				{ 457, 789, 2004, 12, 5, "text2", 124, 56, "name2", "producer2", "country2", "region2", "description2", 75 },
 			},
 			789, 56, 20, 0
 		);
@@ -102,6 +104,8 @@ public class DbCellarEntryDAOTest
 		assertEquals(456, ce.getId());
 		assertEquals(2005, ce.getYear());
 		assertEquals(6, ce.getQuantity());
+		assertEquals(10, ce.getRatingPoints());
+		assertEquals("text", ce.getRatingText());
 
 		Wine w = ce.getWine();
 		assertEquals(123, w.getId());
@@ -123,13 +127,15 @@ public class DbCellarEntryDAOTest
 		ce.getWine().setId(123);
 		ce.setYear(2005);
 		ce.setQuantity(6);
+		ce.setRatingPoints(10);
+		ce.setRatingText("text");
 
 		prepareUpdate(
 			"INSERT INTO wine_years" +
-			"  (winecellar_id, wine_id, year, quantity) " +
-			"VALUES (?, ?, ?, ?)",
+			"  (winecellar_id, wine_id, year, quantity, rating_points, rating_text) " +
+			"VALUES (?, ?, ?, ?, ?, ?)",
 			"CellarEntryInsert",
-			789, 123, 2005, 6);
+			789, 123, 2005, 6, 10, "text");
 
 		me.storeCellarEntry(ce);
 	}
@@ -144,13 +150,15 @@ public class DbCellarEntryDAOTest
 		ce.getWine().setId(123);
 		ce.setYear(2005);
 		ce.setQuantity(6);
+		ce.setRatingPoints(10);
+		ce.setRatingText("text");
 
 		prepareUpdate(
 			"UPDATE wine_years SET" +
-			"  winecellar_id = ?, wine_id = ?, year = ?, quantity = ? " +
+			"  winecellar_id = ?, wine_id = ?, year = ?, quantity = ?, rating_points = ?, rating_text = ? " +
 			"WHERE id = ?",
 			"CellarEntryUpdate",
-			789, 123, 2005, 6, 1);
+			789, 123, 2005, 6, 10, "text", 1);
 
 		me.storeCellarEntry(ce);
 	}

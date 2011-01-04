@@ -59,4 +59,20 @@ public class CellarEntryTest
 		me.setWine(w);
 		assertEquals(w, me.getWine());
 	}
+
+	@Test
+	public void testGetSetRatingPoints()
+	{
+		assertEquals(0, me.getRatingPoints());
+		me.setRatingPoints(10);
+		assertEquals(10, me.getRatingPoints());
+	}
+
+	@Test
+	public void testGetSetRatingText()
+	{
+		assertNull(me.getRatingText());
+		me.setRatingText("text");
+		assertEquals("text", me.getRatingText());
+	}
 }

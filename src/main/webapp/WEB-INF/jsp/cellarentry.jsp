@@ -39,6 +39,20 @@
 			</td>
 			<td><html:errors property="quantity"/>&nbsp;</td>
 		</tr>
+		<tr class="odd">
+			<td><bean:message key="ce.lbl.ratingPoints"/></td>
+			<td>
+				<html:text property="ce.ratingPoints" styleId="fratingPoints"/>
+			</td>
+			<td><html:errors property="ratingPoints"/>&nbsp;</td>
+		</tr>
+		<tr class="even">
+			<td><bean:message key="ce.lbl.ratingText"/></td>
+			<td>
+				<html:text property="ce.ratingText" styleId="fratingText"/>
+			</td>
+			<td><html:errors property="ratingText"/>&nbsp;</td>
+		</tr>
 		<tr class="footer">
 			<td>
 				<html:link action="/CellarEntryAction" paramId="ce.winecellarId"
