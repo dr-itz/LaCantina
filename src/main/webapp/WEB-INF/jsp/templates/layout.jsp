@@ -21,6 +21,7 @@
 		var MENU_ITEMS = [
 			['<bean:message key="menu.winecellar"/>', '/LaCantina/WineCellarAction.do'],
 			['<bean:message key="menu.wines"/>', '/LaCantina/WineAction.do'],
+			['<bean:message key="menu.shoppinglist"/>', '/LaCantina/ShoppingListAction.do'],
 			<% if (SecManager.getSessionToken(request).isAdmin()) { %>
 				['<bean:message key="menu.config"/>', null, null,
 				//	['<bean:message key="menu.config.config"/>',		'/LaCantina/admin/ConfigAction.do'],

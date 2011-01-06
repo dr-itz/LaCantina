@@ -70,4 +70,14 @@
 		<put name="body" value="/WEB-INF/jsp/deny.jsp"/>
 		<put name="title" type="string" value="title.deny"/>
 	</definition>
+
+	<!-- shopping list -->
+	<definition name="shoppingItem" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/shoppingItem.jsp"/>
+		<put name="title" type="string" value="title.shoppinglist.form"/>
+	</definition>
+	<definition name="shoppingList" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/shoppingList.jsp"/>
+		<put name="title" type="string" value="title.shoppinglist.list"/>
+	</definition>
 </tiles-definitions>

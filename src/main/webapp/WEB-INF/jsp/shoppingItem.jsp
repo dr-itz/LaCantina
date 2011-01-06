@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
-<html:form action="/WineAction.do" styleId="wineForm">
+<html:form action="/ShoppingListAction.do" styleId="shoppinglistForm">
 	<html:hidden property="action" value="mod" styleId="pAction"/>
 	<html:hidden property="wine.id" styleId="pId"/>
 
@@ -10,8 +10,8 @@
 		<tr>
 			<th colspan="3">
 				<bean:message key="wine.lbl.name"/>
-				 <logic:notEmpty name="wineForm" property="wine.name">
-				 	'<bean:write name="wineForm" property="wine.name"/>'
+				 <logic:notEmpty name="shoppinglistForm" property="wine.name">
+				 	'<bean:write name="shoppinglistForm" property="wine.name"/>'
 				 </logic:notEmpty>
 			</th>
 		</tr>
@@ -30,25 +30,11 @@
 			<td><html:errors property="producer"/>&nbsp;</td>
 		</tr>
 		<tr class="even">
-			<td><bean:message key="wine.lbl.country"/></td>
+			<td><bean:message key="ce.lbl.year"/></td>
 			<td>
-				<html:text property="wine.country" styleId="fcountry"/>
+				<html:text property="wine.year" styleId="fyear"/>
 			</td>
-			<td><html:errors property="country"/>&nbsp;</td>
-		</tr>
-		<tr class="odd">
-			<td><bean:message key="wine.lbl.region"/></td>
-			<td>
-				<html:text property="wine.region" styleId="fregion"/>
-			</td>
-			<td><html:errors property="region"/>&nbsp;</td>
-		</tr>
-		<tr class="even">
-			<td><bean:message key="wine.lbl.description"/></td>
-			<td>
-				<html:textarea cols="50" rows="8" property="wine.description" styleId="fdescr"/>
-			</td>
-			<td>&nbsp;</td>
+			<td><html:errors property="year"/>&nbsp;</td>
 		</tr>
 		<tr class="odd">
 			<td><bean:message key="wine.lbl.bottlesize"/></td>
@@ -57,21 +43,35 @@
 			</td>
 			<td><html:errors property="bottlesize"/>&nbsp;</td>
 		</tr>
+		<tr class="even">
+			<td><bean:message key="ce.lbl.quantity"/></td>
+			<td>
+				<html:text property="wine.quantity" styleId="fquantity"/>
+			</td>
+			<td><html:errors property="quantity"/>&nbsp;</td>
+		</tr>
+		<tr class="odd">
+			<td><bean:message key="shoppinglist.lbl.store"/></td>
+			<td>
+				<html:text property="wine.store" styleId="fstore"/>
+			</td>
+			<td><html:errors property="store"/>&nbsp;</td>
+		</tr>
 		<tr class="footer">
 			<td>
-				<html:link action="/WineAction.do">
+				<html:link action="/ShoppigListAction.do">
 					<bean:message key="lbl.cancel"/>
 				</html:link>
 			</td>
 			<td align="right">
-				<logic:notEqual name="wineForm" property="wine.id" value="0">
+				<logic:notEqual name="shoppinglistForm" property="wine.id" value="0">
 					<input type="button" value="<bean:message key="lbl.delete"/>"
 					 id="fdelete" onClick="javascript:pfDelete()">
 					&nbsp;<html:submit styleId="fSubmit">
 						<bean:message key="lbl.modify"/>
 					</html:submit>
 				</logic:notEqual>
-				<logic:equal name="wineForm" property="wine.id" value="0">
+				<logic:equal name="shoppinglistForm" property="wine.id" value="0">
 					<html:submit styleId="fSubmit">
 						<bean:message key="lbl.add"/>
 					</html:submit>

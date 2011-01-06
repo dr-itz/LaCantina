@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.sfdr.lacantina.dao.ICellarEntryDAO;
+import ch.sfdr.lacantina.dao.IShoppingListDAO;
 import ch.sfdr.lacantina.dao.IUserDAO;
 import ch.sfdr.lacantina.dao.IWineCellarDAO;
 import ch.sfdr.lacantina.dao.IWineDAO;
@@ -55,6 +56,13 @@ public class DBDAOConnectionTest
 	{
 		ICellarEntryDAO dao = me.getCellarEntryDAO();
 		assertTrue(dao instanceof DbCellarEntryDAO);
+	}
+
+	@Test
+	public void testGetShoppingListDAO()
+	{
+		IShoppingListDAO dao = me.getShoppingListDAO();
+		assertTrue(dao instanceof DbShoppingListDAO);
 	}
 
 	@Test

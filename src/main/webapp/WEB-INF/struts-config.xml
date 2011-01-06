@@ -14,6 +14,8 @@
 		<form-bean name="wineForm" type="ch.sfdr.lacantina.gui.WineForm"/>
 
 		<form-bean name="cellarentryForm" type="ch.sfdr.lacantina.gui.CellarEntryForm"/>
+
+		<form-bean name="shoppinglistForm" type="ch.sfdr.lacantina.gui.ShoppingListForm"/>
 	</form-beans>
 
 	<action-mappings>
@@ -27,6 +29,8 @@
 		<action path="/wine"					forward="wine"/>
 		<action path="/cellarentryList"			forward="cellarentryList"/>
 		<action path="/cellarentry"				forward="cellarentry"/>
+		<action path="/shoppingList"			forward="shoppingList"/>
+		<action path="/shoppingItem"			forward="shoppingItem"/>
 
 		<action path="/LoginAction"
 		 type="ch.sfdr.common.LoginAction"
@@ -71,6 +75,15 @@
 		 validate="true"
 		 input="/cellarentry.do">
 			<forward name="cellarentryList" path="/cellarentryList.do"/>
+		</action>
+
+		<action path="/ShoppingListAction"
+		 type="ch.sfdr.lacantina.gui.ShoppingListAction"
+		 name="shoppinglistForm"
+		 scope="request"
+		 validate="true"
+		 input="/shoppingItem.do">
+			<forward name="shoppingList" path="/shoppingList.do"/>
 		</action>
 	</action-mappings>
 

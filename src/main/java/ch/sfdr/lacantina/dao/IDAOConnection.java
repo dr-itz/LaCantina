@@ -31,6 +31,12 @@ public interface IDAOConnection
 	ICellarEntryDAO getCellarEntryDAO();
 
 	/**
+	 * get the DAO for shopping list queries
+	 * @return IShoppingListDAO
+	 */
+	IShoppingListDAO getShoppingListDAO();
+
+	/**
 	 * closes the connection
 	 */
 	void close();

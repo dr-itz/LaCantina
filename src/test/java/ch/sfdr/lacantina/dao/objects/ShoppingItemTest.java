@@ -6,18 +6,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for Wine
+ * Tests for ShoppingItem
  * @author D.Ritz
  */
-public class WineTest
+public class ShoppingItemTest
 {
-	private Wine me;
+	private ShoppingItem me;
 
 	@Before
 	public void setUp()
 		throws Exception
 	{
-		me = new Wine();
+		me = new ShoppingItem();
 	}
 
 	@Test
@@ -53,27 +53,27 @@ public class WineTest
 	}
 
 	@Test
-	public void testGetSetCountry()
+	public void testGetSetYear()
 	{
-		assertNull(me.getCountry());
-		me.setCountry("country");
-		assertEquals("country", me.getCountry());
+		assertNull(me.getYear());
+		me.setYear(2005);
+		assertEquals(2005, me.getYear().intValue());
 	}
 
 	@Test
-	public void testGetSetRegion()
+	public void testGetSetStore()
 	{
-		assertNull(me.getRegion());
-		me.setRegion("region");
-		assertEquals("region", me.getRegion());
+		assertNull(me.getStore());
+		me.setStore("immer besser, immer billiger");
+		assertEquals("immer besser, immer billiger", me.getStore());
 	}
 
 	@Test
-	public void testGetSetDescription()
+	public void testGetSetQuantity()
 	{
-		assertNull(me.getDescription());
-		me.setDescription("description");
-		assertEquals("description", me.getDescription());
+		assertEquals(0, me.getQuantity());
+		me.setQuantity(6);
+		assertEquals(6, me.getQuantity());
 	}
 
 	@Test
@@ -82,17 +82,5 @@ public class WineTest
 		assertEquals(0, me.getBottleSize());
 		me.setBottleSize(75);
 		assertEquals(75, me.getBottleSize());
-	}
-
-	@Test
-	public void testGetFriendlyName()
-	{
-		me.setName("Campofiorin");
-		me.setProducer("Masi");
-		me.setCountry("Italy");
-		me.setRegion("Veneto");
-		me.setBottleSize(75);
-		assertEquals("Italy/Veneto: Masi: Campofiorin, 75cl", me.getFriendlyName());
-		assertEquals(me.getFriendlyName(), me.toString());
 	}
 }

@@ -25,7 +25,6 @@ public class DummyDAOConnectionFactory
 
 	/**
 	 * a dummy DAO connection, allowing to set the DAOs
-	 * @author D.Ritz
 	 */
 	public static class DummyDAOConnection
 		implements IDAOConnection
@@ -35,6 +34,7 @@ public class DummyDAOConnectionFactory
 		private IWineCellarDAO winecellarDAO;
 		private IWineDAO wineDAO;
 		private ICellarEntryDAO cellarentryDAO;
+		private IShoppingListDAO shoppingListDAO;
 
 		public void close()
 		{
@@ -84,6 +84,16 @@ public class DummyDAOConnectionFactory
 		public void setCellarEntryDAO(ICellarEntryDAO cellarentryDAO)
 		{
 			this.cellarentryDAO = cellarentryDAO;
+		}
+
+		public IShoppingListDAO getShoppingListDAO()
+		{
+			return shoppingListDAO;
+		}
+
+		public void setShoppingListDAO(IShoppingListDAO shoppingListDAO)
+		{
+			this.shoppingListDAO = shoppingListDAO;
 		}
 	}
 }
