@@ -42,14 +42,26 @@
 		<tr class="odd">
 			<td><bean:message key="ce.lbl.ratingPoints"/></td>
 			<td>
-				<html:text property="ce.ratingPoints" styleId="fratingPoints"/>
+				<html:select property="ce.ratingPoints" styleId="fratingPoints">
+					<html:option value="0">-- None --</html:option>
+					<html:option value="1">1</html:option>
+					<html:option value="2">2</html:option>
+					<html:option value="3">3</html:option>
+					<html:option value="4">4</html:option>
+					<html:option value="5">5</html:option>
+					<html:option value="6">6</html:option>
+					<html:option value="7">7</html:option>
+					<html:option value="8">8</html:option>
+					<html:option value="9">9</html:option>
+					<html:option value="10">10</html:option>
+				</html:select>
 			</td>
 			<td><html:errors property="ratingPoints"/>&nbsp;</td>
 		</tr>
 		<tr class="even">
 			<td><bean:message key="ce.lbl.ratingText"/></td>
 			<td>
-				<html:text property="ce.ratingText" styleId="fratingText"/>
+				<html:textarea cols="50" rows="8" property="ce.ratingText" styleId="fratingText"/>
 			</td>
 			<td><html:errors property="ratingText"/>&nbsp;</td>
 		</tr>
