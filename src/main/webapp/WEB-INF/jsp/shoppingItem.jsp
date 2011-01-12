@@ -59,7 +59,7 @@
 		</tr>
 		<tr class="footer">
 			<td>
-				<html:link action="/ShoppigListAction.do">
+				<html:link action="/ShoppingListAction.do">
 					<bean:message key="lbl.cancel"/>
 				</html:link>
 			</td>

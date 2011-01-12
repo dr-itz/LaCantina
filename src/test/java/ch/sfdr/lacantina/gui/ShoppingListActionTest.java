@@ -11,9 +11,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ch.sfdr.lacantina.dao.DAOException;
+import ch.sfdr.lacantina.dao.ICellarEntryDAO;
 import ch.sfdr.lacantina.dao.IShoppingListDAO;
+import ch.sfdr.lacantina.dao.IWineDAO;
 import ch.sfdr.lacantina.dao.PagingCookie;
+import ch.sfdr.lacantina.dao.objects.CellarEntry;
 import ch.sfdr.lacantina.dao.objects.ShoppingItem;
+import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
  * Tests for CellarEntryAction
@@ -24,6 +28,8 @@ public class ShoppingListActionTest
 	extends AbstractActionTest<ShoppingListForm>
 {
 	private IShoppingListDAO shoppingDAO;
+	private IWineDAO wineDAO;
+	private ICellarEntryDAO ceDAO;
 	private List<ShoppingItem> list;
 
 	@Before
@@ -33,7 +39,11 @@ public class ShoppingListActionTest
 		super.setUp(ShoppingListForm.class, ShoppingListAction.class);
 
 		shoppingDAO = jMockery.mock(IShoppingListDAO.class);
+		wineDAO = jMockery.mock(IWineDAO.class);
+		ceDAO = jMockery.mock(ICellarEntryDAO.class);
 		daoConn.setShoppingListDAO(shoppingDAO);
+		daoConn.setWineDAO(wineDAO);
+		daoConn.setCellarEntryDAO(ceDAO);
 	}
 
 	private void setupCellarEntriesExpectations()
@@ -97,6 +107,57 @@ public class ShoppingListActionTest
 		verifyInputForward();
 		assertNotNull(form.getWine());
 		assertEquals(0, form.getWine().getId());
+	}
+
+	@Test
+	public void testFromWineAndWineYear()
+		throws DAOException
+	{
+		final Wine w = new Wine();
+		w.setName("Campofiorin");
+		w.setProducer("Masi");
+		w.setBottleSize(75);
+
+		final CellarEntry ce = new CellarEntry();
+		ce.setWine(w);
+		ce.setYear(2005);
+
+		jMockery.checking(new Expectations() {{
+			one(wineDAO).getWine(456);
+			will(returnValue(w));
+
+			one(ceDAO).getCellarEntry(456, 123);
+			will(returnValue(ce));
+		}});
+
+		// first: fromwine
+		param("action", "fromwine");
+		param("refId", "456");
+		setInputForward();
+		action();
+
+		verifyNoErrors();
+		verifyInputForward();
+
+		ShoppingItem si = form.getWine();
+		assertEquals("Campofiorin", si.getName());
+		assertEquals("Masi", si.getProducer());
+		assertEquals(75, si.getBottleSize());
+
+		// second: fromwineyear
+		param("action", "fromwineyear");
+		param("refId", "456");
+		setInputForward();
+		action();
+
+		verifyNoErrors();
+		verifyInputForward();
+
+		si = form.getWine();
+		assertEquals("Campofiorin", si.getName());
+		assertEquals("Masi", si.getProducer());
+		assertEquals(75, si.getBottleSize());
+		assertEquals(2005, si.getYear().intValue());
 	}
 
 	@Test

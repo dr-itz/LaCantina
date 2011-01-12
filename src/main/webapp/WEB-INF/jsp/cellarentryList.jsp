@@ -88,7 +88,13 @@
 				 paramName="item" paramProperty="id">
 				 	<html:param name="action" value="form"/>
 				 	<bean:message key="lbl.modify"/>
-				 </html:link>
+				</html:link>
+				&nbsp;&nbsp;
+				<html:link action="/ShoppingListAction" paramId="refId"
+				 paramName="item" paramProperty="id">
+				 	<html:param name="action" value="fromwineyear"/>
+				 	<bean:message key="shoppinglist.lbl.addshop"/>
+				</html:link>
 			</td>
 		</tr>
 	</logic:iterate></logic:present>

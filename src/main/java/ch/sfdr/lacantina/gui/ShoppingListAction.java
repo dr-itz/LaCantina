@@ -14,9 +14,13 @@ import ch.sfdr.common.PagedForm;
 import ch.sfdr.common.security.SecManager;
 import ch.sfdr.lacantina.dao.DAOConnectionFactory;
 import ch.sfdr.lacantina.dao.DAOException;
+import ch.sfdr.lacantina.dao.ICellarEntryDAO;
 import ch.sfdr.lacantina.dao.IDAOConnection;
 import ch.sfdr.lacantina.dao.IShoppingListDAO;
+import ch.sfdr.lacantina.dao.IWineDAO;
+import ch.sfdr.lacantina.dao.objects.CellarEntry;
 import ch.sfdr.lacantina.dao.objects.ShoppingItem;
+import ch.sfdr.lacantina.dao.objects.Wine;
 
 /**
  * Action for shopping list handling
@@ -47,6 +51,39 @@ public class ShoppingListAction
 
 		IDAOConnection conn = DAOConnectionFactory.getConnection();
 		try {
+			// pre-fill form from existing wine
+			if (ShoppingListForm.ACTION_FROMWINE.equals(action) ||
+				ShoppingListForm.ACTION_FROMWINEYEAR.equals(action))
+			{
+				int refId = form.getRefId();
+
+				form.reset(mapping, request);
+				ShoppingItem si = form.getWine();
+
+				Wine w = null;
+
+				if (ShoppingListForm.ACTION_FROMWINE.equals(action)) {
+					IWineDAO wdao = conn.getWineDAO();
+					w = wdao.getWine(refId);
+				} else {
+					ICellarEntryDAO cedao = conn.getCellarEntryDAO();
+					CellarEntry ce = cedao.getCellarEntry(refId,
+						SecManager.getUserId(request));
+
+					if (ce != null) {
+						w = ce.getWine();
+						si.setYear(ce.getYear());
+					}
+				}
+				if (w != null) {
+					si.setName(w.getName());
+					si.setProducer(w.getProducer());
+					si.setBottleSize(w.getBottleSize());
+				}
+
+				return returnInputForward(form, mapping, request);
+			}
+
 			IShoppingListDAO dao = conn.getShoppingListDAO();
 
 			if (BaseForm.ACTION_FORM.equals(action)) {

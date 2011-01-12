@@ -13,6 +13,7 @@
 	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
+	<col class="fixedtextcolumn"/>
 	<tr>
 		<th>
 			<tiles:insert definition="sortHeader">
@@ -38,6 +39,9 @@
 				<tiles:put name="col" value="region"/>
 			</tiles:insert>
 		</th>
+		<th>
+			<bean:message key="lbl.action"/>
+		</th>
 	</tr>
 	<logic:present name="wineList">
 	<logic:iterate name="wineList" id="item" indexId="idx">
@@ -52,6 +56,13 @@
 			<td><bean:write filter="true" name="item" property="producer"/></td>
 			<td><bean:write filter="true" name="item" property="country"/></td>
 			<td><bean:write filter="true" name="item" property="region"/></td>
+			<td>
+				<html:link action="/ShoppingListAction" paramId="refId"
+				 paramName="item" paramProperty="id">
+				 	<html:param name="action" value="fromwine"/>
+				 	<bean:message key="shoppinglist.lbl.addshop"/>
+				</html:link>
+			</td>
 		</tr>
 	</logic:iterate></logic:present>
 	<tr class="footer">
@@ -61,7 +72,7 @@
 				<bean:message key="lbl.add"/>
 			</html:link>
 		</td>
-		<td colspan="2" align="right">
+		<td colspan="3" align="right">
 			<tiles:insert definition="paging"/>
 		</td>
 	</tr>

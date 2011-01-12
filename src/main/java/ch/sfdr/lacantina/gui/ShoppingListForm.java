@@ -18,7 +18,11 @@ public class ShoppingListForm
 {
 	private static final long serialVersionUID = 1L;
 
+	public static final String ACTION_FROMWINE = "fromwine";
+	public static final String ACTION_FROMWINEYEAR = "fromwineyear";
+
 	private ShoppingItem wine;
+	private int refId;
 
 	/*
 	 * @see ch.sfdr.common.BaseForm#doValidate(
@@ -52,6 +56,7 @@ public class ShoppingListForm
 		super.reset(mapping, request);
 		wine = new ShoppingItem();
 		wine.setBottleSize(75);
+		refId = 0;
 	}
 
 	/**
@@ -68,5 +73,21 @@ public class ShoppingListForm
 	public void setWine(ShoppingItem wine)
 	{
 		this.wine = wine;
+	}
+
+	/**
+	 * @return the refId
+	 */
+	public int getRefId()
+	{
+		return refId;
+	}
+
+	/**
+	 * @param refId the refId to set
+	 */
+	public void setRefId(int refId)
+	{
+		this.refId = refId;
 	}
 }
