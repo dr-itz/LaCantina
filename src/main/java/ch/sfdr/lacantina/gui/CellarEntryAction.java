@@ -82,7 +82,7 @@ public class CellarEntryAction
 					CellarEntryForm.LIST_TYPE_RATINGS.equals(form.getListType()))
 			{
 
-				List<CellarEntry> wineratingList = dao.getWineRatings(0,
+				List<CellarEntry> wineratingList = dao.getWineRatings(1,
 					form.getPagingCookie());
 				setList(request, form.getPagingCookie(), wineratingList,
 					"wineratingList");
