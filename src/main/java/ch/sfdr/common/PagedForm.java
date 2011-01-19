@@ -35,7 +35,8 @@ public abstract class PagedForm
 	}
 
 	/*
-	 * @see ch.sfdr.common.BaseForm#preValidate(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
+	 * @see ch.sfdr.common.BaseForm#preValidate(
+	 * org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
 	protected void preValidate(ActionMapping mapping, HttpServletRequest request)
@@ -47,6 +48,7 @@ public abstract class PagedForm
 			else
 				pc.setSortDesc(false);
 			pc.setSortKey(sortKey);
+			setAction(ACTION_LIST);
 		}
 	}
 

@@ -27,7 +27,11 @@ public class CellarEntryForm
 {
 	private static final long serialVersionUID = 1L;
 
+	public static final String LIST_TYPE_NORMAL = "normal";
+	public static final String LIST_TYPE_RATINGS = "rating";
+
 	private CellarEntry ce;
+	private String listType;
 
 	/*
 	 * @see
@@ -60,8 +64,8 @@ public class CellarEntryForm
 	{
 		super.reset(mapping, request);
 		ce = new CellarEntry();
+		listType = LIST_TYPE_NORMAL;
 	}
-
 
 	/*
 	 * @see ch.sfdr.common.BaseForm.DataListAttacher#attachDataLists(
@@ -91,5 +95,21 @@ public class CellarEntryForm
 	public void setCe(CellarEntry ce)
 	{
 		this.ce = ce;
+	}
+
+	/**
+	 * @return the listType
+	 */
+	public String getListType()
+	{
+		return listType;
+	}
+
+	/**
+	 * @param listType the listType to set
+	 */
+	public void setListType(String listType)
+	{
+		this.listType = listType;
 	}
 }

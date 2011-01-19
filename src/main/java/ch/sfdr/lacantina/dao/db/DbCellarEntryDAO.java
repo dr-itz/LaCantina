@@ -43,6 +43,9 @@ public class DbCellarEntryDAO
 	private static final String CELLARENTRY_LIST_WHERE =
 		"WHERE y.winecellar_id = ? AND w.user_id = ?";
 
+	private static final String WINERATING_WHERE =
+		"WHERE y.rating_points >= ?";
+
 	/**
 	 * sort mapping
 	 */
@@ -169,5 +172,18 @@ public class DbCellarEntryDAO
 		throws DAOException
 	{
 		executeUpdateStatement("DELETE FROM wine_years WHERE id = ?", id);
+	}
+
+	/*
+	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#getWineRatings(int, ch.sfdr.
+	 * lacantina.dao.PagingCookie)
+	 */
+	public List<CellarEntry> getWineRatings(int minPoints, PagingCookie pc)
+		throws DAOException
+	{
+		return getPagedRowList(
+			"SELECT COUNT(*) " + CELLARENTRY_FROM + WINERATING_WHERE,
+			CELLARENTRY_SELECT + WINERATING_WHERE,
+			pc, minPoints);
 	}
 }
