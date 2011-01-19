@@ -199,11 +199,11 @@ public class CellarEntryActionTest
 	{
 		ratingList = new ArrayList<CellarEntry>();
 		jMockery.checking(new Expectations() {{
-			one(cellarentryDAO).getWineRatings(with(0),
+			one(cellarentryDAO).getWineRatings(with(1),
 				with(any(PagingCookie.class)));
 			will(returnValue(ratingList));
 		}});
-		param("ce.ratingPoints", "0");
+		param("ce.ratingPoints", "1");
 	}
 
 	@Test
