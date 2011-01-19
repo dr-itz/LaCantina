@@ -6,9 +6,10 @@
 <html:form action="/ShoppingListAction.do">
 
 <html:hidden property="action" value="list" styleId="pAction"/>
-<html:hidden property="wine.id" styleId="pId"/>
+<html:hidden property="item.id" styleId="pId"/>
 
 <table class="datatable" width="100%" cellspacing="0">
+	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
 	<col class="fixedtextcolumn"/>
@@ -45,25 +46,35 @@
 				<tiles:put name="col" value="store"/>
 			</tiles:insert>
 		</th>
+		<th>
+			<bean:message key="lbl.action"/>
+		</th>
 	</tr>
 	<logic:present name="shoppingList">
-	<logic:iterate name="shoppingList" id="item" indexId="idx">
+	<logic:iterate name="shoppingList" id="listitem" indexId="idx">
 		<tr class="<%= idx % 2 == 0 ? "even" : "odd" %>">
 			<td>
-				<html:link action="/ShoppingListAction.do" paramId="wine.id"
-				 paramName="item" paramProperty="id">
+				<html:link action="/ShoppingListAction.do" paramId="item.id"
+				 paramName="listitem" paramProperty="id">
 				 	<html:param name="action" value="form"/>
-					<bean:write name="item" property="name"/>
+					<bean:write name="listitem" property="name"/>
 				</html:link>
 			</td>
-			<td><bean:write filter="true" name="item" property="producer"/></td>
-			<td><bean:write filter="true" name="item" property="year"/></td>
-			<td><bean:write filter="true" name="item" property="quantity"/></td>
-			<td><bean:write filter="true" name="item" property="store"/></td>
+			<td><bean:write filter="true" name="listitem" property="producer"/></td>
+			<td><bean:write filter="true" name="listitem" property="year"/></td>
+			<td><bean:write filter="true" name="listitem" property="quantity"/></td>
+			<td><bean:write filter="true" name="listitem" property="store"/></td>
+			<td>
+				<html:link action="/ShoppingListAction.do" paramId="item.id"
+				 paramName="listitem" paramProperty="id">
+				 	<html:param name="action" value="checkinform"/>
+				 	<bean:message key="shoppinglist.lbl.checkin"/>
+				</html:link>
+			</td>
 		</tr>
 	</logic:iterate></logic:present>
 	<tr class="footer">
-		<td colspan="2">
+		<td colspan="3">
 			<html:link action="/ShoppingListAction.do">
 				<html:param name="action" value="new"/>
 				<bean:message key="lbl.add"/>

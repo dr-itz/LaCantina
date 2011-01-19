@@ -58,7 +58,7 @@ public class ShoppingListAction
 				int refId = form.getRefId();
 
 				form.reset(mapping, request);
-				ShoppingItem si = form.getWine();
+				ShoppingItem si = form.getItem();
 
 				Wine w = null;
 
@@ -79,6 +79,7 @@ public class ShoppingListAction
 					si.setName(w.getName());
 					si.setProducer(w.getProducer());
 					si.setBottleSize(w.getBottleSize());
+					si.setWineId(w.getId());
 				}
 
 				return returnInputForward(form, mapping, request);
@@ -86,18 +87,107 @@ public class ShoppingListAction
 
 			IShoppingListDAO dao = conn.getShoppingListDAO();
 
+			/*
+			 * "check-in" handling
+			 */
+			if (ShoppingListForm.ACTION_CHEKIN_FORM.equals(action)) {
+				int id = form.getItem().getId();
+				form.reset(mapping, request);
+
+				ShoppingItem item = dao.getShoppingItem(id);
+				form.setItem(item);
+
+				if (item.getWineId() != null) {
+					IWineDAO wdao = conn.getWineDAO();
+					Wine w = wdao.getWine(item.getWineId());
+					form.setWine(w);
+				} else {
+					Wine w = form.getWine();
+					w.setName(item.getName());
+					w.setProducer(item.getProducer());
+					w.setBottleSize(item.getBottleSize());
+				}
+
+				request.setAttribute("checkinForm", "yesSir");
+				return returnInputForward(form, conn, mapping, request);
+			}
+
+			if (ShoppingListForm.ACTION_CHEKIN.equals(action)) {
+				Wine w = form.getWine();
+				ShoppingItem item = form.getItem();
+				if (item.getWineId() != null)
+					w.setId(item.getWineId());
+
+				boolean wineCreated = false;
+				if (w.getId() == 0) {
+					w.setUserId(SecManager.getUserId(request));
+
+					IWineDAO wdao = conn.getWineDAO();
+					wdao.storeWine(w);
+					wineCreated = true;
+				}
+
+				ICellarEntryDAO ceDao = conn.getCellarEntryDAO();
+
+				// search wine cellar entry
+				CellarEntry ce = null;
+				if (!wineCreated) {
+					ce = ceDao.getCellarEntry(form.getWineCellarId(), w.getId(),
+						item.getYear());
+					// if found: add quantity
+					if (ce != null)
+						ce.setQuantity(ce.getQuantity() + item.getQuantity());
+				}
+				if (ce == null) {
+					// not found: create new
+					ce = new CellarEntry();
+					ce.setWine(w);
+					ce.setWinecellarId(form.getWineCellarId());
+					ce.setYear(item.getYear());
+					ce.setQuantity(item.getQuantity());
+				}
+				// save wine cellar entry
+				ceDao.storeCellarEntry(ce);
+
+				// delete shopping item
+				try {
+					dao.deleteShoppingItem(form.getItem().getId());
+				} catch (DAOException e) {
+					attachSingleErrorMessage(mapping, request,
+						"shoppinglist.delete.failed");
+				}
+			}
+
+
+			/*
+			 * "normal" handling
+			 */
 			if (BaseForm.ACTION_FORM.equals(action)) {
-				if (form.getWine().getId() != 0) {
-					ShoppingItem item = dao.getShoppingItem(form.getWine().getId());
-					form.setWine(item);
+				if (form.getItem().getId() != 0) {
+					ShoppingItem item = dao.getShoppingItem(form.getItem().getId());
+					form.setItem(item);
 				}
 				return returnInputForward(form, mapping, request);
 			}
 
 			if (BaseForm.ACTION_MODIFY.equals(action)) {
 				try {
-					ShoppingItem si = form.getWine();
+					ShoppingItem si = form.getItem();
+
+					/*
+					 * copy-paste name/producer/bottle size.
+					 * stupid, but solves sorting issues w/o touch much code.
+					 */
+					if (si.getWineId() != null) {
+						IWineDAO wdao = conn.getWineDAO();
+						Wine w = wdao.getWine(si.getWineId());
+						si.setName(w.getName());
+						si.setProducer(w.getProducer());
+						si.setBottleSize(w.getBottleSize());
+					}
+
 					si.setUserId(SecManager.getUserId(request));
+
 					dao.storeShoppingItem(si);
 				} catch (DAOException e) {
 					attachSingleErrorMessage(mapping, request,
@@ -105,9 +195,9 @@ public class ShoppingListAction
 				}
 
 			} else if (BaseForm.ACTION_DELETE.equals(action)) {
-				if (form.getWine().getId() != 0) {
+				if (form.getItem().getId() != 0) {
 					try {
-						dao.deleteShoppingItem(form.getWine().getId());
+						dao.deleteShoppingItem(form.getItem().getId());
 					} catch (DAOException e) {
 						attachSingleErrorMessage(mapping, request,
 							"shoppinglist.delete.failed");

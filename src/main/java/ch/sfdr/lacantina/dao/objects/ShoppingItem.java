@@ -8,6 +8,7 @@ public class ShoppingItem
 {
 	private int id;
 	private int userId;
+	private Integer wineId;
 	private String name;
 	private String producer;
 	private Integer year;
@@ -45,6 +46,22 @@ public class ShoppingItem
 	public void setUserId(int userId)
 	{
 		this.userId = userId;
+	}
+
+	/**
+	 * @return the wineId
+	 */
+	public Integer getWineId()
+	{
+		return wineId;
+	}
+
+	/**
+	 * @param wineId the wineId to set
+	 */
+	public void setWineId(Integer wineId)
+	{
+		this.wineId = wineId;
 	}
 
 	/**

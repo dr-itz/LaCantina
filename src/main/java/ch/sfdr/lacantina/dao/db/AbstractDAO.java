@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,23 +218,51 @@ public abstract class AbstractDAO<T>
 	/**
 	 * executes a statement without results
 	 * @param query the query string
+	 * @param autoInc if true, returns the generated autoinc value
+	 * @param bind the bind params
+	 * @throws DAOException
+	 */
+	protected int executeUpdateStatement(String query, boolean autoInc,
+			Object... bind)
+		throws DAOException
+	{
+		int ret = 0;
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(query,
+				autoInc ?
+					Statement.RETURN_GENERATED_KEYS :
+					Statement.NO_GENERATED_KEYS);
+			fillStatement(stmt, bind);
+			stmt.executeUpdate();
+
+			if (autoInc) {
+				ResultSet rs = stmt.getGeneratedKeys();
+				if (rs.next())
+					ret = rs.getInt(1);
+				rs.close();
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBConnection.closeStatement(stmt);
+		}
+		return ret;
+	}
+
+
+	/**
+	 * executes a statement without results
+	 * @param query the query string
 	 * @param bind the bind params
 	 * @throws DAOException
 	 */
 	protected void executeUpdateStatement(String query, Object... bind)
 		throws DAOException
 	{
-		PreparedStatement stmt = null;
-		try {
-			stmt = conn.prepareStatement(query);
-			fillStatement(stmt, bind);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			DBConnection.closeStatement(stmt);
-		}
+		executeUpdateStatement(query, false, bind);
 	}
+
 
 	/**
 	 * returns a new SortPair

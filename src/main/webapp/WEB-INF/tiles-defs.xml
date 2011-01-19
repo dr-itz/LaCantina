@@ -72,8 +72,8 @@
 	</definition>
 
 	<!-- shopping list -->
-	<definition name="shoppingItem" extends="layout">
-		<put name="body" value="/WEB-INF/jsp/shoppingItem.jsp"/>
+	<definition name="shoppingForm" extends="layout">
+		<put name="body" value="/WEB-INF/jsp/shoppingForm.jsp"/>
 		<put name="title" type="string" value="title.shoppinglist.form"/>
 	</definition>
 	<definition name="shoppingList" extends="layout">

@@ -37,6 +37,14 @@ public class ShoppingItemTest
 	}
 
 	@Test
+	public void testGetSetWine()
+	{
+		assertNull(me.getWineId());
+		me.setWineId(123);
+		assertEquals(123, me.getWineId().intValue());
+	}
+
+	@Test
 	public void testGetSetName()
 	{
 		assertNull(me.getName());

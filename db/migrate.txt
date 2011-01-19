@@ -25,3 +25,13 @@ CREATE TABLE IF NOT EXISTS `shoppinglist` (
 ALTER TABLE `shoppinglist`
   ADD CONSTRAINT `shoppinglist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+2011-01-18
+----------
+
+ALTER TABLE `shoppinglist`
+  CHANGE `name` `name` VARCHAR(50) NULL,
+  ADD `wine_id` INT NULL AFTER `user_id`,
+  ADD INDEX (`wine_id`),
+  ADD FOREIGN KEY (`wine_id`) REFERENCES `wines` (`id`)
+    ON DELETE RESTRICT ON UPDATE CASCADE ;

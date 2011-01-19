@@ -30,7 +30,7 @@
 		<action path="/cellarentryList"			forward="cellarentryList"/>
 		<action path="/cellarentry"				forward="cellarentry"/>
 		<action path="/shoppingList"			forward="shoppingList"/>
-		<action path="/shoppingItem"			forward="shoppingItem"/>
+		<action path="/shoppingForm"			forward="shoppingForm"/>
 
 		<action path="/LoginAction"
 		 type="ch.sfdr.common.LoginAction"
@@ -82,7 +82,7 @@
 		 name="shoppinglistForm"
 		 scope="request"
 		 validate="true"
-		 input="/shoppingItem.do">
+		 input="/shoppingForm.do">
 			<forward name="shoppingList" path="/shoppingList.do"/>
 		</action>
 	</action-mappings>

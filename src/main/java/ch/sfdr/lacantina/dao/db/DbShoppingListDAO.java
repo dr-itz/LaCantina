@@ -31,7 +31,7 @@ public class DbShoppingListDAO
 	 * Query used to read shopping items
 	 */
 	private static final String USER_SELECT =
-		"SELECT id, user_id, name, producer, year, store, bottle_size, quantity " +
+		"SELECT id, user_id, wine_id, name, producer, year, store, bottle_size, quantity " +
 		"FROM shoppinglist ";
 
 	/**
@@ -54,6 +54,9 @@ public class DbShoppingListDAO
 		int n = 1;
 		i.setId(rs.getInt(n++));
 		i.setUserId(rs.getInt(n++));
+		i.setWineId(rs.getInt(n++));
+		if (rs.wasNull())
+			i.setWineId(null);
 		i.setName(rs.getString(n++));
 		i.setProducer(rs.getString(n++));
 		i.setYear(rs.getInt(n++));
@@ -103,10 +106,10 @@ public class DbShoppingListDAO
 		if (w.getId() == 0) {
 			executeUpdateStatement(
 				"INSERT INTO shoppinglist" +
-				"  (user_id, name, producer, year, quantity, store," +
+				"  (user_id, wine_id, name, producer, year, quantity, store," +
 				"   bottle_size) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?)",
-				w.getUserId(), w.getName(), w.getProducer(), w.getYear(),
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+				w.getUserId(), w.getWineId(), w.getName(), w.getProducer(), w.getYear(),
 				w.getQuantity(), w.getStore(), w.getBottleSize());
 		} else {
 			executeUpdateStatement(

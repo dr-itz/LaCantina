@@ -22,14 +22,16 @@ DROP TABLE IF EXISTS `shoppinglist`;
 CREATE TABLE IF NOT EXISTS `shoppinglist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
+  `wine_id` int(11) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
   `producer` varchar(50) DEFAULT NULL,
   `year` int(11) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `store` varchar(50) DEFAULT NULL,
   `bottle_size` smallint(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  KEY `user_id` (`user_id`),
+  KEY `wine_id` (`wine_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -133,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `wine_years` (
 -- Constraints for dumped tables
 --
 ALTER TABLE `shoppinglist`
+  ADD CONSTRAINT `shoppinglist_ibfk_2` FOREIGN KEY (`wine_id`) REFERENCES `wines` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `shoppinglist_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 --
 -- Constraints for table `winecellars`
 --

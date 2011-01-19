@@ -13,7 +13,7 @@ public class Wine
 	private String country;
 	private String region;
 	private String description;
-	private short bottleSize;
+	private int bottleSize;
 
 	/**
 	 * @return the id
@@ -130,7 +130,7 @@ public class Wine
 	/**
 	 * @return the bottleSize
 	 */
-	public short getBottleSize()
+	public int getBottleSize()
 	{
 		return bottleSize;
 	}
@@ -140,7 +140,7 @@ public class Wine
 	 */
 	public void setBottleSize(int bottleSize)
 	{
-		this.bottleSize = (short) bottleSize;
+		this.bottleSize = bottleSize;
 	}
 
 	/**

@@ -34,12 +34,12 @@ public class DbShoppingListDAOTest
 		throws DAOException
 	{
 		prepareQueryWithResult(
-			"SELECT id, user_id, name, producer, year, store, bottle_size, quantity " +
+			"SELECT id, user_id, wine_id, name, producer, year, store, bottle_size, quantity " +
 			"FROM shoppinglist " +
 			"WHERE id = ?",
 			"ShoppingItemQuery",
 			new Object[][] {
-				{ 123, 56, "name", "producer", 2005, "store", 75, 5 },
+				{ 123, 56, null, "name", "producer", 2005, "store", 75, 5 },
 			},
 			123
 		);
@@ -47,6 +47,7 @@ public class DbShoppingListDAOTest
 		ShoppingItem si = me.getShoppingItem(123);
 		assertEquals(123, si.getId());
 		assertEquals(56, si.getUserId());
+		assertNull(si.getWineId());
 		assertEquals("name", si.getName());
 		assertEquals("producer", si.getProducer());
 		assertEquals(2005, si.getYear().intValue());
@@ -74,15 +75,15 @@ public class DbShoppingListDAOTest
 			},
 			123);
 		prepareQueryWithResult(
-			"SELECT id, user_id, name, producer, year, store, bottle_size, quantity " +
+			"SELECT id, user_id, wine_id, name, producer, year, store, bottle_size, quantity " +
 			"FROM shoppinglist " +
 			"WHERE user_id = ? " +
 			"ORDER BY producer DESC, name, producer, year, store, bottle_size, quantity " +
 			"LIMIT ? OFFSET ?",
 			"ShoppingItemQuery",
 			new Object[][] {
-				{ 123, 56, "name", "producer", 2005, "store", 75, 5 },
-				{ 124, 56, "name2", "producer2", null, "store2", 75, 5 },
+				{ 123, 56, 456, "name", "producer", 2005, "store", 75, 5 },
+				{ 124, 56, null, "name2", "producer2", null, "store2", 75, 5 },
 			},
 			123, 20, 0
 		);
@@ -96,6 +97,7 @@ public class DbShoppingListDAOTest
 		ShoppingItem si = list.get(0);
 		assertEquals(123, si.getId());
 		assertEquals(56, si.getUserId());
+		assertEquals(456, si.getWineId().intValue());
 		assertEquals("name", si.getName());
 		assertEquals("producer", si.getProducer());
 		assertEquals(2005, si.getYear().intValue());
@@ -120,11 +122,11 @@ public class DbShoppingListDAOTest
 
 		prepareUpdate(
 			"INSERT INTO shoppinglist" +
-			"  (user_id, name, producer, year, quantity, store," +
+			"  (user_id, wine_id, name, producer, year, quantity, store," +
 			"   bottle_size) " +
-			"VALUES (?, ?, ?, ?, ?, ?, ?)",
+			"VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 			"ShoppingItemInsert",
-			123, "name", "producer", 2005, 5, "store", (short) 75);
+			123, null, "name", "producer", 2005, 5, "store", (short) 75);
 
 		me.storeShoppingItem(si);
 	}

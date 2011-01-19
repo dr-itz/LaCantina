@@ -31,6 +31,17 @@ public interface ICellarEntryDAO
 		throws DAOException;
 
 	/**
+	 * reads a cellar entry by wine cellar ID, wine id and year
+	 * @param cellarId ID of the wine cellar
+	 * @param wineId ID of the wine
+	 * @param year year of the wine
+	 * @return cellar entry if found, otherwise null
+	 * @throws DAOException
+	 */
+	CellarEntry getCellarEntry(int cellarId, int wineId, int year)
+		throws DAOException;
+
+	/**
 	 * stores a cellar entry (either insert or update)
 	 * @param ce the cellar entry
 	 * @throws DAOException

@@ -106,13 +106,14 @@ public class DbWineDAO
 		throws DAOException
 	{
 		if (w.getId() == 0) {
-			executeUpdateStatement(
+			int id = executeUpdateStatement(
 				"INSERT INTO wines" +
 				"  (user_id, name, producer, country, region, description," +
 				"   bottle_size) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?)",
+				"VALUES (?, ?, ?, ?, ?, ?, ?)", true,
 				w.getUserId(), w.getName(), w.getProducer(), w.getCountry(),
 				w.getRegion(), w.getDescription(), w.getBottleSize());
+			w.setId(id);
 		} else {
 			executeUpdateStatement(
 				"UPDATE wines SET" +

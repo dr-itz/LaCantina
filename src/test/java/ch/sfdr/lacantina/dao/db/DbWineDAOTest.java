@@ -159,7 +159,7 @@ public class DbWineDAOTest
 			"VALUES (?, ?, ?, ?, ?, ?, ?)",
 			"WineInsert",
 			123, "name", "producer", "country", "region", "description",
-			(short) 75);
+			75);
 
 		me.storeWine(w);
 	}
@@ -185,7 +185,7 @@ public class DbWineDAOTest
 			"WHERE id = ?",
 			"WineUpdate",
 			"name", "producer", "country", "region", "description",
-			(short) 75, 546);
+			75, 546);
 
 		me.storeWine(w);
 	}

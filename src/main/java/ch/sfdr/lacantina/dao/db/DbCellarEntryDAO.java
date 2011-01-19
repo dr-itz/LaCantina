@@ -114,6 +114,18 @@ public class DbCellarEntryDAO
 	}
 
 	/*
+	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#getCellarEntry(int)
+	 */
+	public CellarEntry getCellarEntry(int cellarId, int wineId, int year)
+		throws DAOException
+	{
+		return getSingleRow(
+			CELLARENTRY_SELECT +
+			"WHERE y.winecellar_id = ? AND y.wine_id = ? AND y.year = ?",
+			cellarId, wineId, year);
+	}
+
+	/*
 	 * @see ch.sfdr.lacantina.dao.ICellarEntryDAO#getCellarEntries(int, int)
 	 */
 	public List<CellarEntry> getCellarEntries(int winecellarId, int userId,

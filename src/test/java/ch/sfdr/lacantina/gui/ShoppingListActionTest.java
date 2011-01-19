@@ -13,11 +13,13 @@ import org.junit.Test;
 import ch.sfdr.lacantina.dao.DAOException;
 import ch.sfdr.lacantina.dao.ICellarEntryDAO;
 import ch.sfdr.lacantina.dao.IShoppingListDAO;
+import ch.sfdr.lacantina.dao.IWineCellarDAO;
 import ch.sfdr.lacantina.dao.IWineDAO;
 import ch.sfdr.lacantina.dao.PagingCookie;
 import ch.sfdr.lacantina.dao.objects.CellarEntry;
 import ch.sfdr.lacantina.dao.objects.ShoppingItem;
 import ch.sfdr.lacantina.dao.objects.Wine;
+import ch.sfdr.lacantina.dao.objects.WineCellar;
 
 /**
  * Tests for CellarEntryAction
@@ -30,6 +32,7 @@ public class ShoppingListActionTest
 	private IShoppingListDAO shoppingDAO;
 	private IWineDAO wineDAO;
 	private ICellarEntryDAO ceDAO;
+	private IWineCellarDAO wcDAO;
 	private List<ShoppingItem> list;
 
 	@Before
@@ -41,9 +44,11 @@ public class ShoppingListActionTest
 		shoppingDAO = jMockery.mock(IShoppingListDAO.class);
 		wineDAO = jMockery.mock(IWineDAO.class);
 		ceDAO = jMockery.mock(ICellarEntryDAO.class);
+		wcDAO = jMockery.mock(IWineCellarDAO.class);
 		daoConn.setShoppingListDAO(shoppingDAO);
 		daoConn.setWineDAO(wineDAO);
 		daoConn.setCellarEntryDAO(ceDAO);
+		daoConn.setWinecellarDAO(wcDAO);
 	}
 
 	private void setupCellarEntriesExpectations()
@@ -52,6 +57,16 @@ public class ShoppingListActionTest
 		list = new ArrayList<ShoppingItem>();
 		jMockery.checking(new Expectations() {{
 			one(shoppingDAO).getShoppingList(with(123), with(any(PagingCookie.class)));
+			will(returnValue(list));
+		}});
+	}
+
+	private void setupAttachDataListExpectations()
+		throws DAOException
+	{
+		final List<WineCellar> list = new ArrayList<WineCellar>();
+		jMockery.checking(new Expectations() {{
+			one(wcDAO).getWineCellars(123);
 			will(returnValue(list));
 		}});
 	}
@@ -81,13 +96,13 @@ public class ShoppingListActionTest
 		}});
 
 		param("action", "form");
-		param("wine.id", "456");
+		param("item.id", "456");
 		setInputForward();
 		action();
 
 		verifyNoErrors();
 		verifyInputForward();
-		assertEquals(si, form.getWine());
+		assertEquals(si, form.getItem());
 	}
 
 	@Test
@@ -105,8 +120,8 @@ public class ShoppingListActionTest
 
 		verifyNoErrors();
 		verifyInputForward();
-		assertNotNull(form.getWine());
-		assertEquals(0, form.getWine().getId());
+		assertNotNull(form.getItem());
+		assertEquals(0, form.getItem().getId());
 	}
 
 	@Test
@@ -139,7 +154,7 @@ public class ShoppingListActionTest
 		verifyNoErrors();
 		verifyInputForward();
 
-		ShoppingItem si = form.getWine();
+		ShoppingItem si = form.getItem();
 		assertEquals("Campofiorin", si.getName());
 		assertEquals("Masi", si.getProducer());
 		assertEquals(75, si.getBottleSize());
@@ -153,7 +168,7 @@ public class ShoppingListActionTest
 		verifyNoErrors();
 		verifyInputForward();
 
-		si = form.getWine();
+		si = form.getItem();
 		assertEquals("Campofiorin", si.getName());
 		assertEquals("Masi", si.getProducer());
 		assertEquals(75, si.getBottleSize());
@@ -164,6 +179,8 @@ public class ShoppingListActionTest
 	public void testFormValidation()
 		throws DAOException
 	{
+		setupAttachDataListExpectations();
+
 		param("action", "mod");
 		module.populateRequestToForm();
 
@@ -176,6 +193,8 @@ public class ShoppingListActionTest
 		throws DAOException
 	{
 		setupCellarEntriesExpectations();
+		setupAttachDataListExpectations();
+
 		jMockery.checking(new Expectations() {{
 			one(shoppingDAO).storeShoppingItem(with(any(ShoppingItem.class)));
 
@@ -184,17 +203,17 @@ public class ShoppingListActionTest
 		}});
 
 		param("action", "mod");
-		param("wine.id", "0");
-		param("wine.name", "Campofiorin");
-		param("wine.year", "2005");
-		param("wine.quantity", "10");
+		param("item.id", "0");
+		param("item.name", "Campofiorin");
+		param("item.year", "2005");
+		param("item.quantity", "10");
 
 		action();
 
 		verifyNoErrors();
 		verifyForward("shoppingList");
 
-		ShoppingItem ce = ((ShoppingListForm) module.getActionForm()).getWine();
+		ShoppingItem ce = ((ShoppingListForm) module.getActionForm()).getItem();
 		assertEquals(0, ce.getId());
 		assertEquals("Campofiorin", ce.getName());
 		assertEquals(2005, ce.getYear().intValue());
@@ -220,7 +239,7 @@ public class ShoppingListActionTest
 		}});
 
 		param("action", "del");
-		param("wine.id", "789");
+		param("item.id", "789");
 
 		action();
 
