@@ -2,6 +2,7 @@ package ch.sfdr.lacantina.gui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +44,15 @@ public class ShoppingListActionTest
 
 		shoppingDAO = jMockery.mock(IShoppingListDAO.class);
 		wineDAO = jMockery.mock(IWineDAO.class);
-		ceDAO = jMockery.mock(ICellarEntryDAO.class);
 		wcDAO = jMockery.mock(IWineCellarDAO.class);
+		ceDAO = jMockery.mock(ICellarEntryDAO.class);
 		daoConn.setShoppingListDAO(shoppingDAO);
 		daoConn.setWineDAO(wineDAO);
 		daoConn.setCellarEntryDAO(ceDAO);
 		daoConn.setWinecellarDAO(wcDAO);
 	}
 
-	private void setupCellarEntriesExpectations()
+	private void setupShoppingListExpectations()
 		throws DAOException
 	{
 		list = new ArrayList<ShoppingItem>();
@@ -75,7 +76,7 @@ public class ShoppingListActionTest
 	public void testList()
 		throws DAOException
 	{
-		setupCellarEntriesExpectations();
+		setupShoppingListExpectations();
 
 		param("action", "list");
 		action();
@@ -182,17 +183,36 @@ public class ShoppingListActionTest
 		setupAttachDataListExpectations();
 
 		param("action", "mod");
+		param("item.wineId", "0");
+
 		module.populateRequestToForm();
 
 		verifyError("shoppinglist.name.required");
 		verifyError("shoppinglist.quantity.required");
+
+		assertNull(form.getItem().getWineId());
+	}
+
+	@Test
+	public void testCheckinFormValidation()
+		throws DAOException
+	{
+		setupAttachDataListExpectations();
+
+		param("action", "checkin");
+		module.populateRequestToForm();
+
+		verifyError("wine.name.required");
+		verifyError("wine.producer.required");
+		verifyError("wine.country.required");
+		verifyError("wine.region.required");
 	}
 
 	@Test
 	public void testStoreCellarEntry()
 		throws DAOException
 	{
-		setupCellarEntriesExpectations();
+		setupShoppingListExpectations();
 		setupAttachDataListExpectations();
 
 		jMockery.checking(new Expectations() {{
@@ -220,17 +240,56 @@ public class ShoppingListActionTest
 		assertEquals(10, ce.getQuantity());
 
 		// again, this time an exception will be thrown
-		setupCellarEntriesExpectations();
+		setupShoppingListExpectations();
 		action();
 		verifyError("shoppinglist.update.failed");
 		verifyForward("shoppingList");
 	}
 
 	@Test
-	public void testDeleteCellarEntry()
+	public void testStoreCellarEntryExisting()
 		throws DAOException
 	{
-		setupCellarEntriesExpectations();
+		setupShoppingListExpectations();
+		setupAttachDataListExpectations();
+
+		final Wine w = new Wine();
+		w.setId(450);
+		w.setName("Campofiorin");
+		w.setProducer("Masi");
+		w.setBottleSize(75);
+
+		jMockery.checking(new Expectations() {{
+			one(shoppingDAO).storeShoppingItem(with(any(ShoppingItem.class)));
+
+			one(wineDAO).getWine(450);
+			will(returnValue(w));
+		}});
+
+		param("action", "mod");
+		param("item.id", "0");
+		param("item.wineId", "450");
+		param("item.name", "Campofiorin");
+		param("item.year", "2005");
+		param("item.quantity", "10");
+
+		action();
+
+		verifyNoErrors();
+		verifyForward("shoppingList");
+
+		ShoppingItem ce = ((ShoppingListForm) module.getActionForm()).getItem();
+		assertEquals(0, ce.getId());
+		assertEquals("Campofiorin", ce.getName());
+		assertEquals(2005, ce.getYear().intValue());
+		assertEquals(10, ce.getQuantity());
+	}
+
+	@Test
+	public void testDeleteShoppingItem()
+		throws DAOException
+	{
+		setupShoppingListExpectations();
 		jMockery.checking(new Expectations() {{
 			one(shoppingDAO).deleteShoppingItem(789);
 
@@ -247,9 +306,209 @@ public class ShoppingListActionTest
 		verifyForward("shoppingList");
 
 		// again, this time an exception will be thrown
-		setupCellarEntriesExpectations();
+		setupShoppingListExpectations();
 		action();
 		verifyError("shoppinglist.delete.failed");
 		verifyForward("shoppingList");
+	}
+
+	@Test
+	public void testCheckinForm()
+		throws DAOException
+	{
+		setupAttachDataListExpectations();
+
+		final ShoppingItem si = new ShoppingItem();
+		si.setName("testname");
+		si.setProducer("testproducer");
+		si.setBottleSize(100);
+
+		jMockery.checking(new Expectations() {{
+			one(shoppingDAO).getShoppingItem(456);
+			will(returnValue(si));
+		}});
+
+		param("action", "checkinform");
+		param("item.id", "456");
+		setInputForward();
+		action();
+
+		verifyNoErrors();
+		verifyInputForward();
+
+		assertEquals(si, form.getItem());
+		Wine w = form.getWine();
+		assertEquals("testname", w.getName());
+		assertEquals("testproducer", w.getProducer());
+		assertEquals(100, w.getBottleSize());
+	}
+
+	@Test
+	public void testCheckinFormExistingWine()
+		throws DAOException
+	{
+		setupAttachDataListExpectations();
+
+		final ShoppingItem si = new ShoppingItem();
+		si.setWineId(789);
+		final Wine w = new Wine();
+
+		jMockery.checking(new Expectations() {{
+			one(shoppingDAO).getShoppingItem(456);
+			will(returnValue(si));
+			one(wineDAO).getWine(789);
+			will(returnValue(w));
+		}});
+
+		param("action", "checkinform");
+		param("item.id", "456");
+		setInputForward();
+		action();
+
+		verifyNoErrors();
+		verifyInputForward();
+
+		assertEquals(si, form.getItem());
+		assertEquals(w, form.getWine());
+	}
+
+	@Test
+	public void testCheckinExistingWine()
+		throws DAOException
+	{
+		setupShoppingListExpectations();
+		setupAttachDataListExpectations();
+
+		final ShoppingItem si = new ShoppingItem();
+		si.setWineId(789);
+		si.setYear(2005);
+
+		final Wine w = new Wine();
+		w.setId(789);
+		w.setName("Campofiorin");
+		w.setProducer("Masi");
+		w.setBottleSize(75);
+
+		final CellarEntry ce = new CellarEntry();
+		ce.setWinecellarId(3);
+		ce.setWine(w);
+		ce.setYear(2005);
+		ce.setQuantity(10);
+
+		jMockery.checking(new Expectations() {{
+			one(shoppingDAO).getShoppingItem(456);
+			will(returnValue(si));
+
+			one(ceDAO).getCellarEntry(3, 789, 2005);
+			will(returnValue(ce));
+
+			one(ceDAO).storeCellarEntry(ce);
+
+			one(shoppingDAO).deleteShoppingItem(456);
+		}});
+
+		param("action", "checkin");
+		param("item.id", "456");
+		param("item.year", "2005");
+		param("item.wineId", "789");
+		param("item.quantity", "5");
+		param("wineCellarId", "3");
+
+		action();
+
+		verifyNoErrors();
+        verifyForward("shoppingList");
+        assertEquals(list, module.getRequestAttribute("shoppingList"));
+        assertEquals(15, ce.getQuantity());
+	}
+
+	@Test
+	public void testCheckinExistingWineNoEntry()
+		throws DAOException
+	{
+		setupShoppingListExpectations();
+		setupAttachDataListExpectations();
+
+		final ShoppingItem si = new ShoppingItem();
+		si.setWineId(789);
+		si.setYear(2005);
+
+		final Wine w = new Wine();
+		w.setId(789);
+		w.setName("Campofiorin");
+		w.setProducer("Masi");
+		w.setBottleSize(75);
+
+		jMockery.checking(new Expectations() {{
+			one(shoppingDAO).getShoppingItem(456);
+			will(returnValue(si));
+
+			one(ceDAO).getCellarEntry(3, 789, 2005);
+			will(returnValue(null));
+
+			one(ceDAO).storeCellarEntry(with(any(CellarEntry.class)));
+
+			one(shoppingDAO).deleteShoppingItem(456);
+		}});
+
+		param("action", "checkin");
+		param("item.id", "456");
+		param("item.year", "2005");
+		param("item.wineId", "789");
+		param("item.quantity", "5");
+		param("wineCellarId", "3");
+
+		action();
+
+		verifyNoErrors();
+        verifyForward("shoppingList");
+        assertEquals(list, module.getRequestAttribute("shoppingList"));
+	}
+
+	@Test
+	public void testCheckinExistingNewWine()
+		throws DAOException
+	{
+		setupShoppingListExpectations();
+		setupAttachDataListExpectations();
+
+		final ShoppingItem si = new ShoppingItem();
+		si.setWineId(789);
+		si.setYear(2005);
+
+		final Wine w = new Wine();
+		w.setId(789);
+		w.setName("Campofiorin");
+		w.setProducer("Masi");
+		w.setBottleSize(75);
+
+		jMockery.checking(new Expectations() {{
+			one(shoppingDAO).getShoppingItem(456);
+			will(returnValue(si));
+
+			one(wineDAO).storeWine(with(any(Wine.class)));
+
+			one(ceDAO).storeCellarEntry(with(any(CellarEntry.class)));
+
+			one(shoppingDAO).deleteShoppingItem(456);
+		}});
+
+		param("action", "checkin");
+		param("item.id", "456");
+		param("item.year", "2005");
+		param("item.quantity", "5");
+		param("wineCellarId", "3");
+		param("wine.name", "name");
+		param("wine.producer", "producer");
+		param("wine.country", "country");
+		param("wine.region", "region");
+		param("wine.description", "description");
+		param("wine.bottleSize", "75");
+
+		action();
+
+		verifyNoErrors();
+        verifyForward("shoppingList");
+        assertEquals(list, module.getRequestAttribute("shoppingList"));
 	}
 }

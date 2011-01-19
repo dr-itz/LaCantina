@@ -149,13 +149,8 @@ public class ShoppingListAction
 				// save wine cellar entry
 				ceDao.storeCellarEntry(ce);
 
-				// delete shopping item
-				try {
-					dao.deleteShoppingItem(form.getItem().getId());
-				} catch (DAOException e) {
-					attachSingleErrorMessage(mapping, request,
-						"shoppinglist.delete.failed");
-				}
+				// delete shopping item, handled below
+				action = BaseForm.ACTION_DELETE;
 			}
 
 
@@ -193,8 +188,9 @@ public class ShoppingListAction
 					attachSingleErrorMessage(mapping, request,
 						"shoppinglist.update.failed");
 				}
+			}
 
-			} else if (BaseForm.ACTION_DELETE.equals(action)) {
+			if (BaseForm.ACTION_DELETE.equals(action)) {
 				if (form.getItem().getId() != 0) {
 					try {
 						dao.deleteShoppingItem(form.getItem().getId());
