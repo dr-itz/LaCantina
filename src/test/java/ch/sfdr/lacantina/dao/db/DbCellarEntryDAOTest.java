@@ -173,4 +173,57 @@ public class DbCellarEntryDAOTest
 			1);
 		me.deleteCellarEntry(1);
 	}
+
+	@Test
+	public void testGetWineRatingList()
+		throws DAOException
+	{
+		prepareQueryWithResult(
+			"SELECT COUNT(*) " +
+			"FROM wine_years y INNER JOIN wines w" +
+			"  ON y.wine_id = w.id " +
+			"WHERE y.rating_points >= ?",
+			"CountQuery",
+			new Object[][] {
+				{ 2 },
+			},
+			0);
+
+		prepareQueryWithResult(
+			"SELECT y.id, y.winecellar_id, y.year, y.quantity, y.rating_points, y.rating_text," +
+			"  w.id, w.user_id, w.name, w.producer, w.country, w.region, w.description, w.bottle_size " +
+			"FROM wine_years y INNER JOIN wines w" +
+			"  ON y.wine_id = w.id " +
+			"WHERE y.rating_points >= ?" +
+			" ORDER BY w.country, w.region, w.name" +
+			" LIMIT ? OFFSET ?",
+			"WineRatingListQuery",
+			new Object [][] {
+				{ 456, 789, 2005, 6, 10, "text", 123, 56, "name", "producer", "country", "region", "description", 75 },
+				{ 457, 789, 2004, 12, 5, "text2", 124, 56, "name2", "producer2", "country2", "region2", "description2", 75 },
+			},
+			0, 20, 0
+		);
+
+		PagingCookie pc = new PagingCookie();
+		List<CellarEntry> ratingList = me.getWineRatings(0, pc);
+		assertEquals(2, ratingList.size());
+
+		CellarEntry ce = ratingList.get(0);
+		assertEquals(456, ce.getId());
+		assertEquals(2005, ce.getYear());
+		assertEquals(6, ce.getQuantity());
+		assertEquals(10, ce.getRatingPoints());
+		assertEquals("text", ce.getRatingText());
+
+		Wine w = ce.getWine();
+		assertEquals(123, w.getId());
+		assertEquals(56, w.getUserId());
+		assertEquals("name", w.getName());
+		assertEquals("producer", w.getProducer());
+		assertEquals("country", w.getCountry());
+		assertEquals("region", w.getRegion());
+		assertEquals("description", w.getDescription());
+		assertEquals(75, w.getBottleSize());
+	}
 }

@@ -27,6 +27,7 @@ public class CellarEntryActionTest
 	private ICellarEntryDAO cellarentryDAO;
 	private IWineDAO wineDAO;
 	private List<CellarEntry> list;
+	private List<CellarEntry> ratingList;
 
 	@Before
 	public void setUp()
@@ -191,5 +192,31 @@ public class CellarEntryActionTest
 		action();
 		verifyError("ce.delete.failed");
 		verifyForward("cellarentryList");
+	}
+
+	private void setupWineRatingsExpectations()
+		throws DAOException
+	{
+		ratingList = new ArrayList<CellarEntry>();
+		jMockery.checking(new Expectations() {{
+			one(cellarentryDAO).getWineRatings(with(0),
+				with(any(PagingCookie.class)));
+			will(returnValue(ratingList));
+		}});
+		param("ce.ratingPoints", "0");
+	}
+
+	@Test
+	public void testRatingList()
+		throws DAOException
+	{
+		setupWineRatingsExpectations();
+
+		param("listType", "rating");
+		action();
+
+		verifyNoErrors();
+	    verifyForward("wineratingList");
+	    assertEquals(ratingList, module.getRequestAttribute("wineratingList"));
 	}
 }

@@ -31,6 +31,7 @@
 		<action path="/cellarentry"				forward="cellarentry"/>
 		<action path="/shoppingList"			forward="shoppingList"/>
 		<action path="/shoppingItem"			forward="shoppingItem"/>
+		<action path="/wineratingList"			forward="wineratingList"/>
 
 		<action path="/LoginAction"
 		 type="ch.sfdr.common.LoginAction"
@@ -75,6 +76,7 @@
 		 validate="true"
 		 input="/cellarentry.do">
 			<forward name="cellarentryList" path="/cellarentryList.do"/>
+			<forward name="wineratingList" path="/wineratingList.do"/>
 		</action>
 
 		<action path="/ShoppingListAction"

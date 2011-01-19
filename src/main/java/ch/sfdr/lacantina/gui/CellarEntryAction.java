@@ -78,6 +78,16 @@ public class CellarEntryAction
 							"ce.delete.failed");
 					}
 				}
+			} else if (BaseForm.ACTION_LIST.equals(action) &&
+					CellarEntryForm.LIST_TYPE_RATINGS.equals(form.getListType()))
+			{
+
+				List<CellarEntry> wineratingList = dao.getWineRatings(0,
+					form.getPagingCookie());
+				setList(request, form.getPagingCookie(), wineratingList,
+					"wineratingList");
+
+				return mapping.findForward("wineratingList");
 			}
 
 			// defaults to LIST

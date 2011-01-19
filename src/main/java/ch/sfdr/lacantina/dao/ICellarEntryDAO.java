@@ -45,4 +45,13 @@ public interface ICellarEntryDAO
 	 */
 	void deleteCellarEntry(int id)
 		throws DAOException;
+
+	/**
+	 * reads a list of wine ratings
+	 * @param minPoints the minimum rating points
+	 * @return list of wine ratings
+	 * @throws DAOException
+	 */
+	List<CellarEntry> getWineRatings(int minPoints, PagingCookie pc)
+		throws DAOException;
 }
